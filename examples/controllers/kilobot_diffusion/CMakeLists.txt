@@ -1,0 +1,5 @@
+add_library(kilobot_diffusion SHARED kilobot_diffusion.h kilobot_diffusion.cpp)
+target_link_libraries(kilobot_diffusion
+  argos3core_simulator
+  argos3plugin_simulator_kilobot
+  argos3plugin_simulator_genericrobot)
