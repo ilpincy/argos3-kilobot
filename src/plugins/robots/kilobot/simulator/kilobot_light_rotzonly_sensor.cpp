@@ -22,12 +22,6 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   static SInt32 Modulo(SInt32 n_value, SInt32 un_modulo) {
-      while(n_value < 0) n_value += un_modulo;
-      while(n_value >= un_modulo) n_value -= un_modulo;
-      return n_value;
-   }
-
    static Real ComputeReading(Real f_distance) {
       if(f_distance > 2.5f) {
          return 0.0f;
