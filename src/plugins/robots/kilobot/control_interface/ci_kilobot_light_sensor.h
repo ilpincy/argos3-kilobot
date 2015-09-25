@@ -27,20 +27,16 @@ namespace argos {
    public:
 
       /**
-       * The DTO of the light sensor. It contains the reading of each sensor and
-       * and the angle at which each sensor is placed.
+       * The DTO of the light sensor, containing the sensor reading.
        */
       struct SReading {
-         Real Value;
-         CRadians Angle;
+         SInt16 Value;
 
          SReading() :
-            Value(0.0f) {}
+            Value(-1) {}
 
-         SReading(Real f_value,
-                  const CRadians& c_angle) :
-            Value(f_value),
-            Angle(c_angle) {}
+         SReading(SInt16 n_value) :
+            Value(n_value) {}
       };
 
    public:

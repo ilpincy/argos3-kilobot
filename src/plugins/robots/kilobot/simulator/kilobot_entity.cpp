@@ -45,13 +45,8 @@ namespace argos {
       m_pcLightSensorEquippedEntity(NULL),
       m_pcWheeledEntity(NULL) {
       try {
-         /*
-          * Create and init components
-          */
-         /*
-          * Embodied entity
-          * Better to put this first, because many other entities need this one
-          */
+         /* Create and init components */
+         /* Embodied entity - Better to put this first, because many other entities need this one */
          m_pcEmbodiedEntity = new CEmbodiedEntity(this, "body_0", c_position, c_orientation);
          AddComponent(*m_pcEmbodiedEntity);
          /* Wheeled entity and wheel positions (left, right) */
@@ -64,29 +59,31 @@ namespace argos {
          AddComponent(*m_pcLEDEquippedEntity);
          m_pcLEDEquippedEntity->AddLED(CVector3(), m_pcEmbodiedEntity->GetOriginAnchor());
          /* Light sensor equipped entity */
-         m_pcLightSensorEquippedEntity =
-            new CLightSensorEquippedEntity(this,
-                                           "light_0");
+         m_pcLightSensorEquippedEntity = new CLightSensorEquippedEntity(this, "light_0");
          AddComponent(*m_pcLightSensorEquippedEntity);
-         m_pcLightSensorEquippedEntity->AddSensor(
-                                                  CVector3(LIGHT_SENSOR_RADIUS*Cos(LIGHT_SENSOR_ANGLE),
+         m_pcLightSensorEquippedEntity->AddSensor(CVector3(LIGHT_SENSOR_RADIUS*Cos(LIGHT_SENSOR_ANGLE),
                                                            LIGHT_SENSOR_RADIUS*Sin(LIGHT_SENSOR_ANGLE),
                                                            LIGHT_SENSOR_ELEVATION),
                                                   CVector3(0.0f,0.0f,1.0f),
                                                   LIGHT_SENSOR_RANGE,
                                                   m_pcEmbodiedEntity->GetOriginAnchor());
-         /* RAB equipped entity */
+         /* RAB equipped entity: it simulates the IR communication for
+            kilobots.  The data payload amounts to 9
+            bytes. Additionally, real kilobots use 1 byte to specify
+            the message type and 2 bytes to store the message
+            crc. These should not be simulated */
          m_pcRABEquippedEntity = new CRABEquippedEntity(this,
                                                         "rab_0",
-                                                        9,
+                                                        9, 
                                                         f_communication_range,
                                                         m_pcEmbodiedEntity->GetOriginAnchor(),
                                                         *m_pcEmbodiedEntity,
                                                         CVector3(0.0f, 0.0f, RAB_ELEVATION));
          AddComponent(*m_pcRABEquippedEntity);
 
-         /* Controllable entity
-            It must be the last one, for actuators/sensors to link to composing entities correctly */
+         /* Controllable entity.  It must be the last one, for
+            actuators/sensors to link to composing entities
+            correctly */
          m_pcControllableEntity = new CControllableEntity(this, "controller_0");
          AddComponent(*m_pcControllableEntity);
          m_pcControllableEntity->SetController(str_controller_id);
@@ -110,10 +107,7 @@ namespace argos {
          /*
           * Create and init components
           */
-         /*
-          * Embodied entity
-          * Better to put this first, because many other entities need this one
-          */
+         /* Embodied entity. Better to put this first, because many other entities need this one */
          m_pcEmbodiedEntity = new CEmbodiedEntity(this);
          AddComponent(*m_pcEmbodiedEntity);
          m_pcEmbodiedEntity->Init(GetNode(t_tree, "body"));
@@ -127,12 +121,9 @@ namespace argos {
          AddComponent(*m_pcLEDEquippedEntity);
          m_pcLEDEquippedEntity->AddLED(CVector3(),m_pcEmbodiedEntity->GetOriginAnchor());
          /* Light sensor equipped entity */
-         m_pcLightSensorEquippedEntity =
-            new CLightSensorEquippedEntity(this,
-                                           "light_0");
+         m_pcLightSensorEquippedEntity = new CLightSensorEquippedEntity(this, "light_0");
          AddComponent(*m_pcLightSensorEquippedEntity);
-         m_pcLightSensorEquippedEntity->AddSensor(
-                                                  CVector3(LIGHT_SENSOR_RADIUS*Cos(LIGHT_SENSOR_ANGLE),
+         m_pcLightSensorEquippedEntity->AddSensor(CVector3(LIGHT_SENSOR_RADIUS*Cos(LIGHT_SENSOR_ANGLE),
                                                            LIGHT_SENSOR_RADIUS*Sin(LIGHT_SENSOR_ANGLE),
                                                            LIGHT_SENSOR_ELEVATION),
                                                   CVector3(0.0f,0.0f,1.0f),
@@ -149,8 +140,9 @@ namespace argos {
                                                         *m_pcEmbodiedEntity,
                                                         CVector3(0.0f, 0.0f, RAB_ELEVATION));
          AddComponent(*m_pcRABEquippedEntity);
-         /* Controllable entity
-            It must be the last one, for actuators/sensors to link to composing entities correctly */
+         /* Controllable entity. It must be the last one, for
+            actuators/sensors to link to composing entities
+            correctly */
          m_pcControllableEntity = new CControllableEntity(this);
          AddComponent(*m_pcControllableEntity);
          m_pcControllableEntity->Init(GetNode(t_tree, "controller"));

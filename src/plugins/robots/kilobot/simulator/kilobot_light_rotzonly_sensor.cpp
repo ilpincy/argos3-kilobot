@@ -10,6 +10,7 @@
 #include <argos3/plugins/simulator/entities/light_entity.h>
 #include <argos3/plugins/simulator/entities/light_sensor_equipped_entity.h>
 
+#include "kilobot_measures.h"
 #include "kilobot_light_rotzonly_sensor.h"
 
 namespace argos {
@@ -17,27 +18,22 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   static CRange<Real> SENSOR_RANGE(0.0f, 1.0f);
+   static CRange<SInt16> SENSOR_RANGE(-1, 1024);
 
    /****************************************/
    /****************************************/
 
-   static Real ComputeReading(Real f_distance) {
-      if(f_distance > 2.5f) {
-         return 0.0f;
+   /* This function models the actual response of the sensor to
+      distance and direction. In should match the specific conditions
+      used in experiments */
+   static SInt16 ComputeReading(const Real f_distance, const CRadians& c_angular_distance) {
+      Real f_reading = 0;
+      if(f_distance < 2.5f) {
+         f_reading =  ::exp(-f_distance * 2.0f);
+         f_reading *= 1.0f - c_angular_distance/CRadians::PI;
       }
-      else {
-         return ::exp(-f_distance * 2.0f);
-      }
-   }
 
-   static Real ScaleReading(const CRadians& c_angular_distance) {
-      if(c_angular_distance > CRadians::PI_OVER_TWO) {
-         return 0.0f;
-      }
-      else {
-         return (1.0f - 2.0f * c_angular_distance / CRadians::PI);
-      }
+      return (SInt16) ::floor(f_reading*1024);
    }
 
    /****************************************/
@@ -80,7 +76,7 @@ namespace argos {
          }
          else if(fNoiseLevel > 0.0f) {
             m_bAddNoise = true;
-            m_cNoiseRange.Set(-fNoiseLevel, fNoiseLevel);
+            m_cNoiseRange.Set(-fNoiseLevel*SENSOR_RANGE.GetMax(), fNoiseLevel*SENSOR_RANGE.GetMax());
             m_pcRNG = CRandom::CreateRNG("argos");
          }
       }
@@ -94,7 +90,7 @@ namespace argos {
    
    void CKilobotLightRotZOnlySensor::Update() {
       /* Erase readings */
-      m_tReading.Value = 0.0f;
+      m_tReading.Value = 0;
       /* Get kilobot orientation */
       CRadians cTmp1, cTmp2, cOrientationZ;
       m_pcEmbodiedEntity->GetOriginAnchor().Orientation.ToEulerAngles(cOrientationZ, cTmp1, cTmp2);
@@ -115,9 +111,7 @@ namespace argos {
        *    NOTE: the readings are additive
        * 4. go through the sensors and clamp their values
        */
-      for(CSpace::TMapPerType::iterator it = mapLights.begin();
-          it != mapLights.end();
-          ++it) {
+      for(CSpace::TMapPerType::iterator it = mapLights.begin(); it != mapLights.end(); ++it) {
          /* Get a reference to the light */
          CLightEntity& cLight = *(any_cast<CLightEntity*>(it->second));
          /* Consider the light only if it has non zero intensity */
@@ -125,7 +119,7 @@ namespace argos {
             /* Set the ray end */
             cOcclusionCheckRay.SetEnd(cLight.GetPosition());
             /* Check occlusion between the kilobot and the light */
-            if(! GetClosestEmbodiedEntityIntersectedByRay(sIntersection,
+            if( !GetClosestEmbodiedEntityIntersectedByRay(sIntersection,
                                                           cOcclusionCheckRay,
                                                           *m_pcEmbodiedEntity)) {
                /* The light is not occluded */
@@ -144,8 +138,8 @@ namespace argos {
                cAngleLightWrtKilobot -= cOrientationZ;
                /* Set the actual readings */
                Real fReading = cRobotToLight.Length();
-               CRadians cAngularDistanceFromOptimalLightReceptionPoint = Abs((cAngleLightWrtKilobot - m_tReading.Angle).SignedNormalize());
-               m_tReading.Value += ComputeReading(fReading) * ScaleReading(cAngularDistanceFromOptimalLightReceptionPoint);
+               CRadians cAngularDistanceFromOptimalLightReceptionPoint = Abs((cAngleLightWrtKilobot - LIGHT_SENSOR_ANGLE).SignedNormalize());
+               m_tReading.Value += ComputeReading(fReading,cAngularDistanceFromOptimalLightReceptionPoint);
             }
             else {
                /* The ray is occluded */
@@ -168,7 +162,7 @@ namespace argos {
    /****************************************/
 
    void CKilobotLightRotZOnlySensor::Reset() {
-      m_tReading.Value = 0.0f;
+      m_tReading.Value = 0;
    }
 
    /****************************************/

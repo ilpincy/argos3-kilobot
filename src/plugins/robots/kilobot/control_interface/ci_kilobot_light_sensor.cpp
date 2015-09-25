@@ -15,9 +15,8 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   CCI_KilobotLightSensor::CCI_KilobotLightSensor() {
-      m_tReading.Angle = CRadians(ARGOS_PI);
-      m_tReading.Angle.SignedNormalize();
+   CCI_KilobotLightSensor::CCI_KilobotLightSensor() :
+      m_tReading() {
    }
 
    /****************************************/
@@ -27,7 +26,6 @@ namespace argos {
    void CCI_KilobotLightSensor::CreateLuaState(lua_State* pt_lua_state) {
       CLuaUtility::OpenRobotStateTable(pt_lua_state, "light");
       CLuaUtility::StartTable(pt_lua_state, 1                         );
-      CLuaUtility::AddToTable(pt_lua_state, "angle",  m_tReading.Angle);
       CLuaUtility::AddToTable(pt_lua_state, "value",  m_tReading.Value);
       CLuaUtility::EndTable  (pt_lua_state                            );
       CLuaUtility::CloseRobotStateTable(pt_lua_state);
@@ -55,8 +53,7 @@ namespace argos {
 
    std::ostream& operator<<(std::ostream& c_os,
                             const CCI_KilobotLightSensor::SReading& s_reading) {
-      c_os << "{Value=<" << s_reading.Value
-           << ">, Angle=<" << s_reading.Angle << ">}";
+      c_os << "{Value=<" << s_reading.Value << ">}";
       return c_os;
    }
 

@@ -17,7 +17,7 @@
   <controllers>
 
     <kilobot_diffusion_controller id="fdc"
-                                  library="build/controllers/kilobot_diffusion/libkilobot_diffusion">
+                                  library="build/examples/controllers/kilobot_diffusion/libkilobot_diffusion">
       <actuators>
         <differential_steering implementation="default" />
         <leds implementation="default" medium="leds" />
@@ -26,7 +26,7 @@
       <sensors>
         <range_and_bearing implementation="medium" medium="rab" />
       </sensors>
-      <params alpha="7.5" delta="0.1" velocity="5" />
+      <params max_motion_steps="100" />
     </kilobot_diffusion_controller>
 
   </controllers>
@@ -62,7 +62,7 @@
       <position method="uniform" min="-0.5,-0.5,0" max="0.5,0.5,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
       <entity quantity="10" max_trials="100">
-        <kilobot id="fb">
+        <kilobot id="kb">
           <controller config="fdc" />
         </kilobot>
       </entity>

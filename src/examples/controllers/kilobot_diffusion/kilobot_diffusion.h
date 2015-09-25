@@ -3,16 +3,15 @@
  *
  * An example diffusion controller for the kilobot.
  *
- * This controller makes the robots behave as gas particles. The
- * robots go straight until a time expires, in which case they
- * turn. The net effect is that over time the robots diffuse in the
- * environment.
+ * This controller makes the robots move randomly and diffuse in the
+ * environment.  Each robot performs a random walk: it moves straight
+ * until a timeout expires, and then turns for a random amount of
+ * time.
  *
  * The controller uses the two motors to move the robot around.
  *
  * This controller is meant to be used with the XML files:
- *    experiments/kilobot_diffusion_1.argos
- *    experiments/kilobot_diffusion_10.argos
+ *    experiments/kilobot_diffusion.argos
  */
 
 #ifndef KILOBOT_DIFFUSION_H
@@ -21,16 +20,11 @@
 /*
  * Include some necessary headers.
  */
+
 /* Definition of the CCI_Controller class. */
 #include <argos3/core/control_interface/ci_controller.h>
 /* Definition of the differential steering actuator */
 #include <argos3/plugins/robots/generic/control_interface/ci_differential_steering_actuator.h>
-/* Definition of the LEDs actuator */
-#include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
-/* Definition of the range and bearing actuator */
-#include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_actuator.h>
-/* Definition of the range and bearing sensor */
-#include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h>
 
 /* Random number generator */
 #include <argos3/core/utility/math/rng.h>
@@ -44,6 +38,7 @@
  * With this statement, you save typing argos:: every time.
  */
 using namespace argos;
+
 
 enum TStateNames {KILOBOT_STATE_STOP, KILOBOT_STATE_TURNING, KILOBOT_STATE_MOVING};
 
@@ -92,6 +87,13 @@ public:
     */
    virtual void Destroy() {}
 
+   /*
+    * These functions allow to track the current state of the robot
+    */
+   inline const TStateNames GetCurrentState() const {return m_tCurrentState;};
+   inline const bool StateChanged() const {return (m_tPreviousState != m_tCurrentState);};
+
+   
 private:
 
    /*
@@ -101,39 +103,26 @@ private:
     * <controllers><kilobot_diffusion_controller> section.
     */
 
-   /* counters and helper variables */
-   UInt32 m_unInitStraightCount;
-   UInt32 m_unInitTurnCount;
-   UInt32 m_unStraightCount;
-   UInt32 m_unTurnCount;
-
-   Real m_fSpeakingProbability;
-   CColor m_cCurrentColor;
-
-   Real m_fMotorL;
-   Real m_fMotorR;
-
-   TStateNames m_tCurrentState;
-
-   /* Pointer to the LEDs actuator */
-   CCI_LEDsActuator* m_pcLEDs;
-   /* Pointer to the range and bearing actuator */
-   CCI_RangeAndBearingActuator*  m_pcRABA;
-   /* Pointer to the range and bearing sensor */
-   CCI_RangeAndBearingSensor* m_pcRABS;
    /* Pointer to the differential steering actuator */
    CCI_DifferentialSteeringActuator* m_pcMotors;
 
+   /* behavioural state (moving/turning) */
+   TStateNames m_tCurrentState;
+   TStateNames m_tPreviousState;
+   
+   /* counters for random walk behaviour */
+   UInt32 m_unMaxMotionSteps;
+   UInt32 m_unCountMotionSteps;
+
+   UInt32 m_unMaxTurningSteps;
+   UInt32 m_unCountTurningSteps;
+
+   /* actual motor speed */
+   Real   m_fMotorL;
+   Real   m_fMotorR;
 
    /* variables for the random number generation */
    CRandom::CRNG*  m_pcRNG;
-
-   /* List for the words generated during MNG */
-    std::vector<int> m_lista;
-    
-    /*Last spoken word*/
-    UInt16 m_detta;
-
 };
 
 #endif
