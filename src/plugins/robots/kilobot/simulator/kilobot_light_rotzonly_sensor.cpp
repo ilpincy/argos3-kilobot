@@ -94,9 +94,15 @@ namespace argos {
       /* Get kilobot orientation */
       CRadians cTmp1, cTmp2, cOrientationZ;
       m_pcEmbodiedEntity->GetOriginAnchor().Orientation.ToEulerAngles(cOrientationZ, cTmp1, cTmp2);
+      /* Compute light sensor position */
+      CVector3 c_sensor_position = CVector3(0,0,LIGHT_SENSOR_ELEVATION) +
+         CVector3(LIGHT_SENSOR_RADIUS*Cos(LIGHT_SENSOR_ANGLE), LIGHT_SENSOR_RADIUS*Sin(LIGHT_SENSOR_ANGLE), 0) +
+         CVector3(KILOBOT_ECCENTRICITY,0,0);
+      c_sensor_position.Rotate(m_pcEmbodiedEntity->GetOriginAnchor().Orientation);
+      c_sensor_position += m_pcEmbodiedEntity->GetOriginAnchor().Position;
       /* Ray used for scanning the environment for obstacles */
       CRay3 cOcclusionCheckRay;
-      cOcclusionCheckRay.SetStart(m_pcEmbodiedEntity->GetOriginAnchor().Position);
+      cOcclusionCheckRay.SetStart(c_sensor_position);
       CVector3 cRobotToLight;
       /* Buffer for the angle of the light wrt to the kilobot */
       CRadians cAngleLightWrtKilobot;
@@ -169,7 +175,7 @@ namespace argos {
    /****************************************/
 
    REGISTER_SENSOR(CKilobotLightRotZOnlySensor,
-                   "kilobot_light", "rot_z_only",
+                   "kilobot_light", "default",
                    "Carlo Pinciroli [ilpincy@gmail.com] - Vito Trianni [vito.trianni@istc.cnr.it]",
                    "1.0",
                    "The kilobot light sensor (optimized for 2D).",

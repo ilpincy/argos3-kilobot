@@ -34,7 +34,7 @@ namespace argos {
    static const Real LED_HEIGHT             = KILOBOT_RADIUS * 0.05;
 
    /* Light Sensor */
-   static const CRadians LIGHT_SENSOR_ANGLE = CRadians((ARGOS_PI / 12.0f) * 0.5f);
+   static const CRadians LIGHT_SENSOR_ANGLE = ToRadians(CDegrees(100));
    static const Real LIGHT_SENSOR_ELEVATION = KILOBOT_HEIGHT;
    static const Real LIGHT_SENSOR_RADIUS    = KILOBOT_RADIUS - 0.002;
    static const Real LIGHT_SENSOR_RANGE     = 0.1f;
