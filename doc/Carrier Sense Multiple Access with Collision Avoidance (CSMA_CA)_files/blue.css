@@ -1,0 +1,1223 @@
+/*======================================================================*\
+|| #################################################################### ||
+|| # Package - Joomla Template based on YJSimplegrid Framework          ||
+|| # Copyright (C) 2010  Youjoomla LLC. All Rights Reserved.            ||
+|| # license - PHP files are licensed under  GNU/GPL V2                 ||
+|| # license - CSS  - JS - IMAGE files  are Copyrighted material        ||
+|| # bound by Proprietary License of Youjoomla LLC                      ||
+|| # for more information visit http://www.youjoomla.com/license.html   ||
+|| # Redistribution and  modification of this software                  ||
+|| # is bounded by its licenses                                         ||
+|| # websites - http://www.youjoomla.com | http://www.yjsimplegrid.com  ||
+|| #################################################################### ||
+\*======================================================================*/
+/*BODY ID'S USED FOR CSS FONT STYLES AND BASE SITE BODY STYLING */
+body#stylef1, body#stylef2, body#stylef3, body#stylef4, body#stylef5, body#stylef6, body#stylef7, body#stylef8, body#stylef9, body#stylef10, body#stylef11, body#stylef12, body#stylef13, body#stylef14, body#stylef15, body#stylef16 {
+	background:#ffffff;
+	color:#000000;
+}
+/* BOTTOM PART OF THE SITE LAYOUT. BASE WRAP */
+#centerbottom {
+	background:#fff;
+}
+/*GRIDS STYLING CAN BE USED TO STYLE EACH blue DIFFERENTLY */
+#yjsg1 {
+}
+#header {
+}
+#logo {
+	background:url(../images/blue/logo.png) no-repeat 0px 0px;
+}
+#yjsgheadergrid {
+}
+#yjsg2 {
+}
+#yjsg3 {
+}
+#yjsg4 {
+}
+#yjsg5 {
+}
+#pathway {
+	border:1px solid #f1f1f1;
+}
+#pathway .yjsg_breadcrumbs a.pathway {
+	background: url(../images/arrow.png) no-repeat right center;
+}
+#yjsg6 {
+}
+#yjsg7 {
+}
+#footer {
+	color:#fff;
+}
+#joomlacredit {
+}
+/*TEMPLATE CSS 
+--------------------- */
+/* SITE LINKS */
+a:link, a:visited {
+	text-decoration: none;
+	color:#38a8d6;
+}
+/* SITE HOVERS */
+a:focus, a:hover {
+	color:#444444;
+	text-decoration: none;
+}
+/*DIFFERENT STYLE FOR  LINKS ON DARK BG
+--------------------- */
+#footmod a, #footmod a:visited, #cp a, #cp a:visited, #joomlacredit a, #joomlacredit a:visited{
+	color:#26708e;
+}
+#footmod a:hover, #footmod a:focus, #cp a:focus, #cp a:hover, #joomlacredit a:focus, #joomlacredit a:hover{
+	color:#fff;
+}
+#pathway a, #pathway a:visited {
+	color:#38a8d6;
+}
+#pathway a:focus, #pathway a:hover{
+	color:#444444;
+}
+/* SITE HEADINGS */
+h1, h2, h3, h4, h5, h6 {
+	color:#000000;
+}
+.small, .createdate, .modifydate, .createby {
+	text-transform: uppercase;
+	color:#ccc;
+	font-size:10px;
+}
+/* SITE TITLE, NEWS ITEM TITLE, MORE ARTICLES */
+.pagetitle, div.title h1, div.title h2, .yjsg-morearticles h3 {
+	color:#38a8d6;
+}
+.yjsg-morearticles h3 {
+	border:none;
+}
+/* NEWS ITEM TITLE WITH LINK*/
+div.title h1 a:link, div.title h1 a:visited, div.title h2 a:link, div.title h2 a:visited {
+	color:#38a8d6;
+}
+div.title h1 a:hover, div.title h1 a:focus, div.title h2 a:hover, div.title h2 a:focus {
+	color:#444444;
+}
+/* FORM ELEMENTS */
+/* ARTICLE TABLE OF CONTENTS */
+fieldset, .toclink {
+	border:1px solid #dcdcdc;
+}
+/* FIELDSET IN MODULES */
+.yjsquare_in fieldset, .yjround_in fieldset {
+	border:none;
+}
+/* INPUTBOXES */
+.inputbox{
+	color:#aaaaaa;
+	background: #FFFFFF;
+	border: 1px solid #ececec;
+}
+.inputbox:hover, .inputbox:focus{
+	background: #f9f9f9;
+	border: 1px solid #ececec;
+}
+/*BUTTONS
+--------------------- */
+.button, .validate{
+	background:#38a8d6;
+	border:none;
+	color:#fff;
+}
+/*readon*/
+a.readon:link, a.readon:visited {
+	background:#38a8d6;
+	border:none;
+	color:#fff;
+}
+.readon span {
+	background:#38a8d6;
+}
+a.readon:hover {
+	color:#444444;
+}
+ul.pagination li a, ul.pagination li span, 
+th.pagenav_prev a, th.pagenav_next a,
+div.back_button a,li.pagenav-next a,li.pagenav-prev a {
+	background-image: url(../images/blue/pagination.png);
+	color:#38a8d6;
+}
+/* active one*/
+ul.pagination li span {
+	color:#fff;
+}
+/* hover*/
+ul.pagination li a:hover {
+	color:#fff;
+}
+/* THIS TEMPLATE IS EQUIPED WITH  ROUND AND SQUARE CORNERS
+TO SEE ROUND CORNERS SIMPLY CHANGE THE MODULE blue STYLE IN TEMPLATE MANAGER
+UNDER ACCORDION ADVANCED OPTIONS. SEE ALSO rounded.css FILE".
+
+/* ROUND MODULES STYLING
+--------------------- */
+/* ROUND IMAGE. YOU CAN CHANGE TO YOUR OWN. 1 IMAGE TECHNIQUE USED */
+.yjround .content, .yjround .t, .yjround .b, .yjround .b div {
+	background:url(../images/blue/rounded.png);
+}
+.yjround h4 {
+	color:#000000;
+}
+/* TITLE SPANS FOR SECOND PART OF THE TITLE COLOR */
+.yjround h4 span {
+	color:#38a8d6;
+}
+/* SPECIFIC TEXT AND TITLE COLOR FOR GRIDS WITH DARK BACGROUND*/
+#yjsg1 .yjround .content, #yjsgheadergrid .yjround .content, #yjsg7 .yjround .content {
+	color:#222222;
+}
+.yjround_in {
+}
+/*SQUARE MODULES STYLE
+--------------------- */
+.yjsquare h4 {
+	color:#000000;
+}
+/* SPAN COLOR SHOWS FIRST */
+.yjsquare h4 span {
+	color:#000000;
+}
+.yjsquare {
+}
+.yjsquare_in {
+}
+/* ADDITIONAL MODULE STYLES */
+/* _yj1 */
+.yjsquare_yj1 h4 {
+}
+.yjsquare_yj1 h4 span {
+}
+.yjsquare_yj1 {
+}
+.yjsquare_yj1 .yjsquare_in {
+}
+/* _yj2 */
+.yjsquare_yj2 h4 {
+}
+.yjsquare_yj2 h4 span {
+}
+.yjsquare_yj2 {
+}
+.yjsquare_yj2 .yjsquare_in {
+}
+/*  SPECIFIC TEXT AND TITLE COLOR FOR GRIDS WITH DARK BACGROUND */
+/*#yjsg1 .yjsquare h4, #yjsg7 .yjsquare h4, #yjsgheadergrid .yjsquare h4 {
+	color:#ccc;
+	border-bottom:1px dashed #ccc;
+}
+*//* TITLE SPANS FOR SECOND PART OF THE TITLE COLOR*/
+/*#yjsg1 .yjsquare h4 span, #yjsg7 .yjsquare h4 span, #yjsgheadergrid .yjsquare h4 span {
+	color:#ccc;
+}
+*//*SEARCH INPUTBOX STYLING. CURRENTLY USING DEFAULT INPUT STYLE
+--------------------- */
+.search {
+}
+.search .inputbox {
+}
+/*LOGIN MODULE INPUTBOX CURRENTLY USING DEFAULT INPUT STYLE
+--------------------- */
+#modlgn_passwd, #modlgn_username {
+}
+#modlgn_passwd {
+}
+#modlgn_username {
+}
+#modlgn_remember.inputbox{
+}
+/*TOP MENU STYLE FOR SPLIT MENU, CSS DROPDOWN AND SMOOTH DROPDOWN
+--------------------- */
+.horiznav {
+	background-color: #38a8d6;
+}
+/* MENU OVERRIDES */
+.YJSG_listContainer {
+	background:none;
+}
+/* NORMAL SUBTITLE */
+.horiznav ul li a span.yjm_desc {
+	color:#fff;
+}
+/*ACTIVE AND HOVER SUBTITLE*/
+.horiznav ul li.active a span.yjm_desc, .horiznav ul li a:hover span.yjm_desc, .horiznav ul li.sfHover a span.yjm_desc {
+	color:#fff;
+}
+/* NORMAL TOP LINKS */
+.horiznav ul li {
+	background-color: #38a8d6;
+}
+.horiznav ul li a, .horiznav ul li a:visited {
+	color: #fff;
+	background-color: #38a8d6;
+}
+/* NORMAL TOP LINKS WITH CHILD ELEMENT */
+.horiznav ul li.haschild {
+	background-color: #38a8d6;
+}
+/* TOP LINKS HOVER */
+.horiznav ul li:hover, .horiznav ul li.sfHover {
+	background-color: #38a8d6;
+}
+.horiznav ul li a:hover, .horiznav ul li:hover a, .horiznav ul li.sfHover a,  .horiznav ul li.sfHoverHas a {
+	color: #121212;
+	background-color: #38a8d6;
+}
+/* TOP LINKS HOVER WITH CHILD ELEMENT */
+.horiznav ul li.haschild:hover {
+	background-color: #38a8d6;
+}
+.horiznav ul li.haschild a:hover {
+	color: #121212;
+}
+/* ACTIVE TOP LINKS  */
+.horiznav li#current, .horiznav li.active {
+	background-color: #38a8d6;
+}
+.horiznav li#current a, .horiznav li.active a, .horiznav li.active a:visited, .horiznav li.active.sfHover a:visited, .horiznav li.active.sfHoverHas a:visited {
+	color: #121212;
+	background-color: #38a8d6;
+}
+/* ACTIVE TOP LINKS WITH CHILD ELEMENT */
+.horiznav li#current.haschild, .horiznav li.haschild, .horiznav ul li.haschild.active, .horiznav ul li.sfHoverHas {
+	background-color: #38a8d6;
+}
+/* ACTIVE TOP LINKS HOVER */
+.horiznav li#current:hover, .horiznav li#current.sfHover, .horiznav li.active:hover, .horiznav li.active.sfHover {
+	background-color: #38a8d6;
+}
+.horiznav li#current a:hover, .horiznav li#current.sfHover a:hover, .horiznav li.active a:hover {
+	color: #121212;
+	background-color: #38a8d6;
+}
+/* ACTIVE TOP LINKS HOVER WITH CHILD ELEMENT */
+.horiznav li#current.haschild:hover, .horiznav li#current.haschild.sfHoverHas, .horiznav li#current.active.sfHover {
+	background-color: #38a8d6;
+}
+/* MAIN SUB UL AND MODULE BG */
+ul.subul_main.group_holder, .subul_main li.has_modpoz div.yj_menu_module_holder, .subul_main li.has_module div.yj_menu_module_holder, .subul_main li.haschild div.yj_menu_module_holder, .horiznav ul ul.subul_main.dropline {
+	background:#fff;
+}
+/* end drpline extra */
+.horiznav ul ul.subul_main.dropline ul a, .horiznav ul ul.subul_main.dropline ul a:hover, ul.subul_main.dropline div.yj_menu_module_holder {
+	border-bottom: 1px solid #e7e7e7!important;
+}
+/*--- end dropline extra ---*/
+
+/*--Module in menu---*/
+.yj_menu_module_holder h4,
+.yj_menu_module_holder h4 span{
+	color:#38a8d6;
+}
+.yj_menu_module_holder{
+	color:#777777;
+}
+.yj_menu_module_holder h4{
+	border:none;
+}
+/* MAIN SUB ITEM*/
+.top_menu ul.subul_main li a {
+	background:#fff;
+	border-bottom: 1px solid #e7e7e7;
+	color: #38a8d6;
+}
+.top_menu ul.subul_main li a:visited {
+	color: #38a8d6;
+	background:#fff;
+}
+/*MAIN SUB ITEM HOVER*/
+.top_menu ul.subul_main li a:hover {
+	background:#fff;
+	color: #121212;
+}
+.top_menu ul.subul_main li, .top_menu ul.subul_main li.active, .top_menu ul.subul_main li.active:visited, .top_menu ul.subul_main li.active:hover, .top_menu ul.subul_main li:hover, .top_menu ul.subul_main li:visited, .top_menu ul.subul_main li#current, .top_menu ul.subul_main li#current:hover {
+	border:none;
+	background:none;
+}
+/*MAIN SUB ACTIVE UL A ITEMS*/
+.top_menu li#current ul.subul_main li a, .top_menu li.active ul.subul_main li a {
+	background:#fff;
+	color: #38a8d6;
+}
+/*MAIN SUB ACTIVE UL ITEMS A HOVER*/
+.top_menu li#current ul.subul_main li a:hover, .top_menu li.active ul.subul_main li a:hover, .top_menu li#current.sfHover ul.subul_main li a:hover, .top_menu li.active.sfHover ul.subul_main li a:hover {
+	background:#fff;
+	color: #121212;
+}
+/*MAIN SUB UL ACTIVE LI A ITEM*/
+.top_menu ul.subul_main li#current a,
+.top_menu ul.subul_main li.haschild.active span.subparent a{
+	background:#fff;
+	color: #121212;
+}
+/*MAIN SUB UL ACTIVE LI A ITEM HOVER*/
+.top_menu ul.subul_main li#current a:hover, .top_menu ul.subul_main li#current.sfHover,
+.top_menu ul.subul_main li.haschild.active span.subparent a:hover{
+	background:#fff;
+	color: #121212;
+}
+/*SUB LEVEL PARENT ITEM ARROWS*/
+ul.subul_main li.haschild span.child a, ul.subul_main ul.subul_main li.haschild span.child a, ul.subul_main ul.subul_main ul.subul_main li.haschild span.child a, ul.subul_main ul.subul_main ul.subul_main ul.subul_main li.haschild span.child a {
+	background-image:url(../images/blue/topmenu/arrow_right.png)!important;
+	background-repeat:no-repeat!important;
+	background-position:95% 50%!important;
+}
+ul.subul_main li.haschild span.child a:hover, ul.subul_main ul.subul_main li.haschild span.child a:hover, ul.subul_main ul.subul_main ul.subul_main li.haschild span.child a:hover, ul.subul_main ul.subul_main ul.subul_main ul.subul_main li.haschild span.child a:hover {
+	background-image:url(../images/blue/topmenu/arrow_down.png)!important;
+	background-repeat:no-repeat!important;
+	background-position:95% 50%!important;
+}
+/* IE6 SPECIFIC */
+.horiznav li li.sfHover ul, .horiznav li li.sfHoverHas ul, .top_menu ul.subul_main.isie {
+	background:#292929;
+}
+/********************** CORNERS FOR MENU UL'S ***************************/
+/*TOP LEFT*/
+.horiznav li.tl, .horiznav li.tl:hover {
+	background:transparent url(../images/blue/topmenu/corners/tl.png)!important;
+}
+/* TOP RIGHT*/
+.horiznav li.tr, .horiznav li.tr:hover {
+	background:transparent url(../images/blue/topmenu/corners/tr.png) no-repeat right top!important;
+}
+/* BOTTOM RIGHT*/
+.horiznav li.br, .horiznav li.br:hover {
+	background:transparent url(../images/blue/topmenu/corners/br.png) no-repeat right bottom!important;
+}
+/* BOTTOM LEFT*/
+.horiznav li.bl, .horiznav li.bl:hover {
+	background:transparent url(../images/blue/topmenu/corners/bl.png) no-repeat left bottom!important;
+}
+/* RIGHT MIDDLE */
+.horiznav li.right, .horiznav li.right:hover {
+	background:transparent url(../images/blue/topmenu/corners/right.png) no-repeat right bottom!important;
+}
+/*CUSTOM FIRST DROP NO TOP ROUNDED CORNERS EXAMPLE*/
+
+.horiznav ul.level1 li.tl,.horiznav ul.level1 li.tl:hover{
+	background:transparent url(../images/blue/topmenu/corners/tl.png)!important;
+}
+.horiznav ul.level1 li.tr,.horiznav ul.level1 li.tr:hover{
+	background:transparent url(../images/blue/topmenu/corners/tr.png) no-repeat right top!important;
+}
+.horiznav ul.level2 li.tl,.horiznav ul.level2 li.tl:hover{
+	background:transparent url(../images/blue/topmenu/square/tl.png)!important;
+}
+.horiznav ul.level2 li.tr,.horiznav ul.level2 li.tr:hover{
+	background:transparent url(../images/blue/topmenu/square/tr.png) no-repeat right top!important;
+}
+.horiznav ul.level3 li.tl,.horiznav ul.level3 li.tl:hover{
+	background:transparent url(../images/blue/topmenu/square/tl.png)!important;
+}
+.horiznav ul.level3 li.tr,.horiznav ul.level3 li.tr:hover{
+	background:transparent url(../images/blue/topmenu/square/tr.png) no-repeat right top!important;
+}
+.horiznav ul.level4 li.tl,.horiznav ul.level4 li.tl:hover{
+	background:transparent url(../images/blue/topmenu/square/tl.png)!important;
+}
+.horiznav ul.level4 li.tr,.horiznav ul.level4 li.tr:hover{
+	background:transparent url(../images/blue/topmenu/square/tr.png) no-repeat right top!important;
+}
+.horiznav ul.level5 li.tl,.horiznav ul.level5 li.tl:hover{
+	background:transparent url(../images/blue/topmenu/square/tl.png)!important;
+}
+.horiznav ul.level5 li.tr,.horiznav ul.level5 li.tr:hover{
+	background:transparent url(../images/blue/topmenu/square/tr.png) no-repeat right top!important;
+}
+.top_menu ul.subul_main.level1{
+	margin-top:3px;
+}
+.YJSG_listContainer ul.subul_main.level1{
+	margin-top:-3px!important;
+}
+
+/********************** YJSG MEGA MENU STYLE ***************************/
+/* Group holder title*/
+.top_menu .horiznav .group_holder li.haschild a, .top_menu .horiznav .group_holder li.haschild .group_holder li.haschild a {
+	color: #38a8d6;
+	border:none;
+	background:none;
+}
+.top_menu .horiznav .group_holder li.haschild a:hover, .top_menu .horiznav .group_holder li.haschild .group_holder li.haschild a:hover {
+	color: #121212;
+	background:none;
+}
+/* Group holder items title*/
+.top_menu .horiznav .group_holder li.haschild li a, .top_menu .horiznav .group_holder li.haschild .group_holder li.haschild li a {
+	color: #38a8d6;
+	border-bottom: 1px solid #e7e7e7;
+	background:#fff;
+}
+.top_menu .horiznav .group_holder li.haschild li a:hover, .top_menu .horiznav .group_holder li.haschild .group_holder li.haschild li a:hover {
+	color: #121212;
+	background:#fff;
+}
+span.separator {
+	background:#fff;
+	border-bottom: 1px solid #e7e7e7;
+	color: #121212;
+}
+/*Menu module links*/
+div.yj_menu_module_holder .yjsquare_in a:link, div.yj_menu_module_holder .yjsquare_in a:visited {
+	color:#38a8d6!important;
+}
+div.yj_menu_module_holder .yjsquare_in a:focus, div.yj_menu_module_holder .yjsquare_in a:hover {
+	color:#121212!important;
+}
+/*SIDE MENU MODULE
+--------------------- */
+/* MENU NORMAL LINKS COLOR */
+#mainlevel li a, .menu li a, a.mainlevel {
+	background: url(../images/blue/mainlevel.png) no-repeat left top;/* LINKS BG IMAGE */
+	color:#444444;
+}
+/* HOVER AND ACTIVE LINKS BG IMAGE */
+#mainlevel li a:hover, #mainlevel a#active_menu:link, #mainlevel a#active_menu:visited, a.mainlevel:hover, a.mainlevel#active_menu, #mainlevel li a:hover, #mainlevel a#active_menu:link, #mainlevel a#active_menu:visited, .menu li a:hover, .menu li.active a {
+	background: url(../images/blue/mainlevel.png) no-repeat left bottom;
+}
+/* SUB LEVELS LI IMAGE */
+a.sublevel {
+	background: url(../images/blue/bodyli.png) no-repeat 5px 9px;
+}
+a.sublevel:hover {
+	text-decoration:underline;
+}
+/*HOVER AND ACTIVE LINK COLOR */
+#mainlevel li a:hover, #mainlevel a#active_menu:link, #mainlevel a#active_menu:visited, a.mainlevel#active_menu, a.sublevel, a.sublevel:hover, a.sublevel:active, a.sublevel:focus, #active_menu, a.mainlevel:hover, a.mainlevel:active, a.mainlevel:focus, li.active a, li.parent a, .menu li a:hover {
+	color:#38a8d6;
+}
+/* MENU LI A AND MENU SUB LEVELS LINK COLOR */
+li.active ul li a, a.sublevel#active_menu {
+	color:#38a8d6;
+}
+/* MENU LI A HOVER AND ACTIVE LINK COLOR AND BG */
+li.active ul li a:hover, li.active ul li.active a {
+	color:#444444;
+	background: url(../images/blue/mainlevel.png) no-repeat left top;
+}
+/* SITES LI IMAGE */
+ul li {
+	background: url(../images/blue/bodyli.png) no-repeat 0px 5px;
+}
+/*USER PAGES STYLES */
+div.userpages{
+	background:none;
+	border:none;
+	text-shadow:none;
+}
+div.userpageswrap.offline div.userpages{
+	border:none;
+	background:#fff;
+}
+/*16 and up*/
+div.userpages dt{
+	background:#fff;
+	border:1px solid #ccc;
+}
+/* IMAGE CAPTIONS */
+p.img_caption {
+	background:#efefef;
+	border:1px solid #ccc;
+	text-shadow:1px 1px #fff;
+	text-transform:uppercase;
+	color:#5F5F5F;
+}
+/*SECTION TABLE ENTERY COLORS- */
+table.pollstableborder tr.sectiontableentry1 td, table.pollstableborder tr.sectiontableentry2 td {
+	border: none;
+}
+.sectiontableheader {
+	border: 1px solid #f4f4f4;
+	background:#fff;
+}
+.sectiontableentry1 {
+	background-color : #f4f4f4;
+}
+tr.sectiontableentry1 td, tr.sectiontableentry2 td, td.sectiontableentry1, td.sectiontableentry2 {
+	border-bottom: 1px solid #fff;
+}
+tr.sectiontableentry1 td, td.sectiontableentry1 {
+	background-color: #f4f4f4;
+}
+tr.sectiontableentry2 td, td.sectiontableentry2 {
+	background-color: #fff;
+}
+tr.sectiontableentry1:hover td, tr.sectiontableentry2:hover td {
+	background-color: #f9f9f9;
+}
+
+/***YOUHEADLINE***/
+/***SMALL MENU***/
+#smallnav{
+	background:url(../images/smallnav_bg.png) repeat-x left top;
+}
+#smallmenu ul.menu li{
+	background:url(../images/smallmenu_li.png) no-repeat right center;
+}
+#smallmenu ul.menu li a:link,
+#smallmenu ul.menu li a:visited{
+	color:#aeaaaa;
+}
+#smallmenu ul.menu li a:hover,
+#smallmenu ul.menu li a:focus{
+	color:#38a8d6;
+}
+/***LIVE SEARCH***/
+.yhls .yj_inputbox {
+    border: 1px solid #e6e6e6;
+	background:#f1f1f1;
+    color:#a0a0a0;
+}
+.yhls .button{
+    border: 1px solid #e6e6e6;
+	background:#f1f1f1;
+	color:#38a8d6;
+}
+/***results***/
+.LiveSearchResults{
+	background:#f1f1f1;
+	border:1px solid #e6e6e6;
+}
+.LiveSearchResults .LiveSearchResult{
+	background:#f1f1f1;
+	border-bottom:1px solid #e6e6e6;
+}
+.LiveSearchResults .LiveSearchResult a{
+	color:#777777;
+}
+.LiveSearchExpander,
+.LiveSearchResults .LiveSearchResultHover .LiveSearchExpander{
+	color:#a4a4a4;
+}
+.LiveSearchResults .LiveSearchResultHover{
+	background:#fff;
+}
+.LiveSearchResults .LiveSearchResultHover a{
+	color:#38a8d6;
+}
+.LiveSearchHeader {
+	background:url(../images/livesearch_arrow.png) no-repeat bottom center;
+}
+.LiveSearchResults .LiveSearchResult a.LiveSearchExpandDetails{
+	background:url(../images/info.png) no-repeat center center;
+}
+.LiveSearchResults .LiveSearchResultHover a.LiveSearchExpandDetails{
+	background:url(../images/blue/info_hover.png) no-repeat center center;
+}
+.LiveSearchResults a.next, .LiveSearchResults a.back {
+    background:url(../images/blue/nav.png) no-repeat left top;
+    color:#fff;
+}
+.LiveSearchResults a.next:hover, .LiveSearchResults a.back:hover,
+.LiveSearchResults a.next:focus, .LiveSearchResults a.back:focus{
+    background:url(../images/blue/nav.png) no-repeat left bottom;
+}
+/***MENU***/
+.menu_out{
+	background-color: #38a8d6;
+}
+/*--Menu subs color on level1,level2,level3**/
+ul.subul_main.level1 a:link span.yjm_desc,
+ul.subul_main.level1 a:visited span.yjm_desc,
+ul.subul_main.level1 a:hover span.yjm_desc,
+ul.subul_main.level2 a:link span.yjm_desc,
+ul.subul_main.level2 a:visited span.yjm_desc,
+ul.subul_main.level2 a:hover span.yjm_desc,
+ul.subul_main.level3 a:link span.yjm_desc,
+ul.subul_main.level3 a:visited span.yjm_desc,
+ul.subul_main.level3 a:hover span.yjm_desc{
+	color:#c8c8c8;
+}
+/***YJME TOP1,YJME TOP2***/
+.yhme2 .yjme_item a.item_title:link,
+.yhme2 .yjme_item a.item_title:visited{
+	color:#444444;
+}
+.yhme2 .yjme_item a.item_title:hover,
+.yhme2 .yjme_item a.item_title:focus{
+	color:#38a8d6;
+}
+.yhme .yjme_item div.item_details,
+.yhme2 .yjme_item div.item_details{
+	background:#f1f1f1;
+	border:1px solid #e6e6e6;
+	color:#aaaaaa;
+}
+.yhme .yjme_item .item_category span,
+.yhme2 .yjme_item .item_category span{
+	color:#aaaaaa;
+}
+.yhme .yjme_item .item_cdate,
+.yhme2 .yjme_item .item_cdate{
+	margin:0 2px 0 0;
+}
+.yhme .yjme_item a.item_readmore,
+.yhme2 .yjme_item a.item_readmore{
+	background:#38a8d6;
+}
+.yhme .yjme_item a.item_readmore:link,
+.yhme .yjme_item a.item_readmore:visited,
+.yhme2 .yjme_item a.item_readmore:link,
+.yhme2 .yjme_item a.item_readmore:visited{
+	color:#fff;
+}
+.yhme .yjme_item a.item_readmore:hover,
+.yhme .yjme_item a.item_readmore:focus,
+.yhme2 .yjme_item a.item_readmore:hover,
+.yhme2 .yjme_item a.item_readmore:focus{
+	color:#444444;
+}
+/***YJSG2 OUT***/
+.yjsg2_out{
+	background:#f1f1f1;	
+}
+.grid_top_line,.grid_bottom_line{
+	background:url(../images/grid_top_line.png) repeat-x left top;
+}
+.grid_bottom_line{
+	background:url(../images/grid_bottom_line.png) repeat-x left top;
+}
+/***YOUYORK MODULE***/
+.yy_container .linkForward,
+.yy_container .linkBackward {
+	background:url(../images/blue/yorknav_right.png) no-repeat left top;
+}
+.yy_container .linkBackward{
+	background:url(../images/blue/yorknav_left.png) no-repeat left top;
+}
+/***YJME IN YOUYORK MODULE SLIDE1,SLIDE2***/
+.yhym .yjme_item div.item_details{
+	background:#fff;
+	border:1px solid #e6e6e6;
+	color:#aaaaaa;
+}
+.yhym .yjme_item .item_category span{
+	color:#aaaaaa;
+}
+.yhym .yjme_item a.item_readmore{
+	background:#38a8d6;
+}
+.yhym .yjme_item a.item_readmore:link,
+.yhym .yjme_item a.item_readmore:visited{
+	color:#fff;
+}
+.yhym .yjme_item a.item_readmore:hover,
+.yhym .yjme_item a.item_readmore:focus{
+	color:#444444;
+}
+/***YJME BODYTOP1***/
+.yhme3 .yjme_item_in{
+	border-bottom:1px solid #f1f1f1;
+}
+.yhme3 .yjme_item div.item_details{
+	color:#aaaaaa;	
+}
+.yhme3 .yjme_item .item_category span{
+	color:#aaaaaa;
+}
+.yhme3 .yjme_item a.item_readmore{
+	background:#38a8d6;
+}
+.yhme3 .yjme_item a.item_readmore:link,
+.yhme3 .yjme_item a.item_readmore:visited{
+	color:#fff;
+}
+.yhme3 .yjme_item a.item_readmore:hover,
+.yhme3 .yjme_item a.item_readmore:focus{
+	color:#444444;
+}
+/***SOCIALS LINKS RIGHT***/
+.yjsocials h4{
+	border-bottom:1px solid #f1f1f1;
+}
+.yjfacebook,.yjtwitter,.linkedin,.googleplus,.rss {
+	background:url(../images/blue/socials2.png) no-repeat left top;
+}
+.yjtwitter{
+	background:url(../images/blue/socials2.png) no-repeat -25px top;
+}
+.linkedin{
+	background:url(../images/blue/socials2.png) no-repeat -50px top;
+}
+.googleplus{
+	background:url(../images/blue/socials2.png) no-repeat -75px top;
+}
+.rss{
+	background:url(../images/blue/socials2.png) no-repeat -100px top;
+}
+/***hover***/
+.yjfacebook:hover{
+	background:url(../images/blue/socials2.png) no-repeat left bottom;
+}
+.yjtwitter:hover{
+	background:url(../images/blue/socials2.png) no-repeat -25px bottom;
+}
+.linkedin:hover{
+	background:url(../images/blue/socials2.png) no-repeat -50px bottom;
+}
+.googleplus:hover{
+	background:url(../images/blue/socials2.png) no-repeat -75px bottom;
+}
+.rss:hover{
+	background:url(../images/blue/socials2.png) no-repeat -100px bottom;
+}
+/***MULTITABS RIGHT***/
+.yhmt #tabs_holder{
+	border:1px solid #f1f1f1;
+}
+.yhmt ul#tabs li{
+	color:#c1c1c1;
+	border-bottom:1px solid #f1f1f1; 
+	background:#fff url(../images/multitabs_line.png) repeat-y right top;
+}
+.yhmt ul#tabs li.selected { 
+	background:#fff url(../images/multitabs_line.png) repeat-y right top;
+	color:#38a8d6;
+}
+.yhmt ul#tabs li:hover{ 
+	color:#38a8d6;
+}
+.yhmt ul#tabs li.last.selected{
+	border-bottom:1px solid #fff; 
+}
+/***YJME IN MULTITABS TAB1,TAB2***/
+.yhmt .yjme_item_in{
+	border-bottom:1px solid #f1f1f1;
+}
+.yhmt .yjme_item div.item_details{
+	color:#aaaaaa;
+}
+.yhmt .yjme_item .item_category span{
+	color:#aaaaaa;
+}
+.yhmt .yjme_item a.item_readmore{
+	background:#38a8d6;
+}
+.yhmt .yjme_item a.item_readmore:link,
+.yhmt .yjme_item a.item_readmore:visited{
+	color:#fff;
+}
+.yhmt .yjme_item a.item_readmore:hover,
+.yhmt .yjme_item a.item_readmore:focus{
+	color:#444444;
+}
+/***K2 COMMENTS IN MULTITABS TAB3***/
+.k2LatestCommentsBlock ul li span.lcUsername{
+	color:#38a8d6;
+}
+.k2LatestCommentsBlock ul li span.lcItemTitle a:link,
+.k2LatestCommentsBlock ul li span.lcItemTitle a:visited{
+	color:#444444;
+}
+/***K2 TAG CLOUD TAB4***/
+div.k2TagCloudBlock a{
+	color:#38a8d6;
+}
+div.k2TagCloudBlock a:hover{
+	color:#fff;
+	background:#38a8d6;
+}
+/***YJSG5 OUT***/
+.yjsg5_out{
+	background:#f1f1f1;
+}
+/***YJME USER11***/
+.yhme4 .yjme_item div.item_details{
+	background:#fff;
+	border:1px solid #e6e6e6;
+	color:#aaaaaa;
+}
+.yhme4 .yjme_item .item_category span{
+	color:#aaaaaa;
+}
+.yhme4 .yjme_item a.item_readmore{
+	background:#38a8d6;
+}
+.yhme4 .yjme_item a.item_readmore:link,
+.yhme4 .yjme_item a.item_readmore:visited{
+	color:#fff;
+}
+.yhme4 .yjme_item a.item_readmore:hover,
+.yhme4 .yjme_item a.item_readmore:focus{
+	color:#444444;
+}
+/***YJ LATEST TWEETS USER16***/
+.yhlt h4,.yhlt h4 span{
+	color:#a7a7a7!important;
+}
+.yhlt .yj_twitter_cont{
+	border-bottom:1px solid #f1f1f1;
+}
+.yhlt .yj_twitter_cont a:link,
+.yhlt .yj_twitter_cont a:visited{
+	color:#aaaaaa;
+}
+.yhlt .yj_twitter_cont a:hover,
+.yhlt .yj_twitter_cont a:focus{
+	color:#38a8d6;
+}
+/***YJME LATEST COMMENTS USER17***/
+.yhme5 h4,.yhme5 h4 span{
+	color:#a7a7a7!important;
+}
+.yhme5 .yjme_item_in{
+	border-bottom:1px solid #f1f1f1;
+}
+.yhme5 .yjme_item div.item_details{
+	background:#f1f1f1;
+	border:1px solid #e6e6e6;
+	color:#aaaaaa;	
+}
+.yhme5 .yjme_item .item_category span{
+	color:#aaaaaa;
+}
+.yhme5 .yjme_item a.item_readmore{
+	background:#38a8d6;
+}
+.yhme5 .yjme_item a.item_readmore:link,
+.yhme5 .yjme_item a.item_readmore:visited{
+	color:#fff;
+}
+.yhme5 .yjme_item a.item_readmore:hover,
+.yhme5 .yjme_item a.item_readmore:focus{
+	color:#444444;
+}
+/***SUBSCRIBE MODULE USER 18***/
+.yhsm h4,.yhsm h4 span{
+	color:#aaaaaa!important;
+}
+.inputbox_email{
+	background:#f1f1f1;
+	border:1px solid #e5e5e5;
+	color:#777777;
+}
+.subscribe_button{
+	background:#38a8d6;
+	color:#fff;
+}
+/***FOOTER OUT***/
+.footer_out{
+	background:#38a8d6;
+}
+/***K2***/
+/***Cat view***/
+.yj_date_holder{
+	background:#f1f1f1;
+	border:1px solid #e6e6e6;
+}
+div.subCategory h2 a:link,
+div.subCategory h2 a:visited{
+	color:#444444;
+}
+div.subCategory h2 a:hover,
+div.subCategory h2 a:focus{
+	color:#38a8d6;
+}
+a.subCategoryMore,
+a.subCategoryMore:visited {
+	background:#38a8d6;
+}
+a.subCategoryMore:link,
+a.subCategoryMore:visited{
+	color:#fff;
+}
+a.subCategoryMore:hover,
+a.subCategoryMore:focus{
+	color:#444444;
+}
+/***Cat item view***/
+.catItemView {
+	border-bottom:1px solid #f1f1f1;
+}
+div.catItemCategory,
+div.catItemTagsBlock,
+div.catItemHitsBlock {
+	border-bottom:1px solid #f1f1f1;
+}
+div.catItemCategory span,
+div.catItemTagsBlock span{
+	color:#777777;
+}
+div.catItemTagsBlock ul li{
+	background:#38a8d6;
+}
+div.catItemTagsBlock ul li a:link,
+div.catItemTagsBlock ul li a:visited{
+	color:#fff;
+}
+div.catItemTagsBlock ul li a:hover,
+div.catItemTagsBlock ul li a:focus{
+	color:#444444;
+}
+div.catItemReadMore{
+	background:#38a8d6;
+}
+.catItemReadMore a:link,
+.catItemReadMore a:visited{
+	color:#fff;
+}
+.catItemReadMore a:hover,
+.catItemReadMore a:focus{
+	color:#444444;
+}
+/***Item view***/
+div.itemToolbar {
+	border-top:1px solid #f1f1f1;
+	border-bottom:1px solid #f1f1f1;
+}
+div.itemToolbar ul li {
+	border-right:1px solid #f1f1f1;
+}
+div.itemContentFooter{
+	border-top:1px solid #f1f1f1;
+	border-bottom:1px solid #f1f1f1;
+}
+div.itemRatingBlock{
+	border-bottom:1px solid #f1f1f1;
+}
+div.itemRatingBlock span{
+	color:#777777;
+}
+div.pre25SocialLinks{
+	border-bottom:1px solid #f1f1f1;
+}
+ul.preSocialLinks li a{
+	background:url(../images/blue/socials.png) no-repeat left top;
+}
+div.itemCategory{
+	border-bottom:1px solid #f1f1f1;
+}
+div.itemCategory span{
+	color:#777777;
+}
+div.itemTagsBlock{
+	border-bottom:1px solid #f1f1f1;
+}
+div.itemTagsBlock span{
+	color:#777777;
+}
+div.itemTagsBlock ul li{
+	background:#38a8d6;
+}
+div.itemTagsBlock ul li a:link,
+div.itemTagsBlock ul li a:visited{
+	color:#fff;
+}
+div.itemTagsBlock ul li a:hover,
+div.itemTagsBlock ul li a:focus{
+	color:#444444;
+}
+div.itemAuthorBlock{
+	background:#f1f1f1;
+	border:1px solid #e6e6e6;
+}
+h3.itemAuthorName a:link,
+h3.itemAuthorName a:visited{
+	color:#444444;
+}
+h3.itemAuthorName a:hover,
+h3.itemAuthorName a:focus{
+	color:#38a8d6;
+}
+div.itemAuthorLatest h3{
+	color:#444444;
+}
+div.itemAuthorLatest ul li{
+	border-bottom:1px solid #f1f1f1;
+}
+div.itemRelated h3{
+	color:#444444;
+}
+div.itemRelated ul li{
+	border-bottom:1px solid #f1f1f1!important;
+}
+div.itemNavigation{
+	border-top:1px solid #f1f1f1;
+	border-bottom:1px solid #f1f1f1;
+}
+div.itemComments{
+	border:1px solid #f1f1f1;
+}
+div.itemCommentsForm h3{
+	color:#444444;
+}
+p.itemCommentsFormNotes{
+	color:#aaaaaa;
+	border-top:1px solid #f1f1f1!important;
+}
+div.itemCommentsForm form#comment-form .inputbox{
+	border:1px solid #f1f1f1!important;
+}
+#submitCommentButton{
+	background:#38a8d6!important;;
+	color:#fff;
+}
+h3.itemCommentsCounter{
+	color:#444444;
+}
+ul.itemCommentsList li{
+	border:1px solid #e6e6e6!important;
+	background:#f1f1f1;
+}
+span.commentAuthorName{
+	color:#38a8d6;
+}
+span.commentDate{
+	color:#aaaaaa;
+}
+span.commentLink a:link,
+span.commentLink a:visited{
+	color:#aaaaaa!important;
+}
+span.commentLink a:hover,
+span.commentLink a:focus{
+	color:#444444!important;
+}
+/***Tag View***/
+.tagView .itemView{
+	border-bottom:1px solid #f1f1f1;
+}
+.tagView .itemIntroText{
+	color:#777777;
+}
+.tagView .itemReadMore{
+	background:#38a8d6;
+}
+.tagView .itemReadMore a:link,
+.tagView .itemReadMore a:visited{
+	color:#fff;
+}
+.tagView .itemReadMore a:hover,
+.tagView .itemReadMore a:focus{
+	color:#444444;
+}
+/***User View***/
+.userView .userBlock{
+	background:#f1f1f1;
+	border:1px solid #e6e6e6!important;
+}
+.userView .itemView{
+	border-bottom:1px solid #f1f1f1;
+}
+.userView .itemIntroText{
+	color:#777777;
+}
+.userView .itemReadMore{
+	background:#38a8d6;
+}
+.userView .itemReadMore a:link,
+.userView .itemReadMore a:visited{
+	color:#fff;
+}
+.userView .itemReadMore a:hover,
+.userView .itemReadMore a:focus{
+	color:#444444;
+}
+/***Latest Item View***/
+.latestView .latestItemView{
+	border-bottom:1px solid #f1f1f1;
+}
+.latestView span.catItemDateCreated{
+	color:#aaaaaa;
+}
+/***Generic View***/
+.genericView .itemView{
+	border-bottom:1px solid #f1f1f1;
+}
+.genericView .itemIntroText{
+	color:#777777;
+}
+.genericView .itemReadMore{
+	background:#38a8d6;
+}
+.genericView .itemReadMore a:link,
+.genericView .itemReadMore a:visited{
+	color:#fff;
+}
+.genericView .itemReadMore a:focus{
+	color:#444444;
+}
+/***K2 Menu***/
+.k2CategoriesListBlock ul li a {
+	background:url(../images/blue/mainlevel.png) no-repeat left bottom;
+}
+div.k2CategoriesListBlock ul li.activeCategory a {
+	color:#444444!important;
+}
+div.k2CategoriesListBlock ul li.activeCategory a:hover {
+	color:#444444!important;
+}
+div.k2CategoriesListBlock ul li.activeCategory ul.level1 li a {
+	color:#38a8d6!important;
+}
+div.k2CategoriesListBlock ul li.activeCategory ul.level1 li a:hover {
+	color:#38a8d6!important;
+}
+/***K2 breadcrumbs***/
+.k2bread{
+	border:1px solid #f1f1f1;
+}
+/***MODULE STYLES***/
+/***YJ1***/
+.yj1 h4{
+	border-bottom:1px solid #f1f1f1;
+}
+/***YJ2***/
+.yj2 h4,.yj2 h4 span{
+	color:#444444!important;
+}
+/***YJ3***/
+.yj3 h4,.yj3 h4 span{
+	color:#444444!important;
+}
+.yj3 h4{
+	border-bottom:1px solid #f1f1f1;
+}
+/***YJ4***/
+.yj4{
+	background:#f1f1f1;
+	border:1px solid #e6e6e6;
+}
+/***YJ4***/
+.yj5{
+	background:#f1f1f1;
+	border:1px solid #e6e6e6;
+}
+.yj5 h4,.yj5 h4 span{
+	color:#444444!important;
+}
+/***ADITIONAL***/
+span.dropcap,
+span.bignumber{
+	color:#38a8d6;
+}
+.yjsglogo {
+	background: url(../images/blue/yjsglogo.png) no-repeat center center;
+}
+/***YJ HOVER EFFECT***/
+.yjhoverfx{
+	background:url(../images/hover_fx_arrow.png) no-repeat right 30px;
+}
+.yjhoverlink{
+	background:#fff url(../images/blue/hover_fx.png) no-repeat center 34px;
+}
+.yjhoverlink:hover{
+	background:#fff url(../images/hover_fx_hover.png) no-repeat center 34px;
+}
+.yhym a.item_image .yjhoverlink{
+	background:#f1f1f1 url(../images/blue/hover_fx_small.png) no-repeat 23px 38px;
+}
+.yhym a.item_image .yjhoverlink:hover{
+	background:#f1f1f1 url(../images/hover_fx_hover_small.png) no-repeat 23px 38px;
+}
+.yhym .yjhoverfx{
+	background:url(../images/hover_fx_arrow2.png) no-repeat right 30px;
+}

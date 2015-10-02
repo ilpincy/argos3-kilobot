@@ -1,0 +1,488 @@
+/*======================================================================*\
+|| #################################################################### ||
+|| # Package - Joomla Template based on YJSimpleGrid Framework          ||
+|| # Copyright (C) 2010  Youjoomla LLC. All Rights Reserved.            ||
+|| # license - PHP files are licensed under  GNU/GPL V2                 ||
+|| # license - CSS  - JS - IMAGE files  are Copyrighted material        ||
+|| # bound by Proprietary License of Youjoomla LLC                      ||
+|| # for more information visit http://www.youjoomla.com/license.html   ||
+|| # Redistribution and  modification of this software                  ||
+|| # is bounded by its licenses                                         ||
+|| # websites - http://www.youjoomla.com | http://www.yjsimplegrid.com  ||
+|| #################################################################### ||
+\*======================================================================*/
+.mobiletoptools {
+	display:none!important;
+}
+/*select menu */
+#mmenu_holder {
+	display:none;
+	width:95%;
+	background:#000;
+	padding:10px 0;
+	margin:0 auto;
+	text-align:center;
+	overflow:hidden;
+	position:relative;
+	height:38px;
+}
+select#mmenu {
+	margin:0 auto;
+	cursor:pointer;
+	display:block;
+	width:100%;
+	overflow: hidden;
+	height:35px;
+	padding:5px 0;
+}
+span#yjmm_selectid {
+	position:absolute;
+	display:block;
+	left:0;
+	width:99%;
+	height:35px;
+	padding:0;
+	margin:0;
+	line-height:35px;
+	color: #fff;
+	font-size:18px;
+	font-weight:bold;
+	border:1px solid #3A3A3A;
+	color:#ccc;
+	overflow: hidden;
+	cursor:pointer;
+	background:url(../images/mm_arrow.png) no-repeat right center;
+}
+select.yjstyled {
+	position: relative;
+	opacity: 0;
+	z-index: 5;
+}
+@media screen and (max-width: 1500px) {
+body,
+html {
+	overflow-x: hidden;
+}
+#topmenu_holder.dropped {
+	width:auto!important;
+	float: none!important;
+	clear:both!important;
+	margin:0 auto!important;
+}
+}
+@media screen and (max-width: 980px) {
+.top_menu {
+	visibility:hidden!important;
+	height:0!important;
+	overflow:hidden!important;
+}
+.top_menu.showmenu {
+	visibility:visible!important;
+	height:auto!important;
+	overflow:visible!important;
+}
+#logo {
+	visibility:hidden;
+}
+#logo.lfloat {
+	margin:0 auto!important;
+	float:none!important;
+	visibility:visible!important;
+}
+body,
+html {
+	overflow-x: hidden;
+}
+#header {
+	overflow:hidden;
+}
+#header.dropped {
+	overflow:hidden;
+	height: auto!important;
+}
+#centertop,
+#centerbottom,
+#yjsgheadergrid,
+#yjsg1,
+#yjsg2,
+#yjsg3,
+#yjsg4,
+#yjsg5,
+#yjsg6,
+#yjsg7,
+#midblock,
+#rightblock,
+#leftblock,
+#insetblock,
+#insetsholder_2t,
+#insetsholder_2b,
+#insetsholder_3t,
+#insetsholder_3b,
+#footer,
+#footmod,
+#joomlacredit,
+.validators,
+.yjsgcp,
+.yjsglogo {
+	width:auto!important;
+	float: none!important;
+	clear:both!important;
+}
+embed,
+object {
+	width: 100%!important;
+	height: auto!important;
+}
+img {
+	max-width: 100%!important;
+}
+.yjsglogo {
+	position:static!important;
+	display:block!important;
+}
+div.yjsg-newsitems .float-left {
+	width:50%!important;
+}
+div.yjsg-newsitems .float-left.width100,
+.last.float-left.width33,
+.last.float-left.width20 {
+	width:100%!important;
+}
+div.subCategory {
+	height: auto!important;
+}
+}
+@media screen and (max-width: 768px) {
+.navContainer {
+	width: 98%!important;
+}
+.subCategoryContainer,
+.itemImageBlock,
+.itemContainer,
+.catItemImageBlock,
+div.subCategory a.subCategoryImage img,
+div.subCategory a.subCategoryImage {
+	width:auto!important;
+	float: none!important;
+	clear:both!important;
+}
+.itemToolbar ul li {
+	padding:0 5px 0 0!important;
+}
+}
+@media screen and (max-width: 640px) {
+.userpages,#userpages {
+	width:auto!important;
+	float: none!important;
+	clear:both!important;
+}
+}
+@media screen and (max-width: 480px) {
+div.yjsg-newsitems .float-left,
+.yjsgxhtml {
+	width:auto!important;
+	float: none!important;
+	clear:both!important;
+}
+textarea,
+.inputbox {
+	width: 100%!important;
+	height: auto!important;
+}
+.itemToolbar,
+.itemToolbar ul,
+.itemToolbar ul li {
+	display:block!important;
+	clear:both!important;
+	float:none!important;
+	padding:0!important;
+	text-align:left!important;
+	border:none!important;
+}
+}
+@media screen and (max-width: 320px) {
+}
+@media screen and (max-width: 240px) {
+.navContainer {
+	width: 95%!important;
+}
+}
+/* 
+	this is responsive css visible only in  ie7 / ie8
+	if you need to add more properties just use one of the body
+	class prefixes as our examples below. We added 480 just in case
+	but we all know that there are no devices that small that use IE 7/8 :).
+	
+	body.yjresponsive 			= under 980px always present
+	body.yjresponsive.yjrp980 	= specific for 980px and under
+	body.yjresponsive.yjrp768 	= specific for 768px and under
+	body.yjresponsive.yjrp480 	= specific for 480px and under
+*/
+
+body.yjresponsive,
+html {
+	overflow-x: hidden;
+}
+/*980*/
+body.yjresponsive .top_menu {
+	visibility:hidden!important;
+	height:0!important;
+	overflow:hidden!important;
+}
+body.yjresponsive .top_menu.showmenu {
+	visibility:visible!important;
+	height:auto!important;
+	overflow:visible!important;
+}
+body.yjresponsive #logo {
+	visibility:hidden;
+}
+body.yjresponsive #logo.lfloat {
+	margin:0 auto!important;
+	float:none!important;
+	visibility:visible!important;
+}
+body.yjresponsive #header {
+	overflow:hidden!important;
+}
+body.yjresponsive #header.dropped {
+	overflow:hidden!important;
+	height: auto!important;
+}
+body.yjresponsive #centertop,
+body.yjresponsive #centerbottom,
+body.yjresponsive #yjsgheadergrid,
+body.yjresponsive #yjsg1,
+body.yjresponsive #yjsg2,
+body.yjresponsive #yjsg3,
+body.yjresponsive #yjsg4,
+body.yjresponsive #yjsg5,
+body.yjresponsive #yjsg6,
+body.yjresponsive #yjsg7,
+body.yjresponsive #midblock,
+body.yjresponsive #rightblock,
+body.yjresponsive #leftblock,
+body.yjresponsive #insetblock,
+body.yjresponsive #insetsholder_2t,
+body.yjresponsive #insetsholder_2b,
+body.yjresponsive #insetsholder_3t,
+body.yjresponsive #insetsholder_3b,
+body.yjresponsive #footer,
+body.yjresponsive #footmod,
+body.yjresponsive #joomlacredit,
+body.yjresponsive .validators,
+body.yjresponsive .yjsgcp,
+body.yjresponsive .yjsglogo {
+	width:auto!important;
+	float: none!important;
+	clear:both!important;
+}
+body.yjresponsive #logo {
+	margin:0 auto!important;
+	float:none!important;
+}
+body.yjresponsive embed,
+body.yjresponsive object {
+	width: 100%!important;
+	height: auto!important;
+}
+body.yjresponsive .mobiletoptools {
+	display:none!important;
+}
+body.yjresponsive img {
+	max-width: 100%!important;
+}
+body.yjresponsive .yjsglogo {
+	position:static!important;
+	display:block!important;
+}
+body.yjresponsive.yjrp980 #yjsg1 {
+}
+body.yjresponsive.yjrp980 .yjsgxhtml {
+	width:49%!important;
+	float: left!important;
+	clear:none!important;
+}
+body.yjresponsive.yjrp980 .yjsgxhtml.last_mod {
+	width:100%!important;
+}
+body.yjresponsive div.yjsg-newsitems .float-left {
+	width:50%!important;
+}
+body.yjresponsive div.yjsg-newsitems .float-left.width100,
+body.yjresponsive .last.float-left.width33,
+body.yjresponsive .last.float-left.width20 {
+	width:100%!important;
+}
+/* 768*/
+body.yjresponsive.yjrp768 .subCategoryContainer,
+body.yjresponsive.yjrp768 .itemImageBlock,
+body.yjresponsive.yjrp768 .itemContainer,
+body.yjresponsive.yjrp768 .catItemImageBlock,
+body.yjresponsive.yjrp768 .userpages {
+	width:auto!important;
+	float: none!important;
+	clear:both!important;
+}
+/*480*/
+body.yjresponsive.yjrp480 .yjsgxhtml,
+body.yjresponsive.yjrp480 div.yjsg-newsitems .float-left {
+	width:100%!important;
+	float:none!important;
+	clear:none!important;
+}
+body.yjresponsive.yjrp480 textarea,
+body.yjresponsive.yjrp480 .inputbox {
+	width: 100%!important;
+	height: auto!important;
+}
+
+/***YOUHEADLINE EXTRA***/
+
+@media screen and (max-width: 980px) {
+#smallnav,#small_holder{
+	width:100%!important;
+}
+#smallmenu{
+	float:none!important;
+	margin:0 auto!important;
+}
+.header_in{
+	width:auto!important;
+}
+.yhls .yjsquare_in {
+    float:none!important;
+}
+.yhls form{
+	width:28%!important;
+	margin:0 auto!important;
+}
+#top1,#top2{
+	width:100%!important;
+}
+.yhme .yjme_item div.imageholder{
+	width:100%!important;
+	float:none!important;
+}
+.yhme .yjme_item a.item_image{
+	margin:0 auto 20px auto!important;
+}
+.yhme a.item_title{
+	text-align:center!important;
+}
+.yhme p.item_intro{
+	text-align:center!important;
+}
+.yhme2 .yjme_item{
+	float:left!important;
+	clear:none!important;
+	width:25%!important;
+}
+#yy_container,.yy_container,#yy_slider,.yy_slider,.yy_slideitems,.yy_slideitems_in{
+	width:97%!important;
+}
+.yjsocials h4{
+	width:100%!important;
+	text-align:center!important;
+}
+.yj_socials{
+	margin:0 auto!important;
+	float:none!important;
+}
+.subscribe_button{
+	float:none!important;
+}
+
+
+
+
+}
+@media screen and (max-width: 768px) {
+#user16,#user17,#user18{
+	width:100%!important;
+}
+.yjhoverfx2{
+	display:none!important;
+}
+.youheadline_hover2_it .imageholder,.youheadline_hover2,
+.youheadline_hover2 img{
+	width:100%!important;
+}
+.youheadline_hover2_it{
+	margin-top:20px;
+}
+}
+@media screen and (max-width: 640px) {
+.yhme2 .yjme_item{
+	width:100%!important;
+}
+.yhme2 a.item_title{
+	text-align:center!important;
+}
+.yhme2 .item_details{
+	width:27%;
+	margin:10px auto!important;
+	float:none!important;
+}
+.yhme2 p.item_intro{
+	clear:both!important;
+	width:100%!important;
+	text-align:center!important;
+}
+.yy_slideitems_in{
+	padding:0 10px!important;
+}
+.yhme3 a.item_title{
+	text-align:center!important;
+}
+.yhme3 .item_details{
+	width:35%;
+	margin:10px auto!important;
+	float:none!important;
+}
+.yhme3 .imageholder{
+	margin:10px auto!important;
+	width:100%!important;
+	float:none!important;
+}
+.yhme3 a.item_image{
+	margin: auto!important;
+}
+.yhme3 p.item_intro{
+	text-align:center!important;
+}
+.yhme3 a.item_readmore{
+	margin:5px auto!important;
+	float:none!important;
+}
+.yhme4 .yjme_item{
+	width:100%!important;
+}
+.yhme4 a.item_title{
+	text-align:center!important;
+}
+.yhme4 .item_details{
+	width:27%;
+	margin:10px auto!important;
+	float:none!important;
+}
+.yhme4 p.item_intro{
+	clear:both!important;
+	width:100%!important;
+	text-align:center!important;
+}
+.yhls form{
+	width:70%!important;
+}
+.youheadline_hover2_it{
+	margin-top:40px;
+}
+}
+@media screen and (max-width: 480px) {
+.yhls form{
+	width:90%!important;
+}
+}
+
+
+

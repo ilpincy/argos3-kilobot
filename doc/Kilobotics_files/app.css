@@ -1,0 +1,39 @@
+.navbar {
+    margin-bottom: 0px;
+}
+
+.push {
+    margin-bottom: 20px;
+}
+.editor { 
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    min-height: 500px;
+    height: 100%;
+}
+
+.file-list > .panel-heading  {
+    background-color: #ddd;
+}
+
+.file-list > .list-group {
+    line-height: 0.9;
+}
+
+.active > .btn-toolbar > .file-tools > a {
+    color: #fff;
+}
+
+.centering {
+    text-align: center;
+}
+
+.tight {
+    display: inline-block;
+}
+
+[ng-click],
+[data-ng-click],
+[x-ng-click] {
+    cursor: pointer;
+}

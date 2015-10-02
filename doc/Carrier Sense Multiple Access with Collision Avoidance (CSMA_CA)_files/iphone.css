@@ -1,0 +1,295 @@
+/*======================================================================*\
+|| #################################################################### ||
+|| # Package - Joomla Template based on YJSimpleGrid Framework          ||
+|| # Copyright (C) 2010  Youjoomla LLC. All Rights Reserved.            ||
+|| # license - PHP files are licensed under  GNU/GPL V2                 ||
+|| # license - CSS  - JS - IMAGE files  are Copyrighted material        ||
+|| # bound by Proprietary License of Youjoomla LLC                      ||
+|| # for more information visit http://www.youjoomla.com/license.html   ||
+|| # Redistribution and  modification of this software                  ||
+|| # is bounded by its licenses                                         ||
+|| # websites - http://www.youjoomla.com | http://www.yjsimplegrid.com  ||
+|| #################################################################### ||
+\*======================================================================*/
+@media screen {
+
+body {
+	margin:0;
+}
+
+.mobiletoptools {
+	height:44px;
+	line-height:44px;
+	text-align:center;
+	font-size:11px;
+	font-weight:bold;
+	text-shadow:1px 1px #fff;
+	position:relative;
+/*	overflow:hidden;*/
+	margin:0 auto;
+	z-index:0;
+	background:#889BB3 url(../../images/mobile/mmenubg.gif) repeat-x left top;
+}
+
+.mobiletoptools .title {
+	font-size:16px;
+	font-weight:bold;
+	color:#717880;
+	text-shadow: #eff0f2 0 1px 1px;
+	text-align:center;
+}
+
+.mobtoolelements {
+	background:#A8ADBA url(../../images/mobile/mobtoolelements_bg.gif) repeat-x left top;
+	overflow:hidden;
+	padding:10px;
+	border:0;
+	color:#4c4e50;
+	text-shadow: #fff 0 1px 1px;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.mobtoolelements fieldset, .mobtoolelements form {
+	border:0;
+}
+
+div.mobtoolelements input.inputbox, div.mobtoolelements input.inputbox:hover, div.mobtoolelements #modlgn_passwd, div.mobtoolelements #modlgn_username {
+	border:0;
+	width:302px;
+	height:32px;
+	padding:0 10px;
+	margin:5px 0;
+	background: url(../../images/mobile/mobile_input.png) no-repeat left top;
+}
+
+div.mobtoolelements #modlgn_remember {
+	background:none;
+	height:15px;
+	width:15px;
+}
+
+div.mobtoolelements .button {
+	color:#fff;
+	text-align:center;
+	font-weight:bold;
+	text-shadow: #696f76 0 -1px 1px;
+	height:31px;
+	width:70px;
+	border:0;
+	padding:0 0 3px 0;
+	background: url(../../images/mobile/mob_button.png) no-repeat left center;
+}
+
+div.mobtoolelements ul li {
+	background:none;
+}
+
+div.mobtoolelements ul li a, div.mobtoolelements ul li a:visited {
+	color:#4c4e50;
+}
+
+div.mobtoolelements ul li a:focus, div.mobtoolelements ul li a:hover {
+	color:#717880;
+}
+
+/* general toggler styles */
+.YJ_mtoggler, .YJ_mtoggler_hover {
+	background:url(../../images/mobile/tog_l.gif) no-repeat left center;
+	color:#333333;
+	padding:0 0 0 10px;
+	height:31px;
+	line-height:28px;
+	cursor:pointer;
+/*	position:absolute;*/
+	left:5px;
+	top:7px;
+	float:left;
+	display:block;
+}
+
+.YJ_mtoggler span, .YJ_mtoggler span:hover {
+	display:block;
+	background:url(../../images/mobile/tog_r.gif) no-repeat right center;
+	height:31px;
+	line-height:28px;
+	padding:0 10px 0 0px;
+	width:auto;
+	color:#fff;
+	font-weight:bold;
+	text-shadow: #696f76 0 -1px 1px;
+}
+
+.YJ_mtoggler_active span, .YJ_mtoggler span:hover {
+	color:#dadfe5;
+	text-shadow: #121212 0 -1px 1px;
+}
+
+.YJ_mparams {
+}
+/* search toggler style*/
+#mobsearch div.YJ_mtoggler {
+	height:31px;
+	width:43px;
+	padding:0;
+	background: url(../../images/mobile/mobsearch.gif) no-repeat left center;
+	text-indent:-9999%;
+}
+.search label{
+	display:none!important;
+}
+/*mobile login*/
+.yjreg {
+	overflow:hidden;
+	margin:0 auto;
+	width:100%;
+	padding:0;
+	margin:0;
+}
+
+.yjreg label {
+	float:left;
+	height:20px;
+	overflow:hidden;
+	display:block;
+	width:200px;
+}
+
+.yjreg input {
+	float:right;
+	width:200px;
+	margin:0 10px 0 0;
+}
+
+.yjreg_ins {
+	width:100%;
+	clear:both;
+	float:left;
+	display:block;
+}
+
+/* mobile search*/
+#mobsearch div.YJ_mtoggler span {
+	background:none;
+	padding:0;
+}
+
+.YJ_mparams div.search {
+	height:38px;
+	margin:0;
+	padding:0;
+	background-image:url(../../images/mobile/msearchbg.gif);
+	background-position:left center;
+	background-repeat:no-repeat;
+	background-color:#fff;
+}
+
+.YJ_mparams div.search .inputbox, .YJ_mparams div.search .inputbox:hover {
+	margin:3px 0 0 30px;
+	padding:3px 0 0 0;
+	width:630px;
+	height:25px;
+	background:none;
+	border:none;
+}
+
+.YJ_mparams form {
+	margin:0;
+	padding:0;
+}
+
+/* mobile menu */
+#mobilemenu {
+	display:block;
+}
+
+#mobilemenu a, #mobilemenu a:visited {
+	color:#4c4e50;
+}
+
+#mobilemenu a:focus, #mobilemenu a:hover {
+	color:#717880;
+}
+
+#mobilemenu ul li {
+	margin: 0;
+	border-bottom: 1px solid #E0E0E0;
+	padding: 10px;
+	font-size: 20px;
+	font-weight: bold;
+	list-style: none;
+	font-family: Helvetica;
+	background:#fff;
+	position: relative;
+}
+
+#mobilemenu ul li.haschild {
+}
+
+#mobilemenu ul li.haschild ul li {
+	width: 150px;
+	height: 38px;
+	display: block;
+	position: absolute;
+	top: 0px;
+	right: 0;
+	padding: 0 !important;
+	background-image:none;
+	z-index:1;
+}
+
+#mobilemenu ul li.haschild ul li a, #mobilemenu ul li.haschild ul li a:link, #mobilemenu ul li.haschild ul li a:visited, #mobilemenu ul li.haschild ul li a:hover, #mobilemenu ul li.haschild ul li a:focus {
+	width:45px;
+	height:40px;
+	z-index:100;
+	position:absolute;
+	background: url(../../images/mobile/mobilearrow.png) no-repeat left center;
+	text-indent:-9999%;
+	right:0;
+}
+
+/* mobile switch*/
+.changemobile {
+	height:31px;
+	width:44px;
+	position:absolute;
+	right:10px;
+	top:7px;
+	text-indent:-999%;
+	background: url(../../images/mobile/changemobile.gif) no-repeat left center;
+}
+
+/* mobile top scroll*/
+.mscroll {
+	right:70px;
+	height:31px;
+	width:35px;
+	text-indent:-999%;
+	position:absolute;
+	left:auto;
+	top:7px;
+	background: url(../../images/mobile/mscroll.gif) no-repeat left center;
+}
+#mmholder{
+	position:absolute;
+	top:5px;
+	overflow:hidden;
+}
+#mobmenu,#mobsearch,#moblogin,#mobreg{
+	float:left;
+	height:44px;
+	width:75px;
+	margin:0px 0 0 0;
+	display:block;
+	overflow:hidden;
+	z-index:8000!important;
+}
+#mobmenu div.YJ_mtoggler,#mobsearch div.YJ_mtoggler,#moblogin div.YJ_mtoggler,#mobreg div.YJ_mtoggler{
+	left:0;
+}
+#mobsearch{
+	margin-left:15px;
+}
+.form-validate button.validate{
+	font-size:10px!important;
+}

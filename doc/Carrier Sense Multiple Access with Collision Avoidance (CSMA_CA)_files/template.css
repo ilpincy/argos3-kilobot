@@ -1,0 +1,386 @@
+/*======================================================================*\
+|| #################################################################### ||
+|| # Package - Joomla Template based on YJSimpleGrid Framework          ||
+|| # Copyright (C) 2010  Youjoomla LLC. All Rights Reserved.            ||
+|| # license - PHP files are licensed under  GNU/GPL V2                 ||
+|| # license - CSS  - JS - IMAGE files  are Copyrighted material        ||
+|| # bound by Proprietary License of Youjoomla LLC                      ||
+|| # for more information visit http://www.youjoomla.com/license.html   ||
+|| # Redistribution and  modification of this software                  ||
+|| # is bounded by its licenses                                         ||
+|| # websites - http://www.youjoomla.com | http://www.yjsimplegrid.com  ||
+|| #################################################################### ||
+\*======================================================================*/
+@import url("layout.css");        /*layout css file*/
+@import url("newsitems.css");     /*newsitems css file*/
+@import url("menus.css");         /*menu css file*/
+@import url("typo.css");          /*typo css file*/
+@import url("joomladefaults.css");      /*default system styles*/
+body {
+	text-align:center; /*center hack*/
+	padding:0;
+	margin:0;
+	line-height:1.5em;
+	background-color:#FFFFFF;
+}
+#stylef1 {
+	font-family:"Bookman Old Style", serif;
+}
+#stylef2 {
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+#stylef3 {
+	font-family: "Times New Roman", Times, serif;
+}
+#stylef4 {
+	font-family:Century Gothic, sans-serif;
+}
+#stylef5 {
+	font-family:"Lucida Grande", sans-serif;
+}
+#stylef6 {
+	font-family: Arial, Helvetica, sans-serif;
+}
+#stylef7 {
+	font-family: Tahoma, Geneva, sans-serif;
+}
+#stylef8 {
+	font-family: Verdana, Geneva, sans-serif;
+}
+#stylef9 {
+	font-family: Copperplate Gothic Light, sans-serif;
+}
+#stylef10 {
+	font-family:"Lucida Console", Monaco, monospace;
+}
+#stylef11 {
+	font-family: Gill Sans MT, sans-serif;
+}
+#stylef12 {
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+#stylef13 {
+	font-family: "Courier New", Courier, monospace;
+}
+#stylef14 {
+	font-family: Cambria, serif;
+}
+#stylef15 {
+	font-family: Georgia, Serif;
+}
+/* JOOMLA! STYLING
+--------------------- */
+a:focus {
+	outline:0px;
+}
+focus {
+	outline:0px;
+}
+h1, h2, h3, h4, h5, h6, p, blockquote, form, label, ul, ol, dl, fieldset, address {
+	margin:0.5em 0;
+}
+ul {
+	margin: 0px;
+	padding: 0px;
+	list-style:none;
+}
+ul li {
+	padding-left:15px;
+}
+body ol {
+	list-style: decimal inside;
+	margin:0;
+	padding:0;
+}
+body ol li {
+	margin: 0px;
+	padding: 5px 3px;
+	list-style-image:none;
+	background:none;
+}
+/* ORDERED LIST FOR MODULES ONLY */
+.yjsquare_in ol li, .yjround_in ol li {
+}
+/*END*/
+
+body a, body a:hover {
+	cursor: pointer;
+}
+a:link, a:visited {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+h1 {
+	font-size:2.5em;
+	line-height:1.5em;
+}
+h2 {
+	font-size:1.7em;
+	line-height:1.7em;
+}
+h3 {
+	font-size:1.3em;
+	line-height:1.3em;
+}
+h4 {
+	font-size:0.7em;
+	line-height:2.0em;
+}
+h5 {
+	font-size:1.1em;
+	line-height:1.1em;
+}
+h6 {
+	font-size:1em;
+	line-height:1em;
+	font-weight:bold;
+}
+h1 .cufon {
+	padding:5px 0 0 0;
+}
+.componentheading {
+	letter-spacing: normal;
+	margin:10px 0px 4px 10px;
+}
+.contentpaneopen {
+	padding:0 0px;
+	text-align: left;
+}
+.contentpane {
+	padding:0 0px 0px 0px !important;
+	text-align: left;
+}
+.category {
+	margin-left:0px;
+}
+.insidem ul {
+	margin-left:10px;
+}
+.contentpaneopen, .contentpane {
+}
+.contentpaneopen {
+	border-collapse: separate;
+	border-spacing: 3px;
+}
+table.contenttoc, #article-index {
+	margin: 0 0 10px 10px;
+	padding: 0;
+	width: 30%;
+	float: right;
+}
+#article-index ul li {
+	background:none;
+}
+a.toclink {
+	padding:5px;
+	display:block;
+	margin: 2px 0;
+}
+/*SITE IMAGES*/
+img a, img {
+	border:0;
+	padding:0;
+}
+.img_caption {
+	text-align:center;
+}
+.img_caption.left {
+	float: left;
+	margin-right: 1em;
+}
+.img_caption.right {
+	float: right;
+	margin-left: 1em;
+}
+.img_caption.left p {
+	clear: left;
+	text-align: center;
+	padding:3px;
+}
+.img_caption.right p {
+	clear: right;
+	text-align: center;
+	padding:3px;
+}
+.contentdescription img {
+	padding:5px;
+	margin:0px;
+}
+/* END SITE IMAGES */
+input#search_searchword {
+	padding:2px;
+}
+table.searchintro {
+	padding: 10px 0;
+	width: 100%;
+}
+table.searchintro td {
+	padding: 5px!important;
+}
+.clr {
+	clear:both;
+	height:1px;
+}
+fieldset {
+	padding:.5em;
+}
+.inputbox {
+	margin-top:5px;
+	padding:2px 0;
+	text-indent:2px;
+}
+.input {
+	border:0;
+}
+/* BUTTONS
+--------------------- */
+.button, .validate{
+	padding:3px 10px 1px 10px;
+	margin-top:5px;
+	font-size:80%;
+	text-transform:uppercase;
+	font-weight:bold;
+	border-radius:5px;
+}
+.button {
+	text-align:center;
+}
+.readon {
+	height:20px;
+	line-height:20px;
+	display:block;
+	clear:both;
+	float:left;
+	padding:0 0 0 10px;
+	margin:10px 0 0 0;
+	font-size:90%;
+	font-weight:bold;
+	text-transform:uppercase;
+	border-radius:5px;
+}
+.readon span {
+	display: block;
+	height:20px;
+	line-height:20px;
+	padding:0 10px 0 0px;
+	border-radius:5px;
+}
+/*END BUTTONS*/
+/* pagination */
+ul.pagenav {
+	background:none;
+	display:block;
+	overflow:hidden;
+	margin:0 auto;
+	text-align:center;
+}
+ul.pagenav li {
+	background:none;
+	float:left;
+	padding:0;
+	margin:0 10px 0 0;
+}
+ul.pagination {
+	background:none;
+	display:block;
+	margin:0 auto!important;
+	padding:0!important;
+	height:30px;
+	text-align:center;
+	overflow:hidden;
+	width:100%;
+}
+ul.pagination li {
+	background:none;
+	width:30px;
+	height:30px;
+	display:inline;
+	padding:0!important;
+	margin:0 10px 0 0!important;
+}
+ul.pagination li a, ul.pagination li span, th.pagenav_prev a, th.pagenav_next a, div.back_button a, li.pagenav-prev a, li.pagenav-next a {
+	height:30px;
+	width:30px;
+	padding:0;
+	margin:0;
+	display:inline-block;
+	line-height:30px;
+	font-weight:500;
+	font-size:9px;
+	text-align:center!important;
+}
+ul.pagination li.pagination-next a, th.pagenav_next a, li.pagenav-next a {
+	background-position:-30px top;
+}
+ul.pagination li.pagination-next a:hover, th.pagenav_next a:hover, li.pagenav-next a:hover {
+	background-position:-90px top;
+}
+ul.pagination li.pagination-prev a, th.pagenav_prev a, div.back_button a, li.pagenav-prev a {
+	background-position:-60px top;
+}
+ul.pagination li.pagination-prev a:hover, th.pagenav_prev a:hover, div.back_button a:hover, li.pagenav-prev a:hover {
+	background-position:-120px top;
+}
+/* active one*/
+ul.pagination li span {
+	background-position:-150px top;
+}
+/* hover*/
+ul.pagination li a:hover {
+	background-position:-150px top;
+}
+/* remove inside a text*/
+ul.pagination li.pagination-next a strong, ul.pagination li.pagination-prev a strong, th.pagenav_prev a, th.pagenav_next a, li.pagenav-prev a, li.pagenav-next a {
+	text-indent:-99999px;
+	display:block;
+}
+/* end pag*/
+/*POLL */
+.yjsg_poll {
+	padding:0 5px;
+}
+div.yjsg_poll div.poll fieldset {
+	margin: 15px 0px 10px 0px;
+}
+table.pollstableborder td.sectiontableentry1, table.pollstableborder td.sectiontableentry2, table.pollstableborder tr.sectiontableentry1 td, table.pollstableborder tr.sectiontableentry2 td {
+	height: 20px;
+	padding-left: 5px;
+	text-align:left;
+	padding-right: 10px;
+	line-height: 18px;
+	margin-bottom:5px;
+	background: none;
+	border:none;
+}
+table.pollstableborder {
+	border: none;
+	padding: 0;
+	width: 100%;
+	text-align: left;
+}
+table.pollstableborder img {
+	vertical-align: baseline;
+}
+table.pollstableborder td {
+	padding:0 5px !important;
+}
+/*SECTION TABLE ENTERIES */
+tr.sectiontableentry1 td, tr.sectiontableentry2 td, td.sectiontableentry1, td.sectiontableentry2 {
+	height: 20px;
+	padding: 0 10px;
+	line-height: 29px;
+}
+.sectiontableheader {
+	padding: 5px;
+	font-weight: bold;
+}
+/*contact*/
+#component-contact {
+	padding:0 8px;
+}
+#modlgn_remember.inputbox {
+	border: none!important;
+	padding: 0!important;
+}

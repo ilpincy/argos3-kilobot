@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.kilobotics.com/labs#lab2-communication -->
+<html lang="en" ng-app="kiloApp" class="ng-scope"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+  <title>Kilobotics</title>
+  <link rel="shortcut icon" href="https://www.kilobotics.com/favicon.ico?v=2" type="image/x-icon">
+  <link rel="icon" href="https://www.kilobotics.com/favicon.ico?v=2" type="image/x-icon">
+  <link rel="stylesheet" href="./Kilobotics_files/bootstrap.css">
+  <link rel="stylesheet" href="./Kilobotics_files/app.css">
+  <script src="./Kilobotics_files/angular.min.js"></script><style type="text/css"></style>
+  <script src="./Kilobotics_files/angular-route.min.js"></script>
+  <script src="./Kilobotics_files/dropbox.min.js"></script>
+  <script src="./Kilobotics_files/ace.js"></script><style id="ace_editor">.ace_editor {position: relative;overflow: hidden;font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;font-size: 12px;line-height: normal;direction: ltr;}.ace_scroller {position: absolute;overflow: hidden;top: 0;bottom: 0;background-color: inherit;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_content {position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: text;min-width: 100%;}.ace_dragging, .ace_dragging * {cursor: move !important;}.ace_dragging .ace_scroller:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;content: '';background: rgba(250, 250, 250, 0.01);z-index: 1000;}.ace_dragging.ace_dark .ace_scroller:before{background: rgba(0, 0, 0, 0.01);}.ace_selecting, .ace_selecting * {cursor: text !important;}.ace_gutter {position: absolute;overflow : hidden;width: auto;top: 0;bottom: 0;left: 0;cursor: default;z-index: 4;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_gutter-active-line {position: absolute;left: 0;right: 0;}.ace_scroller.ace_scroll-left {box-shadow: 17px 0 16px -16px rgba(0, 0, 0, 0.4) inset;}.ace_gutter-cell {padding-left: 19px;padding-right: 6px;background-repeat: no-repeat;}.ace_gutter-cell.ace_error {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABOFBMVEX/////////QRswFAb/Ui4wFAYwFAYwFAaWGAfDRymzOSH/PxswFAb/SiUwFAYwFAbUPRvjQiDllog5HhHdRybsTi3/Tyv9Tir+Syj/UC3////XurebMBIwFAb/RSHbPx/gUzfdwL3kzMivKBAwFAbbvbnhPx66NhowFAYwFAaZJg8wFAaxKBDZurf/RB6mMxb/SCMwFAYwFAbxQB3+RB4wFAb/Qhy4Oh+4QifbNRcwFAYwFAYwFAb/QRzdNhgwFAYwFAbav7v/Uy7oaE68MBK5LxLewr/r2NXewLswFAaxJw4wFAbkPRy2PyYwFAaxKhLm1tMwFAazPiQwFAaUGAb/QBrfOx3bvrv/VC/maE4wFAbRPBq6MRO8Qynew8Dp2tjfwb0wFAbx6eju5+by6uns4uH9/f36+vr/GkHjAAAAYnRSTlMAGt+64rnWu/bo8eAA4InH3+DwoN7j4eLi4xP99Nfg4+b+/u9B/eDs1MD1mO7+4PHg2MXa347g7vDizMLN4eG+Pv7i5evs/v79yu7S3/DV7/498Yv24eH+4ufQ3Ozu/v7+y13sRqwAAADLSURBVHjaZc/XDsFgGIBhtDrshlitmk2IrbHFqL2pvXf/+78DPokj7+Fz9qpU/9UXJIlhmPaTaQ6QPaz0mm+5gwkgovcV6GZzd5JtCQwgsxoHOvJO15kleRLAnMgHFIESUEPmawB9ngmelTtipwwfASilxOLyiV5UVUyVAfbG0cCPHig+GBkzAENHS0AstVF6bacZIOzgLmxsHbt2OecNgJC83JERmePUYq8ARGkJx6XtFsdddBQgZE2nPR6CICZhawjA4Fb/chv+399kfR+MMMDGOQAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: 2px center;}.ace_gutter-cell.ace_warning {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX///8AAAD///8AAAAAAABPSzb/5sAAAAB/blH/73z/ulkAAAAAAAD85pkAAAAAAAACAgP/vGz/rkDerGbGrV7/pkQICAf////e0IsAAAD/oED/qTvhrnUAAAD/yHD/njcAAADuv2r/nz//oTj/p064oGf/zHAAAAA9Nir/tFIAAAD/tlTiuWf/tkIAAACynXEAAAAAAAAtIRW7zBpBAAAAM3RSTlMAABR1m7RXO8Ln31Z36zT+neXe5OzooRDfn+TZ4p3h2hTf4t3k3ucyrN1K5+Xaks52Sfs9CXgrAAAAjklEQVR42o3PbQ+CIBQFYEwboPhSYgoYunIqqLn6/z8uYdH8Vmdnu9vz4WwXgN/xTPRD2+sgOcZjsge/whXZgUaYYvT8QnuJaUrjrHUQreGczuEafQCO/SJTufTbroWsPgsllVhq3wJEk2jUSzX3CUEDJC84707djRc5MTAQxoLgupWRwW6UB5fS++NV8AbOZgnsC7BpEAAAAABJRU5ErkJggg==");background-position: 2px center;}.ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAAB2k804AAAAPklEQVQY02NgIB68QuO3tiLznjAwpKTgNyDbMegwisCHZUETUZV0ZqOquBpXj2rtnpSJT1AEnnRmL2OgGgAAIKkRQap2htgAAAAASUVORK5CYII=");background-position: 2px center;}.ace_dark .ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAChoaGAgIAqKiq+vr6tra1ZWVmUlJSbm5s8PDxubm56enrdgzg3AAAAAXRSTlMAQObYZgAAAClJREFUeNpjYMAPdsMYHegyJZFQBlsUlMFVCWUYKkAZMxZAGdxlDMQBAG+TBP4B6RyJAAAAAElFTkSuQmCC");}.ace_scrollbar {position: absolute;right: 0;bottom: 0;z-index: 6;}.ace_scrollbar-inner {position: absolute;cursor: text;left: 0;top: 0;}.ace_scrollbar-v{overflow-x: hidden;overflow-y: scroll;top: 0;}.ace_scrollbar-h {overflow-x: scroll;overflow-y: hidden;left: 0;}.ace_print-margin {position: absolute;height: 100%;}.ace_text-input {position: absolute;z-index: 0;width: 0.5em;height: 1em;opacity: 0;background: transparent;-moz-appearance: none;appearance: none;border: none;resize: none;outline: none;overflow: hidden;font: inherit;padding: 0 1px;margin: 0 -1px;text-indent: -1em;-ms-user-select: text;-moz-user-select: text;-webkit-user-select: text;user-select: text;}.ace_text-input.ace_composition {background: #f8f8f8;color: #111;z-index: 1000;opacity: 1;text-indent: 0;}.ace_layer {z-index: 1;position: absolute;overflow: hidden;white-space: pre;height: 100%;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;/* setting pointer-events: auto; on node under the mouse, which changesduring scroll, will break mouse wheel scrolling in Safari */pointer-events: none;}.ace_gutter-layer {position: relative;width: auto;text-align: right;pointer-events: auto;}.ace_text-layer {font: inherit !important;}.ace_cjk {display: inline-block;text-align: center;}.ace_cursor-layer {z-index: 4;}.ace_cursor {z-index: 4;position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 2px solid}.ace_slim-cursors .ace_cursor {border-left-width: 1px;}.ace_overwrite-cursors .ace_cursor {border-left-width: 0px;border-bottom: 1px solid;}.ace_hidden-cursors .ace_cursor {opacity: 0.2;}.ace_smooth-blinking .ace_cursor {-moz-transition: opacity 0.18s;-webkit-transition: opacity 0.18s;-o-transition: opacity 0.18s;-ms-transition: opacity 0.18s;transition: opacity 0.18s;}.ace_editor.ace_multiselect .ace_cursor {border-left-width: 1px;}.ace_marker-layer .ace_step, .ace_marker-layer .ace_stack {position: absolute;z-index: 3;}.ace_marker-layer .ace_selection {position: absolute;z-index: 5;}.ace_marker-layer .ace_bracket {position: absolute;z-index: 6;}.ace_marker-layer .ace_active-line {position: absolute;z-index: 2;}.ace_marker-layer .ace_selected-word {position: absolute;z-index: 4;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}.ace_line .ace_fold {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;display: inline-block;height: 11px;margin-top: -2px;vertical-align: middle;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpi+P//fxgTAwPDBxDxD078RSX+YeEyDFMCIMAAI3INmXiwf2YAAAAASUVORK5CYII=");background-repeat: no-repeat, repeat-x;background-position: center center, top left;color: transparent;border: 1px solid black;-moz-border-radius: 2px;-webkit-border-radius: 2px;border-radius: 2px;cursor: pointer;pointer-events: auto;}.ace_dark .ace_fold {}.ace_fold:hover{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACBJREFUeNpi+P//fz4TAwPDZxDxD5X4i5fLMEwJgAADAEPVDbjNw87ZAAAAAElFTkSuQmCC");}.ace_tooltip {background-color: #FFF;background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.1));background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));border: 1px solid gray;border-radius: 1px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);color: black;display: block;max-width: 100%;padding: 3px 4px;position: fixed;z-index: 999999;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: default;white-space: pre;word-wrap: break-word;line-height: normal;font-style: normal;font-weight: normal;letter-spacing: normal;pointer-events: none;}.ace_folding-enabled > .ace_gutter-cell {padding-right: 13px;}.ace_fold-widget {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0 -12px 0 1px;display: none;width: 11px;vertical-align: top;background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42mWKsQ0AMAzC8ixLlrzQjzmBiEjp0A6WwBCSPgKAXoLkqSot7nN3yMwR7pZ32NzpKkVoDBUxKAAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: center;border-radius: 3px;border: 1px solid transparent;cursor: pointer;}.ace_folding-enabled .ace_fold-widget {display: inline-block;   }.ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==");}.ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCAYAAAAG5SQMAAAAOUlEQVR42jXKwQkAMAgDwKwqKD4EwQ26sSOkVWjgIIHAzPiCgaqiqnJHZnKICBERHN194O5b9vbLuAVRL+l0YWnZAAAAAElFTkSuQmCCXA==");}.ace_fold-widget:hover {border: 1px solid rgba(0, 0, 0, 0.3);background-color: rgba(255, 255, 255, 0.2);-moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);-webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);}.ace_fold-widget:active {border: 1px solid rgba(0, 0, 0, 0.4);background-color: rgba(0, 0, 0, 0.05);-moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);-webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);}/*** Dark version for fold widgets*/.ace_dark .ace_fold-widget {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHklEQVQIW2P4//8/AzoGEQ7oGCaLLAhWiSwB146BAQCSTPYocqT0AAAAAElFTkSuQmCC");}.ace_dark .ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAH0lEQVQIW2P4//8/AxQ7wNjIAjDMgC4AxjCVKBirIAAF0kz2rlhxpAAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAHElEQVQIW2P4//+/AxAzgDADlOOAznHAKgPWAwARji8UIDTfQQAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget:hover {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);background-color: rgba(255, 255, 255, 0.1);}.ace_dark .ace_fold-widget:active {-moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);-webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);}.ace_fold-widget.ace_invalid {background-color: #FFB4B4;border-color: #DE5555;}.ace_fade-fold-widgets .ace_fold-widget {-moz-transition: opacity 0.4s ease 0.05s;-webkit-transition: opacity 0.4s ease 0.05s;-o-transition: opacity 0.4s ease 0.05s;-ms-transition: opacity 0.4s ease 0.05s;transition: opacity 0.4s ease 0.05s;opacity: 0;}.ace_fade-fold-widgets:hover .ace_fold-widget {-moz-transition: opacity 0.05s ease 0.05s;-webkit-transition: opacity 0.05s ease 0.05s;-o-transition: opacity 0.05s ease 0.05s;-ms-transition: opacity 0.05s ease 0.05s;transition: opacity 0.05s ease 0.05s;opacity:1;}.ace_underline {text-decoration: underline;}.ace_bold {font-weight: bold;}.ace_nobold .ace_bold {font-weight: normal;}.ace_italic {font-style: italic;}.ace_error-marker {background-color: rgba(255, 0, 0,0.2);position: absolute;z-index: 9;}.ace_highlight-marker {background-color: rgba(255, 255, 0,0.2);position: absolute;z-index: 8;}</style><style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;border-radius: 2px;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}</style><style>    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }</style>
+  <!-- <script src="/lib/ace/ace.js"></script> -->
+  <script src="./Kilobotics_files/ui-bootstrap-tpls-0.6.0.min.js"></script>
+</head>
+<body>
+  <div id="wrap">
+    <div class="navbar navbar-default navbar-static-top ng-scope" ng-controller="NavCtrl">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="https://www.kilobotics.com/">Kilobotics</a>
+        </div>
+        <div class="navbar-collapse collapsed collapse" collapse="isCollapsed" style="height: 0px;">
+          <ul class="nav navbar-nav">
+            <li ng-class="{active: isActive(&#39;/documentation&#39;)}" class=""><a ng-href="/documentation" href="https://www.kilobotics.com/documentation">Documentation</a></li>
+            <li ng-class="{active: isActive(&#39;/download&#39;)}"><a ng-href="/download" href="https://www.kilobotics.com/download">Downloads</a></li>
+            <li ng-class="{active: isActive(&#39;/labs&#39;)}" class="active"><a ng-href="/labs" href="https://www.kilobotics.com/labs">Labs</a></li>
+            <li ng-class="{active: isActive(&#39;/editor&#39;)}"><a ng-href="/editor" href="https://www.kilobotics.com/editor">Editor</a></li>
+            <li ng-class="{active: isActive(&#39;/docs&#39;)}"><a target="_self" href="https://www.kilobotics.com/docs/index.html">API Docs</a></li>
+          </ul>
+          </div>
+      </div><!--.container -->
+    </div><!--.navbar -->
+
+    <!-- ngView:  --><div ng-view="" class="ng-scope"><div class="container ng-scope">
+<h1 id="kilobot-labs">Kilobot Labs</h1>
+
+<p>These labs are a tutorial to help anyone get started programming
+the kilobots using the kilobotics software. These labs were developed
+as part of
+a <a href="http://www.eecs.harvard.edu/ssr/projects/progSA/kilobot.html#event">NSF-funded
+workshop</a> to make programming the kilobots accessible to students
+and scientists from different disciplines. They are a great way to get
+started using the kilobots. The labs are meant to be done by teams of
+two people (pair programming) using one laptop, a controller, a small
+whiteboard, and two kilobots. The labs cover the main functionalities
+of the kilobot, and end with some fun demos that can be run with large
+robot populations.</p>
+
+<ul>
+<li><a href="https://www.kilobotics.com/labs#getting-started">Getting Started</a></li>
+<li><a href="https://www.kilobotics.com/labs#lab0-blinky">Lab0: Blinky</a></li>
+<li><a href="https://www.kilobotics.com/labs#lab1-movement">Lab1: Movement</a></li>
+<li><a href="./Kilobotics_files/Kilobotics.html">Lab2: Communication</a></li>
+<li><a href="https://www.kilobotics.com/labs#lab3-putting-it-together">Lab3: Putting It Together</a></li>
+<li><a href="https://www.kilobotics.com/labs#lab4-orbit">Lab4: Orbit</a></li>
+<li><a href="https://www.kilobotics.com/labs#lab5-move-to-light">Lab5: Move to Light</a></li>
+<li><a href="https://www.kilobotics.com/labs#lab6-gradient">Lab6: Gradient</a></li>
+<li><a href="https://www.kilobotics.com/labs#lab7-sync">Lab7: Sync</a></li>
+
+</ul>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>The following labs assume that you have: one overhead controller
+and two kilobots with the latest firmware, and a computer with the
+KiloGUI tool.</p>
+
+<p>If your robots or controller are brand new, purchased from kteam or
+made by yourself, you will need to setup the latest firmware on the
+kilobots and controller. Follow the instructions
+provided <a href="https://www.kilobotics.com/documentation#firmware">here</a>.
+This does take some effort, but only needs to be done once for any
+robot or controller you purchase.
+
+</p><p>To do these labs, we suggest using the
+<a href="https://www.kilobotics.com/documentation#generaluse">KiloGUI</a>
+controller interface for uploading and running code and the 
+<a href="https://www.kilobotics.com/editor">KiloEditor</a> to write
+and compile programs for the kilobot through your webbrowser. To use
+the KiloGUI, you need to install it on your computer. To use the
+KiloEditor, you can use any browser and access it from the top menu
+("Editor"). You will also need a Dropbox account to store your files;
+the files will be stored in the <code>Apps/KiloEdit</code> folder.
+
+</p><ul>
+<li>Step 1: Follow the directions
+for <a href="https://www.kilobotics.com/documentation#generaluse">Installing
+and Using KiloGUI</a> here.
+</li><li>Step 2: When you have this working, skim the section on KiloEditor
+and then go to Lab0.
+</li></ul>
+
+<p>Most labs start with three items: <strong>Program, Objective, and
+Code</strong>. The Program is a description of the program you will
+write. The Objective is the learning objective, or in other words the
+parts of the kilobot programming library that we are introduing. And
+the Code is an example final solution code - only read this after you
+are done programming your own version.
+
+
+
+</p><h2 id="lab0-blinky">LAB0: BLINKY</h2>
+<ul>
+<li><strong>Program:</strong> Blink LEDS Red then Blue for 500ms each</li>
+<li><strong>Objective:</strong> Introduce basic code structure (i.e. <code>setup</code> and <code>loop</code>) and basic functions such as <code>set_color</code> and <code>delay</code></li>
+<li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/blink_led.c">blink_led.c</a> 
+</li></ul>
+
+<p>In the Kilobotics Editor, create a new file and name
+it <code>blink_led.c</code>. If this is your first time using the
+editor, then it will ask you to sign into dropbox so that it can store
+your files there. Once you have a new file, you'll see several things
+in the file, like <code>#include &lt;kilobot.h&gt;</code> which
+contains the definitions of the <a target="_self" href="https://www.kilobotics.com/docs/index.html">Kilobot library
+API</a> (API stands for Application Programming Interface).</p>
+
+
+<p>To program the robots we will use a variant of the "C"
+language. The main place to add code is in <code>loop</code>. This
+function will be run repeatedly until you either reset or pause the
+robot. We will modify <code>loop</code> to blink the robot LED. Take a
+look at the <a target="_self" href="https://www.kilobotics.com/docs/index.html">Kilobot library
+API</a> page to see how to use the functions <code>set_color</code>
+and <code>delay</code>. Here is some psuedocode to describe what you
+want the robot to do. Write proper code using the API to do the
+following:</p>
+
+<pre><code>set LED color to RED
+delay 500ms
+set LED color to BLUE
+delay 500ms</code></pre>
+
+<p>Now compile your code, by clicking on the compile button in the
+editor. This will produce a file called <code>blink_led.hex</code>. 
+
+</p><p>Now we will use the KiloGUI to upload the hex file to your to your
+kilobot and see what happens. First read
+the <a href="https://www.kilobotics.com/documentation">instructions on
+how to use the KiloGUI</a>. Once you've successfully uploaded the
+code, and hit "Run", you should see the LED blinking as you programmed
+it to. If you run into problems, take a look at the solution code
+above.</p>
+
+<p>Finally, read the API documentation and see if you can answer the
+following questions: (1) What is the maximum delay rounded up to
+seconds, that you can cause with a single call to delay? (2) How would
+you set the LED to the color cyan? We will use the API quite a bit in
+these labs, so you may want to keep it open in your browser.
+
+</p><p> Behind the scenes,
+the <a href="https://www.kilobotics.com/editor">Kilobotics Editor</a>
+compiles your code
+using <a href="https://gcc.gnu.org/wiki/avr-gcc">avr-gcc</a> and will
+link it against <a href="http://www.nongnu.org/avr-libc/">avr-libc</a>
+and <a href="http://github.com/acornejo/kilolib">kilolib</a>. Some of
+the low level functions, including math functions, are part of
+the <a href="http://www.nongnu.org/avr-libc/">avr-libc</a> library,
+whose documentation is
+available <a href="http://www.nongnu.org/avr-libc/user-manual/modules.html">here</a>. If
+you choose to do so, you can install avr-gcc, avr-libc and kilolib on
+your computer and develop locally instead of relying on the Kilobotics
+Editor
+(see <a href="https://www.kilobotics.com/documentation#advanceduse">Advanced
+Use</a>). However, for the purposes of this workshop, we will simply
+assume you are using the Kilobotics Editor.</p>
+
+
+
+<h2 id="lab1-movement">LAB1: MOVEMENT</h2>
+<h3 id="calibrate-your-robots">1.1 Calibrate your robots</h3>
+<ul>
+<li><strong>Objective:</strong> Manually calibrate the kilobots using the KiloGUI</li>
+</ul>
+
+<p>The Kilobots use vibration motors to move, this is known as
+stick-slip locomotion. Due to manufacturing differences the power
+required to achieve good forward and turning motion varies from robot
+to robot, and generally varies from surface to surface. In this lab
+you will learn how to manually calibrate the values required for
+turning left, turning right, and going straight. In the process you
+can also assign a unique identifier to your kilobot, if you so
+desire. Follow the steps below</p>
+
+<ol style="list-style-type: decimal">
+
+<li>Open up the KiloGUI program and click on the Calibration button,
+you will be presented with the following screen.
+<br><img src="./Kilobotics_files/calib.png"></li>
+
+<li>Select a value for turning left, click test to tell the robot to
+move using this value. Values between 60 and 75 work best for turning,
+but this will depend on your robot on the surface being used. Choose
+different values until your robot can perform a full turn consistently
+on the surface being used. The robot should not make excessive
+vibrating noise; if it does, reduce the value slightly.</li>
+
+<li>Follow the same procedure for turn right.</li>
+
+<li>To calibrate to go straight, you can use the values you already
+found for turn left and turn right as a good initial guess. Usually go
+straight values should be between 2 and 10 units smaller than the
+turning left and turning right values to achieve a good motion.</li>
+
+<li>Choose to set a unique ID for your robot by typing an integer in
+the unique ID box, and clicking test. Picking a number between 0 and
+255 is a good bet, but it can go alot higher (see the APi to determine
+how high).
+
+</li><li>Once you have calibrated all the values, <strong>make sure to
+click Save</strong> to write these changes to the EEPROM ("permanent")
+memory of your robot. We will use these values in our next programs.
+
+</li></ol>
+
+<h3 id="simple-movement">1.2 Simple_movement.c</h3>
+
+<ul>
+<li><strong>Program:</strong> Move forward 2 sec, clockwise 2 sec, anticlockwise 2 sec, stop .5 sec, and repeat</li>
+<li><strong>Objective:</strong> Introduce <code>set_motors</code> and calibration constants <code>kilo_turn_left, kilo_turn_right, kilo_straight_left, kilo_straight_right</code></li>
+<li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/simple_movement.c">simple_movement.c</a></li>
+</ul>
+
+<p>In this lab we will make the Kilobot go through its motions
+--forward, turn left, turn right-- in a loop. To do this we will use
+the function <code>set_motors</code> that takes values for each of the
+two motors, and we will use the calibrated constants that we set in
+Lab 1.1. Read
+the <a href="https://www.kilobotics.com/docs/index.html">API page</a>
+to see how to use <code>set_motors</code> and how to use the
+calibration constants (e.g. <code>kilo_turn_left</code>). There's one
+more important thing you need to do, which
+is <code>spinup_motors</code>. When the motors are first turned on, we
+must set the motors to the maximum speed for 15 milliseconds or so, in
+order for the kilobot to overcome static friction. We call this
+spinning up the motors. Therefore, for the robot to move it must first
+spin up the motors and then set its desired motion. Motors need to be
+spinup every time the robot changes its direction of motion. This can
+be done through the <code>spinup_motors</code> function, also
+described in the <a target="_self" href="https://www.kilobotics.com/docs/index.html">API page</a>.</p>
+
+<p>Create a file called <code>simple_movement.c</code>. Here's the
+pseudocode you need to write. Then compile, upload and run your
+code!</p>
+
+<pre><code>spinup motors, set motors to forward, set LED to green
+delay 2000ms
+spinup motors, set motors to turn left, set LED to red 
+delay 2000ms
+spinup motors, set motors to turn right, set LED to blue 
+delay 2000ms
+turn motors off, turn LED off
+delay 500ms
+</code></pre>
+
+
+<h3 id="nonblocked-movement">1.3 Nonblocked_movement.c</h3>
+
+<ul>
+<li><strong>Program:</strong> Create a state machine with states <code>forward, turnleft</code> and <code>turnright</code>, switching states every two seconds.</li>
+<li><strong>Objective:</strong> Introduce the <code>kilo_ticks</code> clock.</li>
+<li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/nonblocked_movement.c">
+nonblocked_movement.c</a></li>
+</ul>
+
+<p>In the last two code examples, we used delay to control how long to
+wait. But that prevents the robot from doing anything else during that
+time - we call that "blocking" code. We will now rewrite the
+same code in a "non-blocking" manner by using timers to
+control when to switch from moving forward to turning.</p>
+
+<p>We will use the robot's own clock to check time, by reading the
+variable <code>kilo_ticks</code>. One tick is equivalent to roughly 30
+ms, or equivalently there are approximatly 32 clock ticks every
+second. Clock values must be stored in a non-negative 32-bit integer
+to avoid having overflows (<code>uint32_t</code>). We'll start by
+writing some simple code that just blinks the LED every 64 clock ticks
+(roughly every 2 seconds). Create a file
+called <code>nonblocking_movement.c</code> with the following in
+proper code.</p>
+
+<pre><code>// before program loop declare the variables 
+uint32_t last_changed = 0;
+
+// In program loop
+if kilo_ticks &gt; (last_changed + 64) then
+    set last_changed = kilo_ticks // remember the current time
+    blink the LED (turn led yellow, delay 100ms, turn led off)</code></pre>
+
+<br>
+<p>Compile your code and test to make sure it behaves as expected, in
+other words the LED blinks yellow once every two seconds. 
+
+</p><p>Once we have that working and tested, we will create
+a <strong>state machine</strong> with three states: forward, left and
+right. Each time the timer expires, instead of blinking an LED, we
+will change the state to the next state and thus cycle through the
+different motions.</p>
+<br>
+
+<pre><code>// Before setup and loop, declare some names
+#define LEFT_RED 0
+#define RIGHT_BLUE 1
+#define FORWARD_GREEN 2
+
+//and declare variables to hold the state and the clock ticks
+int state = 0;
+uint32_t last_changed = 0;
+
+//In setup
+set state to be FORWARD_GREEN
+set last_changed to be kiloticks
+
+// In program loop
+if kilo_ticks &gt; (last_changed + 64) then
+    last_changed = kilo_ticks // remember the current time
+    if state is FORWARD_GREEN
+       then set LED to green, spinup motors, set motors to move forward, set state to LEFT_RED
+    else if state is LEFT_RED
+       then set LED to red, spinup motors, set motors to turn left, set state to RIGHT_BLUE
+    else if state is RIGHT_BLUE
+       then set LED to blue, spinup motors, set motors to turn right, set state to FORWARD_GREEN
+</code></pre>
+
+<br>
+<p>So with this code the robot will cycle through three motions (and
+their associated colors) every 2 seconds. Note that this slightly
+different from what we did in lab 1.2 since we had a fourth stopped
+state in that case, but you could add that if you like by extending
+the logic.</p>
+
+<p>Once you have this code working you have the basic block structure
+for more complex code. In this case, the timer event causes the robot
+to move from one motor state to another. But while the robot is
+moving, other code can run - for example later on we will have the
+robot listening for messages from other robots. Or we can even have
+messages from other robots (or other sensed things) trigger the change
+from one state to another, rather than the timer. This code provides
+the structure for a implementing <strong>general
+finite-state-machines</strong> on the kilobots.</p>
+
+<p>Before moving on to the next lab, make sure to take a look at the
+sample code provided to see how we implemented this timer-driven state
+machine. The code uses some extra C syntax (such
+as <code>#define</code> to make the code more readable by giving each
+state a name, and if you are familiar with C you can also use switch
+statements instead of if-else statements. The code
+uses <code>uint32_t</code> for storing the timer value, and this
+stands for unsigned (i.e. non-negative) 32-bit integer. See if you can
+answer the following question: When a kilobot is turned on its
+clock <code>kilo_ticks</code> is set to zero, and this clock is
+incremented 32 times per second. How long would a kilobot have to run
+for it would reach the maximum value your variable could store?
+
+</p><h2 id="lab2-communication">LAB2: COMMUNICATION</h2>
+<p>In this Lab we will start using the ability of two kilobots to communicate with each other. We will dedicate one kilobot to be the <strong>speaker</strong> and the other kilobot to be the <strong>listener</strong>. Eventually we will program robots that do both, but the speaker/listener code here is also useful for debugging for more complex programs.</p>
+
+<h3 id="test_speaker.c">2.1 Test_speaker.c</h3>
+<ul>
+<li><strong>Program:</strong> Broadcast a fixed message, and blink magenta when you transmit</li>
+<li><strong>Objective:</strong> Introduce the <code>message_t</code> data structure, and the <code>kilo_message_tx</code> callback.</li>
+<li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/test_speaker.c">test_speaker.c</a></li>
+</ul>
+
+<p>A kilobot uses infrared (IR) to broadcast a message within an
+approximately circular radius of three body lengths. Multiple robots
+packed closely together will have overlapping transmission regions,
+causing the IR signals to interfere.</p>
+
+<p>The kilobots use a variant of the CSMA/CD media access control
+method (carrier-sensing multiple access with collision detection) to
+ameliorate the problems with interference. Suffice it to say, if you
+instruct a robot to send a message, it may take some time before the
+robot can actually broadcast the message. Moreover, with even after
+the message is broadcast, it is possible that this message cannot be
+decoded by the receiver robot due to noise.</p>
+
+<p>In this lab we will instruct each robot to send a fixed message,
+and the robot will broadcast it as often as possible (depending on the
+congestion of the channel). Without any other robots within shouting
+distance, a kilobot achieves roughly 3 messages/sec. 
+
+</p><p>To do this, we will first declare a variable
+called <code>transmit_msg</code> of the structure
+type <code>message_t</code>. You should do this near the top of the
+file. Next, we add the function <code>message_tx()</code> that returns
+the address of the message we declared (<code>return
+&amp;transmit_msg</code>). As you'll see later, we will register this
+"callback" function in the kilobot main loop, and every time the
+kilobot is ready to send a message it will "interrupt" the main code
+and call the <code>message_tx()</code> to get the message that needs
+to be sent.
+
+
+</p><p>Because there's a bit more of syntax involved, you should use the
+exact code provided below and make sure to compare your code to that
+of the solution code at the end of the lab.  You should also visit
+the <a target="_self" href="https://www.kilobotics.com/docs/index.html">API page</a> and
+look up <code>message_t</code> under Data Structures.</p>
+
+<pre><code>message_t transmit_msg;
+
+message_t *message_tx() {
+    return &amp;transmit_msg;
+} </code></pre>
+
+<p>We will use the <code>setup()</code> function to the set the
+initial contents of the message and compute the message CRC value
+(used for error detection) through the
+function <code>message_crc()</code>. The code below shows how to
+initialize a simple message. In general you want to compute the CRC
+only when a new message content is being generated because it takes a
+longish time to compute.</p>
+
+<pre><code>void setup() {
+    transmit_msg.type = NORMAL;
+    transmit_msg.data[0]=0;
+    transmit_msg.crc = message_crc(&amp;transmit_msg);
+}</code></pre>
+
+<p>At this point, we have almost all the code needed for the robot to
+be constantly broadcasting the message "0". However we will add some
+more code so that we can have the LED blink whenever the robot sends a
+message out. This way you can see the rate at which the robot is able
+to transmit the message.</p>
+
+<p>To do this we will declare a variable (often called a "boolean
+flag" because its value will only be one or zero)
+called <code>message_sent</code>. We will set this flag inside a
+function called <code>message_tx_success()</code> which is another
+callback function that only gets called when a message is finally
+successfully sent on a channel. Then we will clear this flag in the
+main loop where we will blink an LED to indicate that a message was
+sent. Note that we could have blinked the LED in the callback function
+itself, rather than using a flag, but this is not recommended because
+the callback stops the main loop from running and prevents any more
+events from being seen by the robot. Therefore it is good practice to
+try and put as little code as possible in any of the callbacks
+(e.g. you never want to have the <code>delay()</code> function in your
+callback).
+
+</p><pre><code>//At the top of the file, declare a "flag" for when a message is sent
+int message_sent = 0;
+
+// Add another function definition after your message_tx function
+// (note that "void" means the function doesn't return any value)
+
+void message_tx_success() {
+   message_sent = 1;
+}</code></pre>
+
+<p>Then, in your program loop, write code to do this
+
+</p><pre><code>// Blink led magenta when you get a message
+if (message_sent == 1) {
+    message_sent = 0;
+    set_color(RGB(1,0,1));
+    delay(100);
+    set_color(RGB(0,0,0));
+}
+</code></pre>
+
+<p>Finally, you must register your message transmission functions with the kilobot library as follows:</p>
+<pre><code>int main() {
+    kilo_init();
+    kilo_message_tx = message_tx;
+    kilo_message_tx_success = message_tx_success;
+    kilo_start(setup, loop);
+
+    return 0;
+}</code></pre>
+
+<p>Once you have added this code in the file you are pretty much done.
+You can compile and upload, but the real test will be once we have
+created the listener robot.</p>
+
+<p>Last notes: Because there is substantial syntax involved, take a
+look at the solution code and the API pages
+for <code>kilo_message_tx</code>. If you have not used C before, then
+the code may also be confusing because of the use of the same variable
+in different ways: e.g. <code>&amp;msg</code>, <code>*msg</code>
+and <code>msg</code>. A simplish explanation is that when we declare a
+data structure like <code>message_t msg;</code> then it is stored in
+some address in memory (<code>&amp;msg</code>) and sometimes rather
+than send the full value over (which may be quite large) we just send
+the memory address location so another function can just look it up
+there. To understand this more, look up C pointer explanations
+online. However in kilobot code we won't use pointers that often, and
+the message transmission code for the most part follows the same
+pattern. So you do not need a deep understanding of C and pointers to
+continue.
+
+</p><h3 id="test-listener">2.2. Test_listener.c</h3>
+<ul>
+<li><strong>Program:</strong> Blink yellow when a new message is
+recieved. 
+</li><li><strong>Objective:</strong> Introduce the <code>kilo_message_rx</code> callback and store incoming messages.</li>
+<li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/test_listener.c">test_listener.c</a></li>
+</ul>
+
+
+<p>Now we will create the listener robot. We first declare a
+variable <code>rcvd_message</code> of type <code>message_t</code> to
+store any new incoming messages and a boolean variable (often called a
+"flag") called <code>new_message</code> to indicate that a
+new message has been received.</p>
+
+<p>Create a new file called <code>test_listener.c</code> and add the
+following code after the include section.</p>
+
+
+<pre><code>int new_message = 0;
+message_t rcvd_message;
+
+void message_rx(message_t *msg, distance_measurement_t *dist) {
+    rcvd_message = *msg;  //store the incoming message
+    new_message = 1;      // set the flag to 1 to indicate that a new message arrived
+}</code></pre>
+
+<p>Now in the program loop, we will check the flag to see if a new
+message has arrived. If a new message has arrived, we will blink the
+LED yellow, and clear the flag.</p>
+
+<pre><code>void loop() {
+    // Blink led yellow when you get a message
+    if (new_message == 1) {
+        new_message = 0;
+        set_color(RGB(1,1,0));
+        delay(100);
+        set_color(RGB(0,0,0));
+    }
+}</code></pre>
+<p>Finally, as before, you must modify your main section to register the message reception function with the kilobot library as follows:</p>
+<pre><code>int main() {
+    kilo_init();
+    kilo_message_rx = message_rx;
+    kilo_start(setup, loop);
+
+    return 0;
+}</code></pre>
+
+<br>
+<p>Compile both your speaker and listener and test them together. Note
+that you can use this program to see what the effective listening
+range of a robot is. Measure how far they can hear each other, and see
+ehat kinds of barriers can block the communication. Behind the scenes,
+the kilobot library code guarantees that each time a message is
+successfully decoded, the function <code>message_rx()</code> will get
+called with the message and the distance measurements as
+parameters. For now, the listener robot is just responding to
+receiving a message, and we do not care about the data or distance
+measurements. In the nexts ection we will use both data and
+distance.</p>
+
+<h3 id="test-speaker-mod">2.3 Test_speaker_mod.c</h3>
+<ul>
+
+<li><strong>Program:</strong> Change the transmitted message every 2
+second between "1" and "0".</li>
+<li><strong>Objective:</strong> Explain how to set and change the
+value of a message transmitted in the program code.</li>
+<li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/test_speaker_mod.c">
+test_speaker_mod.c</a></li>
+</ul>
+
+<p>Once you've tested the speaker and listener together, we will
+modify the speaker code to send two different messages. Specifically
+we will use a timer to change the message being sent once every two
+seconds. You should start from the code you already have for the
+speaker and the code for checking the timer will look similar to the
+code you wrote in lab 1.3.</p>
+
+<pre><code>
+//a flag for deciding whether you are transmitting 0 or 1
+int sendone = 0; 
+// don't forget to make sure you've declared all the other variables you need
+
+// In program loop, add 
+
+// Code to switch the message
+if kilo_ticks &gt; (last_changed + 64) then
+   last_changed = kilo_ticks;
+
+   if (sendone==0) { // send message with data 0
+       message.type = NORMAL;
+       message.data[0] = 0;
+       message.crc = message_crc(&amp;message);
+       sendone = 1;
+   } else {         // send message with data 1
+       message.type = NORMAL;
+       message.data[0] = 1;
+       message.crc = message_crc(&amp;message);
+       sendone = 0;
+   }
+
+// and Modify code to blink the led magenta or cyan depending on message data
+if (message_sent == 1) {
+    message_sent = 0;
+    if (sendone==0) { 
+       set_color(RGB(1,0,1));
+    } else {
+       set_color(RGB(0,1,1));
+    }
+    delay(100);
+    set_color(RGB(0,0,0));
+
+</code></pre>
+
+<br>
+<p>The rest of the code will remain mostly the same - the message
+transmission functions will transmit whatever message is currently
+setup and the success function will set a flag whenever a message is
+successfully transmitted. Read the API docs page to see more on the
+<code>message_t</code> structure. The "data" field is an array that
+allows one to place data in the message (question: how many data bytes
+can you send in a message?).
+
+</p><h3 id="modify-test-listener">2.3 Test_listener_mod.c</h3>
+<ul>
+<li><strong>Program:</strong> If a received message is even and
+nearby, blink red. If it is even and further, blink blue. If a
+recieved message is odd, blink green if nearby and yellow if far.</li>
+
+<li><strong>Objective:</strong> Introduce how to check message content and distance.</li>
+<li><strong>Code:</strong>
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/test_listener_mod.c">
+test_listener_mod.c</a></li>
+</ul>
+
+<p>Now we will modify the listener code from before to read the value
+of the message by reading the value of the first byte of the recieved
+message. If the value is odd (or one), then blink the LED blue. If the
+value is even (or zero), then blink the LED red. We will also record
+the distance between us and the listener, by
+using <code>estimate_distance()</code>. Here's an example of how to
+store the value of a message and compute the distance.</p>
+
+<pre><code>// Declare variables to store the contents of the message
+// Use a uint8_t for data, because we are sending/receiving 1 byte (i.e. 8 bits)
+// Use an integer (16-bit) to store the distance
+uint8_t data = 0;
+int dist = 0;
+
+void message_rx(message_t *m, distance_measurement_t *d) {
+    data = m-&gt;data[0];
+    dist = estimate_distance(&amp;dist_measure);
+    new_message = 1;
+}</code></pre>
+
+<br>
+<p>Now modify the program loop from before to check the content of the
+message and blink red or blue accordingly (instead of just blinking
+yellow).
+
+</p><p>Once you have that compiled and tested with your speaker robot, you
+can do the next step: changing the behavior when the listener is close
+or far away from the speaker. If the robot is "far" (more
+than 50mm away) then instead of blue/red use cyan/magenta. Note that
+the diameter of a kilobot is 33 mm and <code>estimate_distance</code>
+gives a distance roughly in millimeters, however this can depend on
+the surface a robot is running on since the estimator is converting a
+raw intensity signal to a measure unit (see API docs). When you run
+your code, you can use a ruler to measure and see how accurate the
+estimator is. 
+
+</p><pre><code>
+
+// In program loop, if you get a new message, check data and distance
+if (dist &lt; 50) {
+    then set LED according to the "near" rules
+} else {
+    set LED according to the "far" rules
+}</code></pre>
+
+<br>
+<p>Now is a good time to test your code. Compile, upload, and run your
+listener robot. Then do the same for your speaker. When the robots are
+close together the listener should be blinking blue or red as messages
+arrive. Moving the robots further away should cause the listener robot
+to blink magenta or cyan. Moving the robots even further away should
+cause the listener to stop blinking once it is outside the
+communication range.</p>
+
+
+<h3 id="explanation">2.4 Read Message API</h3>
+<p>We have only used a small part of the message structure. Read the
+API to further understand the <code>message_t</code> data structure
+and the callbacks <code>kilo_message_tx, kilo_message_tx_success,
+kilo_message_rx</code> and the
+estimator <code>estimate_distance()</code>. There are many other
+things one can do --- e.g. send larger messages with multiple values
+in different bytes of the data array, or send large numbers (16-bit
+integer) by breaking it into multiple bytes, or send a single message
+from one robot to another and then become quiet, instead of the
+constant broadcast we used here. The further labs (e.g. Gradients)
+will show more examples of using robot communication to do more
+complex things.  Also, for future code examples, if you are not using
+distance in your code, it is best to not convert the distance signal
+to a distance in mm (remove the line
+with <code>estimate_distance()</code>
+from <code>message_rx()</code>). This estimation takes quite a few
+cycles and blocks the robot from receiving message during that time;
+normally that's not a problem, but if you have a very packed density
+of robots then this can increase message loss.
+</p>
+
+<h2 id="lab3-putting-it-together">LAB3: PUTTING IT TOGETHER</h2>
+
+<ul>
+<li><strong>Program:</strong> Create a single robot that both sends
+and receives messages. The robot should check every second if it has
+received a message. If so, then it should pick a random direction to
+move in (50% straight, 25% left, 25% right) and set its led according
+to the motion (green=forward, red=left, blue=right). If not, it should
+stop and set its led white.</li>
+<li><strong>Objective:</strong> Put communication and motion together,
+introduce <code>rand_hard()</code>, and create subroutine for cleaner
+and more efficient motion code.</li>
+<li><strong>Code:</strong>
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/disperse.c">
+disperse.c</a></li>
+</ul>
+
+<p>We will now create a single robot with the following behavior: The
+robot will always broadcast a message and listen for messages from
+other robots. If the robot does not hear any neighboring robots, then
+it will turn off its motors and stand still. However if it hears
+another robot nearby, it will move randomly. This lab is fun to run on
+a group of robots, because this has the effect of causing robots to
+disperse. If there is enough space, robots will generally find
+locations where they all end up standing still.</p>
+
+<p>Create a new file called <code>disperse.c</code>. Using your
+previous code from lab 2.1 and 2.2 as examples, modify the message
+callbacks so that the robot is transmitting a single fixed message
+(set in <code>setup</code>) and sets a flag when it receives a
+message. Then modify your program loop to use <code>kilo_ticks</code>
+to check once a second if there is a new message. If there is, then
+turn the LED yellow for 100ms. 
+
+</p><p>Make sure to test this code quickly with your two robots. Both
+should blink yellow roughly once a second when they see each other,
+and not blink if moved far away from one another.</p>
+
+<p>As the next step, modify the code above so that the robot chooses
+randomly between three different colors to flash when it gets a
+message. The code below show how to use the
+function <code>rand_hard()</code> to pick green with 50% probability,
+red with 25% probability, and blue with 25% probability. The random
+number generator <code>rand_hard()</code> returns a 16-bit integer,
+but we will use modulo-arithmatic to convert it to return only four
+values (0,1,2,3), like having a four-sided dice. 
+
+</p><pre><code>
+int random_number = 0;
+int dice = 0; // four-sided dice
+
+// In program loop, when I get a new message, flip a coin
+
+random_number = rand_hard();
+dice = (random_number % 4); // C syntax for computing modulo 4
+
+if ((dice == 0) || (dice == 1)) // C syntax for OR is ||
+  then set LED to green
+else if (dice == 2)
+  then set LED to red
+else if (dice == 3)
+  then set LED to blue
+else // something didn't work in this code...
+  then set LED to cyan
+
+// If I didn't get a message, then set LED to white.
+
+</code></pre>
+
+<p>Again, <em>test this code!</em> In general it is a good habit to
+individually test the logic blocks of your code at each step. Robot
+code is different from general code writing because it is difficult to
+debug, and that makes continual testing especially important. Given
+the above code, what you should see is that when your two robots are
+close to each other they should flash their LEDs random colors
+(changing colors no faster than 1 second, both robots should have
+different sequences, and you shouldn't see cyan ever). If your robots
+are apart, they should turn white. Also, read the API docs to learn
+more about the different random number generator options
+(<code>rand_hard(), rand_soft()</code>) and how they differ.
+
+<br>
+</p><p>Next, lets add the motion. But first we will create a new
+subroutine function called <code>set_motion</code>. This function will
+check the current direction of the robot, and only spinup and set
+motors if the robot is changing its direction. This function will make
+the motion of your robot smoother and also be useful for all code
+written this point onwards. Note that you must define this function
+before the <code>loop()</code> code begins (C requires that you define
+any new functions before they get used).
+
+</p><p>Take a look at the psusedocode below. We define four motion states
+in the beginning (STOP, FORWARD, LEFT, RIGHT) and an integer that
+keeps track of the current motion state of the robot. Then we have a
+function that takes a new desired motion, and then compares it to the
+current motion of the robot. If that's not the same, then it sets the
+motors and the current motion state of the robot to be the new
+value. Note that declaring a function "void" means a function that
+doesn't return any value. </p>
+
+<pre><code>#define STOP 0
+#define FORWARD 1
+#define LEFT 2
+#define RIGHT 3
+
+int cur_motion = 0;
+
+void set_motion(int new_motion) {
+    if cur_motion is not equal to the new_motion then
+        if new_motion is STOP then
+            stop
+        else if new_motion is FORWARD then
+            move forward
+        else if new_motion is LEFT then
+            turn left
+        else 
+            turn right
+        set cur_motion = new_motion
+}
+
+//To call this function, we will say something like: set_motion(FORWARD);
+</code></pre>
+
+<br><p>Now in the program loop, modify the code so that when a robot
+checks for message once every second, it rolls the dice as before but
+in addition to changing LED colors it also uses the
+new <code>set_motion()</code> to set the motion (green straight, red
+left, blue right). If it didn't receive any message it should turn off
+its motors and have the LED be white. Some common bugs to watch out
+for - if your robot starts violently jumping around and making noise,
+then you are probably changing the motion too frequently, i.e. the
+code to restrict checking for new message only once per second is not
+working. Also in isolation, the robot should stand still and have its
+LED white; if that is not happening then check if the message flags
+are being cleared correctly (are you clearing the flag after yyou read
+the message). 
+
+</p><p>Run the code on two robots to see that it works as expected. And
+then run it on many robots by having everyone put their robots
+together. Disperse is always a fun demo to run, if you want to show
+off your kilobot swarm.
+
+
+</p><h2 id="lab4-orbit">LAB4: ORBIT</h2>
+
+<p>Now that we've learned all the basics, we will code up some fun and
+classic "demos" in the next few labs. 
+
+</p><ul>
+<li><strong>Objective</strong>: Use distance sensing to have one robot orbit another stationary robot while keeping a fixed distance.</li>
+<li><strong>Video</strong>: <a href="https://www.youtube.com/watch?v=EOEh9xnLB_0">link</a></li>
+</ul>
+
+
+<p>Orbiting is a commonly used primitive - basically it allows one
+robot (the planet) to use the distance from another robot (the star)
+as a way to move. It can be extended to edge-following if there is a
+group of stars, then the planets can orbit that group of stars. We use
+edge-following in many algorithms. In classic robotics, orbiting is
+related to other feedback algorithms like line-following or
+wall-following or phototaxis. </p>
+
+
+<h3 id="orbit-star">4.1 Orbit_star.c</h3>
+<ul>
+<li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/orbit_star.c">
+orbit_star.c</a></li>
+</ul>
+
+<p>The orbit-star program is identical to
+the <code>test_speaker.c</code> program you created in Lab 2. Its
+purpose is to serve as a stationary reference that constantly emits
+beacon messages to the oribiting robot.</p>
+
+<h3 id="orbit-planet.c">4.2 Orbit-planet.c</h3>
+<ul>
+<li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/orbit_planet.c">
+orbit_planet.c</a></li>
+</ul>
+
+<p>Create a new file <code>orbit_planet.c</code> and use a starting
+point the contents of the <code>disperse.c</code>. Modify the code so
+that the robot is no longer transmitting any messages; this can be
+done by removing the code for the transmit callback and removing the
+line in the <code>main()</code> code that
+sets <code>kilo_message_tx(), kilo_message_tx_success()</code>.  We
+will mainly be reusing the <code>set_motion</code> function and
+receive functions from the previous code. In addition, we will be
+using the distances of the recived message to determine how to move so
+you need to have <code>estimate_distance()</code> in
+your <code>message_rx()</code>
+
+</p><pre><code>
+int new_message = 0;
+int new_dist = 0;
+
+void message_rx(message_t *m, distance_measurement_t *d) {
+    new_message = 1;
+    new_dist = estimate_distance(&amp;d);
+}
+</code></pre>
+<br>
+
+<p>Our goal is for the planet robot to orbit at a fixed distance from
+the star robot; specifically we will use <strong>an orbiting distance
+of 60mm</strong>, since this is a good compromise between the maximum
+communication range (~110mm) and the minimum distance (33mm) when two
+robots are touching.</p>
+
+<p>Here's how the robot will do it. If the current distance estimate
+to the robot is ever 4cm or smaller, then the robot is really "too
+close" to the star. In that case, the robot should just move forward
+until the distance is no longer too close. This allows the planet
+robot to get to a reasonable distance away from the star quickly and
+then start the orbiting, in the case where it starts in a pisition
+that leaves not much room for manuevering. (Note that this case only
+occurs very rarely, mostly when the robot first starts up, and while
+it can cause the planet to nudge the star out of the way, things
+usually resolve correctly).
+
+</p><p>Once the robot is no longer "too close" then, the robot will simply
+alternate between turning left when the current distance is less than
+the desired orbiting distance, and turning right when the current
+distance is greater than the desired oribiting distance. This code
+causes the robot to keep making small adjustments around the 6cm
+position, while moving forward all the time. Note that this causes the
+robot to orbit in a clockwise direction; if you switch the adjustments
+you get orbiting in the opposite direction. </p>
+
+<pre><code>// Define some variables
+
+#define TOO_CLOSE 40
+#define DESIRED_DISTANCE 60
+
+// In the program loop
+
+if new_message
+    new_message = 0;       // clear new message flag
+    if new_dist &lt; TOO_CLOSE
+       then set_motion(FORWARD) and set LED to be green
+    elseif new_dist &lt; DESIRED DISTANCE
+       then set_motion(LEFT) and set LED to be red
+    else // distance is equal or greater than desired
+       then set_motion(RIGHT) and set LED to be blue
+</code></pre>
+
+<br>
+<p>Test your code! You should be able to perturb the planet robot
+somewhat and watch it recover. If you move the star out of
+communication range, the planet robot just continues its last motion -
+you can make that code better by having the robot stop and turn its
+LED white if it hears no messages. Also, if you notice, the robot
+always "weaves" when it is close to the desired distance, because it
+always turns left or right even if it is very close to the sired
+distance. You can make it move forward for a small band near the
+desired distance to smooth out the motion. Also, this code tends to
+bring out the problems with hand-calibration of robots, because you
+may have calibrated the robot to be better (or faster) at turning left
+than right and so the weaving will be asymmetric. You can recalibrate
+your make the planet motion more smooth.
+
+</p><p>If you finish this lab quickly, and have time to spend, try
+extending the code so that the planet robot tries to orbit two
+stars. In order to do this, the robot will need to keep track of
+distances from both stars separately (the two stars can transmit
+different values in the message data field, so that the listening
+planet know who it is hearing) and selectively orbit the closer star. 
+
+
+</p><h2 id="lab5-move-to-light">LAB5: MOVE TO LIGHT</h2>
+
+<ul>
+<li><strong>Objective</strong>: For each robot to move towards the direction of the brightest light source.</li>
+<li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/move_to_light.c">move_to_light.c</a></li>
+<li><strong>Video</strong>: <a href="https://www.youtube.com/watch?v=pd1CseHrvA8">link</a></li>
+</ul>
+
+<p>This lab is the first one to measure environmental conditions using
+the sensors available on the kilobots. Specifically, we will use the
+ambient light sensor to follow a gradient of light. Note that, because
+the ambient light sensor is placed in a different location between the
+KTeam kilobots and the Harvard kilobots, the same light following
+strategy does not work and this code described here is specifically
+for robots purchased from Kteam. In addition, this code tends to be
+much more sensitive to the setup and light levels, therefore if you
+are having too much trouble with this lab feel free to continue on to
+the next labs.
+
+</p><p>In order to measure ambient light, we will use the
+function <code>get_ambientlight()</code> to read the current value for
+the sensor. When a sensor cannot return a good reading, it returns
+-1. In addition such sensors are inherently noisy, so one should not
+rely on a single reading of the sensor. Therefore we will wrte a
+function that "samples" the current light level by averaging 300
+sensor readings, while discarding any bad sensor readings. Here's what
+the code should roughly look like:</p>
+
+<pre><code>// Function to sample light
+int sample_light() {
+
+  int numsamples = 0;
+  int sum = 0;
+
+  while (numsamples &lt; 300) {
+        int sample = get_ambientlight();
+        if (sample != -1) {
+            sum = sum + sample;
+            numsamples = numsamples+1;
+        }
+  }
+  return (average / 300);
+}</code></pre>
+
+<p>In this lab, we will require a dark room (no windows) and a single
+light source (i.e. a desk lamp with an incandescent bulb). 
+
+</p><p>To get a feel for the sensor, you can optionally write some code
+that sets the LED color based on the ambient light levels and then you
+can move the robot to different locations and change the orientation
+of the robot (the sensor is on the side!) to see what values the robot
+is reading. Try different colors for ranges 0-150, 150-300, 300-450,
+450-600, 600-750, above 750.
+
+</p><p>We will use a simple strategy to have the robot move towards the
+light, by trying to keep the light source in front of the robot. In an
+idealized setting, if the sensor is pointed towards the light it will
+have a high reading and if pointed opposite it will have a low
+reading. Since the sensor is on the left side of the robot (relative
+to its forward motion), the robot is actually pointed almost 90
+degrees away from the light source when the sensor has a highest
+reading. We will use two simple thresholds THRESH_LO and THRESH_HI to
+turn the robot towards the light if its turned too far. Like in
+orbiting the robot should weave towards the light. 
+
+</p><pre><code>
+#define THRESH_LO 300
+#define THRESH_HI 600
+int current_light = 0;
+
+// In setup, start the robot moving
+set_motion(LEFT);
+
+// In program loop
+
+current_light = sample_light();
+
+if (current_light &lt; THRESH_LO) {
+   set_motion(RIGHT) and set LED red
+} else if (current_light &gt; THRESH_HI {
+   set_motion(LEFT) and set LED blue
+} else { 
+   // keep doing what you were doing last
+   set LED green
+}
+</code></pre>
+
+<p>To test your code make sure you are in a room without windows (or
+close all the shades), and turn on a single directed light source (a
+desk lamp works well) and pointed towards the robot. The robot should
+start turning until it faces the light, and then switch back and forth
+between turning left and right as it moves towards the light
+source. You should be able to see which part of the main logic you are
+in based on the LED colors. You may need to adjust the thresholds for
+this to work in your environment setting.</p>
+
+<p>In a more typical robot, the light measuring sensor is often placed
+in the front of the robot, or there may be two sensors slightly to
+left and right of the front so that the robot can instantly measure
+the direction of higher light without moving. As mentioned before,
+many robot behaviors are coded as simple feedback on a external
+signal, and moving towards light has some of the same structural
+elemnts as orbiting.
+
+</p><h2 id="lab6-gradient">LAB6: GRADIENT</h2>
+<ul>
+<li><strong>Objective</strong>: For each robot to compute its distance
+(measured in number of information hops) towards a distinguished seed
+robot. We refer to this distance as the gradient of a robot.
+</li><li><strong>Code:</strong> 
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/gradient_simple.c">gradient_simple.c</a></li>
+<li><p><strong>Video</strong>: <a href="https://www.youtube.com/watch?v=Z2nLhx3hMwI">link</a></p></li>
+</ul>
+
+<p>This behavior is inspired by the idea of morphogen gradients and
+pattern formation in multi-cellular organism development; imagine a
+particular cell being the source of a morphgen chemical, that diffuses
+and degrades as it passes over a 2D surface of cells. The non-source
+cells can record or threshold the value of the morphogen gradient and
+then use that to decide what part of the pattern to become. A classic
+example is the early fruit fly embryo, and the morphogen bicoid, that
+allows the embryo to broadly divide into head, thorax, and abdomenal
+regions. More generally though, a gradient defines a sense of distance
+from a source because its value decreases as it moves away from the
+source.
+
+</p><p><strong>In our case, we will create a gradient that increases in value
+as we move away from the source</strong>. The source robot will emit a
+gradient of value 0, and then listening robots will record the lowest
+value they hear, and set their gradient value to be that value
+incremented by 1. Then they too will start transmitting their own
+gradient value to their neighbors, causing the gradient information to
+flow through the network.
+
+</p><p>In computer networking, this gradient value is also called a
+"hop-count" because it represents the minimum number of times a
+message needed to be forwarded from the source in order to get to a
+particular node or robot. A robot with a gradient value 3, means that
+the message went from the source robot through at least two other
+robots before arriving here. Since robots can communicate only within
+a fixed distance (at most 10cm), the hop count also represents a sense
+of spatial distance, e.g. a robot with gradient value 3 can be no more
+than 3x10 cm away from the source.
+
+</p><p><em>How we will do this:</em> First, designate one of your robots as the
+"seed" and use the KiloGUI to set its ID to be 42. Also make sure that
+none of your other robots have IDs that are 42. It is good in this
+case to have 5-10 more robots so you can really test this code
+well. 
+
+</p><p> The seed robot starts with a gradient value of zero, and every
+other robots starts with the maximum gradient value (they think they
+are very far from the seed in the start). In addition, each robot
+continually transmits its gradient value, and we set up some of that
+in the setup code as well.
+
+</p><pre><code>// Setup Gradient variables and definitions
+// Our seed robot will have the ID 42
+// We will use a 8-bit non-negative number to store the gradient value
+// So the maximum possible gradient value is 255
+
+#define SEED_ID 42
+#define GRADIENT_MAX 255
+uint8_t my_gradient_value; 
+message_t transmitmsg;
+
+// In setup code, set gradient value and transmission
+
+if (kilo_uid == SEED_ID) {
+   my_gradient_value = 0;
+} else {
+   my_gradient_value = GRADIENT_MAX;
+}
+
+transmitmsg.type = NORMAL;
+transmitmsg.data[0] = my_gradient_value;
+transmitmsg.crc = message_crc(&amp; transmitmsg)
+
+// don't forget to setup the message_tx callback parts of the code
+// so that robot is continually transmitting transmitmsg
+</code></pre>
+
+<p>Next set up the robot so that it receives
+messages. In <code>message_rx()</code>, the robot should store the
+recieved msg data and set the new_message flag as we've done many
+times before.
+
+</p><p>In the main loop is where all the action will happen. If the robot
+is the seed, then it should ignore all messages and never change
+anything. However if it not the seed, then the robot should check if
+there is a new message. If there is, then the robot can compare the
+recieved gradient value to its own gradient value and decide whether
+to update itself. 
+
+</p><p>Lets say the received gradient value is V, and the robot's own
+gradient value is M. Then if (M &gt; (V+1)) the robot should update its
+own value so that M = V+1 and it should update its transmit message to
+transmit the new updated value. By doing this, the robot is attempting
+to find the minimum gradient value in its neighborhood and seting
+itself to 1 plus that value.
+
+</p><pre><code>// In program loop
+
+if (kilo_uid != SEED_ID) {
+   if (new_message == 1) {
+        if (my_gradient_value &gt; (received_gradient_value + 1)) {
+               my_gradient_value = (received_gradient_value + 1));
+               transmitmsg.data[0] = my_gradient_value;
+               transmitmsg.crc = message_crc(&amp;transmitmsg);
+        }
+       new_message = 0;
+   }
+}
+</code></pre>
+
+
+<p> Finally, in the main program loop, set the robot to choose the
+color of their LED based on their gradient value. As a start you can
+do values 0 through 5 to be (WHITE, RED, GREEN, BLUE, MAGENTA, YELLOW)
+and values higher than 5 to be yellow. Then test your code by lining
+up 10 robots or so in a row with some spacing, and placing the seed
+robot at the left. You can also let the color be modulo the gradient
+value (e.g. red for even, green for odd) if you have lots of
+robots.</p>
+
+<p><strong>Adaptive Gradients</strong>: There are lots of ways to
+extend this program. One of the more important ways is to make the
+system "adaptive". Right now a robot only decreases its gradient
+value, and if the seed robot disappears or is moved, then the gradient
+values do not adjust correctly. To fix this, we can add a timer, so
+that a robot only keeps a gradient value for so long and "forgets it"
+if it has not heard a neighbor with that value minus 1 for a long
+time. More specifically, if a robot has a gradient value V, then it
+resets the timer (say to 2 seconds) every time it hears a neighbor
+with the value V-1. If the timer expires, then that means the robot
+has not heard a neighbor support its value for 2 seconds and in that
+case it can either increment is gradient value or reset it to max
+value. Here's some example
+code: <a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/gradient_adaptive.c">gradient_adaptive.c</a>. To
+test adaptive gradients, you can move the seed robot around and see if
+the color values adjust accordingly.
+
+</p><h2 id="lab7-sync">LAB7: SYNC</h2>
+
+<ul>
+
+<li><strong>Objective</strong>: Create a logical synchronous clock
+between different robots to allow two or more robots to blink an LED
+in unison roughly every 4 seconds.
+</li><li><strong>Video</strong>: <a href="https://www.youtube.com/watch?v=NK-n786jw4Y">link</a>
+</li><li><strong>Code:</strong>
+<a href="https://github.com/SSR-Harvard/kilobotics-labs/blob/master/sync.c">sync.c</a>
+</li></ul>
+
+<p>Spontaneous synchronization is a classic collective behavior in
+nature, from heart cells to fireflies, and there are many ways in
+which individuals can synchronize to their neighbor.
+
+</p><p>Here we will use a method that relies on averaging. Each robot
+acts as an oscillator, flashing its LED in a fixed period P. At the
+same time, it continually transmits a message with its current
+position in the clock period (i.e. a value between 0 and P). In the
+absence of any neighbors, the robot will simply blink in a fixed
+period, like a firefly. If the robot hears neighboring robots, then it
+receives information about their current positions in their own
+periods. In order to synchronize, it collects that information and
+uses the average to make an adjustment to its own next flashing
+time. Sometimes this can be hard to get right, so there's quite a few
+hints on how to do it below. After you've tested your code on two
+robots, its fun to test with a whole collective!</p>
+
+<p>Step 1: Create a robot oscillator that flashes every 2
+seconds. Write the following in proper code and test. 
+
+</p><pre><code>#define PERIOD 64
+uint32_t reset_time = 0;
+
+// In Program Loop
+
+if (kilo_ticks &gt;= (last_reset + PERIOD)) {
+   set LED to red
+   last_reset = kilo_ticks
+} else {
+   turn LED off
+}
+</code></pre>
+
+<p>The next step is for the robot to continually transmit the current
+position of its clock within its ticking period (i.e. kilo_ticks -
+last_reset). Since we reset our clock every 64 ticks, this value will
+be less than 64. We want this value to be as accurate as possible, so
+we can read the clock in the <code>message_tx</code> function.
+
+</p><pre><code>message_t message;
+
+message_t *message_tx() {
+    message.data[0] = kilo_ticks - last_reset; // current position in PERIOD
+    message.crc = message_crc(&amp;message);
+    return &amp;message;
+}
+</code></pre>
+
+<p>The next step is for a robot to collect the messages it hears from
+other neighbors. By comparing the its own current clock position to
+that of its neighbors (i.e. the first byte of the received message), a
+robot can tell how much it is out of sync with its neighbors. Each
+time a new message arrives, the robot will store the value of the
+adjustment to be made. Then, when the robot completes its own time
+period and flashes, it will also make one big adjustment for next
+time's flash.
+
+</p><p>The adjustment itself will depends on how the neighbor differs. If
+the neighbor is ahead or behind, and if they are ahead or behind by
+more than half a period.
+
+</p><p>NOTE: TO BE COMPLETED
+
+</p><p>Note that this is only one way to implement synchronization,
+especially how offsets are recorded and used to adjust one's own
+clock. Feel free to experiment with other ideas and see how well the
+group is able to synchronize.
+</p></div></div>
+
+    <div id="push"></div>
+</div>
+
+<div id="footer">
+  <hr>
+  <div class="container">
+    <div class="row">
+      <div class="col col-lg-4">
+      </div>
+      <div class="col col-lg-4">
+      </div>
+      <div class="col col-lg-4">
+        <p class="muted">Copyright © SSR Lab, Harvard University 2013</p>
+      </div>
+    </div><!-- row -->
+  </div><!-- container -->
+</div>
+
+  <script src="./Kilobotics_files/app.js"></script>
+  <script src="./Kilobotics_files/services.js"></script>
+  <script src="./Kilobotics_files/controllers.js"></script>
+  <script src="./Kilobotics_files/directives.js"></script>
+  <!-- <script src="/js/filters.js"></script> -->
+
+
+<iframe id="rdbIndicator" width="100%" height="270" border="0" src="./Kilobotics_files/indicator.html" style="display: none; border: 0; position: fixed; left: 0; top: 0; z-index: 2147483647"></iframe></body></html>

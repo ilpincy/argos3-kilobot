@@ -1,0 +1,540 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0120)http://ecomputernotes.com/computernetworkingnotes/multiple-access/carrier-sense-multiple-access-with-collision-avoidance -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="google-site-verification" content="aK_Phyynd78ks67zUkdxo_mQj6E8DuPHDr_Hkj7O4VM">
+<link href="https://plus.google.com/+DineshThakurG?rel=author">
+<link href="https://plus.google.com/+DineshThakurG?rel=publisher">
+<script src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/cb=gapi.loaded_1" async=""></script><script src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/cb=gapi.loaded_0" async=""></script><script type="text/javascript" async="" src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/plusone.js" gapi_processed="true"></script><script type="text/javascript" async="" src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/ga.js"></script><script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27232614-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<meta property="fb:page_id" content="428803893854340">
+<meta name="msvalidate.01" content="0DD52539FE5E85FDAD995A720B69670F">
+  <!--<base href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/carrier-sense-multiple-access-with-collision-avoidance">--><base href=".">
+  
+  <meta name="keywords" content="Carrier Sense Multiple Access with Collision Avoidance">
+  <meta name="author" content="Dinesh Thakur">
+  <meta name="description" content="CSMA/CA protocol is used in wireless networks because they cannot detect the collision so the only solution is collision avoidance.">
+  <meta name="generator" content="Computer Notes">
+  <title>Carrier Sense Multiple Access with Collision Avoidance (CSMA/CA)</title>
+  <link href="http://ecomputernotes.com/templates/youheadline/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+  <style type="text/css">
+
+#blankBM100{overflow:hidden;width:100%;background:#FFFFFF}
+#blankBM90{overflow:hidden;width:100%;background:#FFFFFF}
+  </style>
+  <script src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/core.js" type="text/javascript"></script><style type="text/css"></style>
+  <script src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/caption.js" type="text/javascript"></script>
+  <script src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/styles.js" type="text/javascript"></script>
+  <script src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/yjresponsive.js" type="text/javascript"></script>
+  <script type="text/javascript">
+window.addEvent('load', function() {
+				new JCaption('img.caption');
+			});
+  </script>
+  <link rel="stylesheet" href="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/yjresponsive.css" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="apple-touch-fullscreen" content="YES">
+  
+  
+
+		<link href="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/template.css" rel="stylesheet" type="text/css">
+		<link href="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/blue.css" rel="stylesheet" type="text/css">
+		<link href="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/iphone.css" rel="stylesheet" type="text/css">
+
+
+									<script type="text/javascript"> var YJSG_topmenu_font = '12px'; </script>
+			
+			<script language="javascript" type="text/javascript">	
+			window.addEvent('domready', function(){
+				new SmoothDrop({
+					'container':'horiznav',	
+					contpoz: 0,
+					horizLeftOffset: 24, // submenus, left offset
+					horizRightOffset: -24, // submenus opening into the opposite direction
+					horizTopOffset: 20, // submenus, top offset
+					verticalTopOffset:49, // main menus top offset
+					verticalLeftOffset: 10, // main menus, left offset
+					maxOutside: 50
+				});
+			});				
+			</script>	
+			<style type="text/css">
+			.horiznav li li,.horiznav ul ul a, .horiznav li ul,.YJSG_listContainer{
+			width:280px;
+		}
+			</style>
+	<!--Border radius-->
+	<script type="text/javascript">
+    window.addEvent('load', function() {
+        $$('.yhls .yj_inputbox,.yhls .button,.LiveSearchResults.defaultfeed,.yhme .yjme_item div.item_details,.yhme2 .yjme_item div.item_details,.yhme .yjme_item a.item_readmore,.yhme2 .yjme_item a.item_readmore,.yhym .yjme_item div.item_details,.yhym .yjme_item a.item_readmore,.yhme3 .yjme_item a.item_readmore,.yhmt .yjme_item a.item_readmore,div.k2TagCloudBlock a,.yhme4 .yjme_item div.item_details,.yhme4 .yjme_item a.item_readmore,.yhme5 .yjme_item div.item_details,.yhme5 .yjme_item a.item_readmore,.inputbox_email,.subscribe_button,.yj_date_holder,a.subCategoryMore,a.subCategoryMore:visited,div.catItemTagsBlock ul li,div.catItemReadMore,div.itemTagsBlock ul li,#submitCommentButton,.tagView .itemReadMore,.userView .itemReadMore,.genericView .itemReadMore,.inputbox,.button, .validate,.readon,.readon span,div.itemAuthorBlock,.itemComments,.userView .userBlock,.yj4,.yj5,#pathway,.k2bread').setStyles({
+             borderRadius: '5px',
+             WebkitBorderRadius:'5px',
+             MozBorderRadius:'5px'
+        });
+    });
+    </script>
+	<style type="text/css">
+		.subscribe_button{
+			line-height:18px;
+		}
+		.yhls .button{
+			padding:3px 5px 3px 5px;
+		}
+		.button,.validate{
+			padding:4px 10px ;
+		}
+		textarea:focus, input:focus{
+			outline: none;
+		}
+    </style>
+<style type="text/css">
+.horiznav li ul ul,.subul_main.group_holder ul.subul_main ul.subul_main, .subul_main.group_holder ul.subul_main ul.subul_main ul.subul_main, .subul_main.group_holder ul.subul_main ul.subul_main ul.subul_main ul.subul_main,.horiznav li li li:hover ul.dropline{
+	margin-top: -32px!important;
+	margin-left:95%!important;
+}
+</style>
+
+<link rel="stylesheet" type="text/css" href="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/prettify.css"></head>
+<body id="stylef12">
+
+<div id="fb-root"></div>
+
+
+<!-- switch back to mobile -->
+<div class="mobiletoptools" style="font-size:12px; width:100%;"> <a class="changemobile" href="http://ecomputernotes.com/?change_mobile=1" onclick="return confirm(&#39;Switching to mobile mode. To change back to desktop mode use link on top right of this page.&#39;);" title="Turn Desktop View Off"><span>Turn Desktop View Off</span></a> </div>
+  		  		 <!--header-->
+ <div class="header_out">
+ <div class="header_in" style="font-size:12px;width:100%; ">
+   <div id="header" style="height:109px;">
+      <div id="logo" class="png" style="height:109px;width:20.5%;">
+           <a href="http://ecomputernotes.com/" style="height:109px;"></a>
+          </div>
+    <!-- end logo -->
+   <div id="yjsgheadergrid" style="width:78%;">
+		<div id="header2" class="yjsgxhtml" style="width:100.00%;">
+		<div class="yjsquare">
+    <div class="yjsquare_in"><div id="blankBM90"><form action="http://www.google.com/" id="cse-search-box">
+  <div style="display:block;float:right; margin:20px 0px 0px 0px;">
+    <input type="hidden" name="cx" value="partner-pub-4339819269747791:1835077740">
+    <input type="hidden" name="ie" value="UTF-8">
+    <input type="text" name="q" size="25" style="background: url(http://cse.google.com/cse/intl/en/images/google_custom_search_watermark.gif) 0% 50% no-repeat rgb(255, 255, 255);">
+    <input type="submit" name="sa" value="Search">
+  </div>
+<input name="siteurl" type="hidden" value="ecomputernotes.com/computernetworkingnotes/multiple-access/carrier-sense-multiple-access-with-collision-avoidance"><input name="ref" type="hidden" value="www.google.ca/"><input name="ss" type="hidden" value=""></form>
+
+<script type="text/javascript" src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/brand"></script><br><br></div>
+
+</div>
+</div>
+
+	</div>
+	</div>
+  </div>
+  </div>
+  </div>
+  <!-- end header -->
+  		    <!--top menu-->
+<div class="menu_out">
+    <div id="topmenu_holder" style="width:100%;">
+        <div class="top_menu" style="font-size:12px;">
+            <div id="horiznav" class="horiznav">	<ul class="menunav">
+	<li class="item435"><span class="mymarg"><a class="yjanchor " href="http://ecomputernotes.com/"><span class="yjm_has_none"><span class="yjm_title">Home</span></span></a></span></li><li class="item577"><span class="mymarg"><a class="yjanchor " href="http://www.ysurfing.com/"><span class="yjm_has_none"><span class="yjm_title">Technology Motivation</span></span></a></span></li><li class="item575"><span class="mymarg"><a class="yjanchor " href="http://ecomputernotes.com/article"><span class="yjm_has_none"><span class="yjm_title">Article</span></span></a></span></li><li class="item604"><span class="mymarg"><a class="yjanchor " href="https://plus.google.com/u/0/communities/107703108132698239163"><span class="yjm_has_none"><span class="yjm_title">Discussion Forum</span></span></a></span></li><li class="item633"><span class="mymarg"><a class="yjanchor " href="http://ecomputernotes.com/about"><span class="yjm_has_none"><span class="yjm_title">About Us</span></span></a></span></li></ul></div>
+        </div>
+    </div>
+</div>
+    <!-- end top menu -->
+  		  		<div id="centertop" style="font-size:12px; width:100%;">
+  		                
+</div>
+<!-- end centartop-->
+<div id="centerbottom" style="font-size:12px; width:100%;">
+       <!--MAIN LAYOUT HOLDER -->
+<div id="holder2">
+  <!-- messages -->
+  
+<div id="system-message-container">
+</div>
+  <!-- end messages -->
+  <!-- MID BLOCK -->
+  <div id="midblock" style="width:65%;">
+    <div class="insidem">
+                  <!-- component -->
+      
+<div class="news_item_a">
+		
+		
+	
+		<div class="title">
+	
+		<h1>
+						<a href="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA).html" class="contentpagetitle"> 
+				Carrier Sense Multiple Access with Collision Avoidance (CSMA/CA) 
+			</a>
+					</h1>
+		
+	</div>
+				
+	
+		<div class="newsitem_tools">
+		<div class="newsitem_info">
+						
+						<span class="createby">
+				by Dinesh Thakur 
+			</span>
+						
+				
+			
+						
+			<div class="clr"></div>
+				
+					</div>
+		
+			</div>
+	
+	
+	<div class="newsitem_text">
+		              
+		        
+        
+		<div><div style="float:right;margin: 0px;">
+<script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Skyper -->
+<ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-4339819269747791" data-ad-slot="9666818867"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div></div><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• CSMA/CA <a class="sitelinkx" href="http://ecomputernotes.com/computernetworkingnotes/computer-network/protocol" title="" target="_self">protocol</a> is used in wireless networks because they cannot detect the collision so the only solution is collision avoidance.</span></p><div><div style="display:block;float:left;margin: 0px;">
+<script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 300 x 250 -->
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-4339819269747791" data-ad-slot="0187217147"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div></div>
+<p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;">• CSMA/CA avoids the collisions using three basic techniques.</span>
+ 
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">(i) Interframe space</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">(ii) Contention window</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">(iii) Acknowledgements</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://ecomputernotes.com/images/CSMA-CA.jpg" title="CSMA/CA" rel="lightbox-article"><img src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/thumb477-CSMA-CA-677aed4ba576ac8599482db11602e489.jpg" alt="CSMA/CA" class="thumb-plg"></a></span>
+</p><p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;"><b>1. Interframe Space (IFS)</b></span>
+</p><p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;"><b>&nbsp;</b></span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• Whenever the channel is found idle, the station does not transmit immediately. It waits for a period of time called interframe space (IFS).</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• When channel is sensed to be idle, it may be possible that same distant station may have already started transmitting and the signal of that distant station has not yet reached other stations.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• Therefore the purpose of IFS time is to allow this transmitted signal to reach other stations.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• If after this IFS time, the channel is still idle, the station can send, but it still needs to wait a time equal to contention time.</span>
+</p><p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;">• IFS variable can also be used to define the priority of a station or a frame.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">&nbsp;</span>
+</p><p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;"><b>2. Contention Window</b></span>
+</p><p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;"><b>&nbsp;</b></span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• Contention window is an amount of time divided into slots.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• A station that is ready to send chooses a random number of slots as its wait time.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• The number of slots in the window changes according to the binary exponential back-off strategy. It means that it is set of one slot the first time and then doubles each time the station cannot detect an idle channel after the IFS time.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• This is very similar to the p-persistent method except that a random outcome defines the number of slots taken by the waiting station.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• In contention window the station needs to sense the channel after each time slot.</span>
+</p><p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;">• If the station finds the channel busy, it does not restart the process. It just stops the timer &amp; restarts it when the channel is sensed as idle.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">&nbsp;</span>
+</p><p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;"><b>3. Acknowledgement</b></span>
+</p><p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;"><b>&nbsp;</b></span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• Despite all the precautions, collisions may occur and destroy the data.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• The positive acknowledgment and the time-out timer can help guarantee that receiver has received the frame.</span>
+</p><h2 style="text-align: justify;"><span style="font-style: normal; font-family: georgia,palatino; font-size: 12pt;">CSMA/CA Procedure:</span></h2>
+<p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;">Fig. Shows the flow chart explaining the principle of <i>CSMA/CA.</i></span>
+</p><p style="text-align: justify;"><span style="font-family: georgia,palatino; font-size: 12pt;"><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://ecomputernotes.com/images/CSMA-CA-Procedure.jpg" title="CSMA/CA Procedure" rel="lightbox-article"><img src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/thumb477-CSMA-CA-Procedure-3205a537db0c890bce47ffdb18957046.jpg" alt="CSMA/CA Procedure" class="thumb-plg"></a></i></span>
+</p><p style="text-align: justify;">&nbsp;
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• This is the CSMA protocol with collision avoidance.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• The station ready to transmit, senses the line by using one of the persistent strategies.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• As soon as it find the line to be idle, the station waits for an IFG (Interframe gap) amount of time.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• If then waits for some random time and sends the frame.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• After sending the frame, it sets a timer and waits for the acknowledgement from the receiver.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• If the acknowledgement is received before expiry of the timer, then the transmission is successful.</span>
+</p><p style="text-align: justify;"><span style="font-size: 12pt; font-family: georgia,palatino;">• But if the transmitting station does not receive the expected acknowledgement before the timer expiry then it increments the back off parameter, waits for the back off time and resenses the line.</span>
+</p><p style="text-align: justify;">&nbsp;</p><div><script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Lower Responsive Ads -->
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4339819269747791" data-ad-slot="5947504145" data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><br><br>	
+		</div>
+	</div>
+<!--end news item -->
+<div><script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Matched content Ads -->
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-4339819269747791" data-ad-slot="8468048949"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+
+      <!-- end component -->
+            	  <div class="clearm"></div>
+    </div>
+    <!-- end mid block insidem class -->
+  </div>
+  <!-- end mid block div -->
+
+    <!-- right block -->
+  <div id="rightblock" style="width:19%;">
+    <div class="inside">
+      <div class="yjsquare">
+    <div class="yjsquare_in"><ul class="category-module">
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/plesiochronous-media">
+		What is Plesiochronous media?        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/multiple-input-multiple-output">
+		What is MIMO (Multiple Input Multiple Output)?         </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/optical-transport-network">
+		What is OTN (Optical Transport Network) ?        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/synchronous-digital-hierarchy">
+		What is Synchronous Digital Hierarchy (SDH)?        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/random-access-methods">
+		Random Access Methods in Computer Networks        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/architecture-of-tcpip">
+		TCP/IP Architecture        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/crc">
+		What is CRC?        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/data-encapsulation">
+		Data Encapsulation        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/how-many-amplitude-levels-are-there-for-each-of-the-following-methods">
+		How many amplitude levels are there for each of the following methods        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/frequency-division-multiplexing">
+		Frequency Division Multiplexing        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/time-division-multiple-access">
+		Time Division Multiple Access (TDMA).        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/statistical-time-division-multiplexing">
+		Statistical Time Division Multiplexing (STDM)        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/tcpip-protocol">
+		TCP/IP Protocol        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/time-division-multiplexing">
+		Time Division Multiplexing (TDM)        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/code-division-multiplexing">
+		Code Division Multiplexing (CDM)/Spread Spectrum        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/frequency-division-multiple-access">
+		Frequency Division Multiple Access (FDMA).        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/code-division-multiple-access">
+		Code Division Multiple Access (CDMA).        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/what-is-wired-transmission-type-of-wired-transmission">
+		What is wired transmission? Type of wired transmission        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA).html">
+		Carrier Sense Multiple Access with Collision Avoidance (CSMA/CA)        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/carrier-sense-multiple-access-with-collision-detection">
+		Carrier Sense Multiple Access with Collision Detection (CSMA/CD)        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/tcpip-reference-model">
+		TCP/IP Reference Model        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title " href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/what-is-csma-difference-netween-csmaca-and-csmacd">
+		Carrier Sense Multiple Access (CSMA)        </a>
+                </h4>
+
+       			        		
+			</li>
+		    <li>
+	   	<h4>
+	   			<a class="mod-articles-category-title active" href="http://ecomputernotes.com/computernetworkingnotes/multiple-access/multiplexing-what-is-multiplexing-explain-its-multiplexing-methods">
+		Multiplexing - What is Multiplexing ?Explain its Multiplexing Methods        </a>
+                </h4>
+
+       			        		
+			</li>
+	</ul>
+</div>
+</div>
+
+    </div>
+  </div>
+  <!-- end right block -->
+    
+    <!-- left block -->
+  <div id="leftblock" style="width:16%;">
+    <div class="inside">
+      <div class="yjsquare_menu">
+    <div class="yjsquare_in"><ul class="menu">
+<li id="item-468"><a class="mainlevel" href="http://ecomputernotes.com/fundamental">Computer Fundamental</a></li><li id="item-473" class="active parent"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes">Computer Networking</a><ul><li id="item-474"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes/computer-network">Computer Network</a></li><li id="item-475"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes/communication-networks">Comm. Networks</a></li><li id="item-476"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes/network-technologies">Network Tech.</a></li><li id="item-477" class="current-side active"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes/multiple-access">Multiple Access</a></li><li id="item-478"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes/switching">Switching</a></li><li id="item-479"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes/naming-and-addressing">IP Address Sys</a></li><li id="item-480"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes/routing">Routing</a></li><li id="item-481"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes/services-and-applications">Services / App.</a></li><li id="item-482"><a class="mainlevel" href="http://ecomputernotes.com/computernetworkingnotes/security">Security</a></li></ul></li><li id="item-483"><a class="mainlevel" href="http://ecomputernotes.com/sql">Structured Query (SQL)</a></li><li id="item-488"><a class="mainlevel" href="http://ecomputernotes.com/js">Java Script</a></li><li id="item-491"><a class="mainlevel" href="http://ecomputernotes.com/html">HTML Language</a></li><li id="item-493"><a class="mainlevel" href="http://ecomputernotes.com/css">Cascading Style Sheet</a></li><li id="item-495"><a class="mainlevel" href="http://ecomputernotes.com/what-is-c">C Programming  (Theory)</a></li><li id="item-505"><a class="mainlevel" href="http://ecomputernotes.com/c-program">C Programming  (Pratical)</a></li><li id="item-506"><a class="mainlevel" href="http://ecomputernotes.com/visual-basic">Visual Basic</a></li><li id="item-516"><a class="mainlevel" href="http://ecomputernotes.com/cpp">C++ Programming</a></li><li id="item-524"><a class="mainlevel" href="http://ecomputernotes.com/java">Java Programming</a></li><li id="item-634"><a class="mainlevel" href="http://ecomputernotes.com/servlet">Java Servlet</a></li><li id="item-641"><a class="mainlevel" href="http://ecomputernotes.com/jsp">Java Server Pages</a></li><li id="item-533"><a class="mainlevel" href="http://ecomputernotes.com/computer-graphics">Computer Graphics</a></li><li id="item-538"><a class="mainlevel" href="http://ecomputernotes.com/e-commerce">Electronic Commerce</a></li><li id="item-541"><a class="mainlevel" href="http://ecomputernotes.com/mis">Management (MIS)</a></li><li id="item-554"><a class="mainlevel" href="http://ecomputernotes.com/data-structures">Data Structures</a></li><li id="item-561"><a class="mainlevel" href="http://ecomputernotes.com/software-engineering">Software Engineering</a></li><li id="item-579"><a class="mainlevel" href="http://ecomputernotes.com/digital-electronics">Digital Electronics</a></li><li id="item-588"><a class="mainlevel" href="http://ecomputernotes.com/csharp">C# Programming</a></li><li id="item-595"><a class="mainlevel" href="http://ecomputernotes.com/database-system">Database System</a></li><li id="item-647"><a class="mainlevel" href="http://ecomputernotes.com/struts2">Struts 2 Tutorial</a></li><li id="item-673"><a class="mainlevel" href="http://ecomputernotes.com/php">PHP (Hypertext Preprocessor)</a></li><li id="item-671"><a class="mainlevel" href="http://ecomputernotes.com/troubleshooting">Troubleshooting</a></li><li id="item-672"><a class="mainlevel" href="http://ecomputernotes.com/how-to">How to</a></li></ul></div>
+</div>
+<div class="yjsquare">
+    <h4>
+    <span>Follow</span> us  </h4>
+    <div class="yjsquare_in"><div id="blankBM100"><!-- Place this tag where you want the +1 button to render. -->
+<div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 200px; height: 24px; background: transparent;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 200px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 24px;" tabindex="0" vspace="0" width="100%" id="I0_1443828850401" name="I0_1443828850401" src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/fastbutton.html" data-gapiattached="true" title="+1"></iframe></div>
+<!-- Place this tag after the last +1 button tag. -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<br><br></div>
+
+</div>
+</div>
+
+    </div>
+  </div>
+  <!-- end left block -->
+       </div>
+<!-- end holder div -->
+           
+
+</div>
+<!-- end centerbottom-->
+            
+   <!-- footer -->
+<div class="grid_top_line"></div>
+<div class="footer_out">
+    <div id="footer" style="font-size:12px; width:100%;">
+      <div id="youjoomla">
+                            <div id="cp">
+            
+<script type="text/javascript">
+
+	window.addEvent('domready', function() {
+	new SmoothScroll({duration: 500});	
+	})
+</script>
+<div class="validators">Connect Us On <a href="http://www.facebook.com/ysurfing">FaceBook</a> and <a title="Author: Dinesh Thakur on Google+" rel="author" href="https://plus.google.com/+DineshThakurG?rel=author" target="_blank">Google+</a></div><div class="yjsgcp"><b><a href="http://www.facebook.com/ysurfing">Dinesh Thakur</a></b> is a Technology Columinist and founder of <a href="http://ecomputernotes.com/" target="_blank">Computer Notes</a> and <a href="http://www.ysurfing.com/" target="_blank">Technology Motivation</a>. Mail Me At <a href="mailto:dineshthakur@ecomputernotes.com" target="_blank">(@Computer Notes)</a> </div>                                       </div>
+      </div>
+    </div>
+</div>
+<!-- end footer -->
+	        <script src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/astrack.js" type="text/javascript"></script>
+   
+
+<iframe id="rdbIndicator" width="100%" height="270" border="0" src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/indicator.html" style="display: none; border: 0; position: fixed; left: 0; top: 0; z-index: 2147483647"></iframe><iframe name="oauth2relay657901858" id="oauth2relay657901858" src="./Carrier Sense Multiple Access with Collision Avoidance (CSMA_CA)_files/postmessageRelay.html" tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe></body></html>
