@@ -17,7 +17,7 @@
   <controllers>
 
     <kilobot_phototaxis_controller id="fdc"
-                                  library="build/examples/controllers/kilobot_phototaxis/libkilobot_phototaxis">
+                                   library="build/examples/controllers/kilobot_phototaxis/libkilobot_phototaxis">
       <actuators>
         <differential_steering implementation="default" />
       </actuators>

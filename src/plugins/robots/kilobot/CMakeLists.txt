@@ -10,7 +10,9 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
     simulator/dynamics2d_kilobot_model.h
     simulator/kilobot_entity.h
     simulator/kilobot_measures.h
-    simulator/kilobot_light_rotzonly_sensor.h)
+    simulator/kilobot_light_rotzonly_sensor.h
+    simulator/kilobot_communication_entity.h
+    simulator/kilobot_communication_medium.h)
 endif(ARGOS_BUILD_FOR_SIMULATOR)
 
 #
@@ -26,7 +28,9 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
     ${ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR}
     simulator/dynamics2d_kilobot_model.cpp
     simulator/kilobot_entity.cpp
-    simulator/kilobot_light_rotzonly_sensor.cpp)
+    simulator/kilobot_light_rotzonly_sensor.cpp
+    simulator/kilobot_communication_entity.cpp
+    simulator/kilobot_communication_medium.cpp)
   # Compile the graphical visualization only if the necessary libraries have been found
   include(ARGoSCheckQTOpenGL)
   if(ARGOS_COMPILE_QTOPENGL)

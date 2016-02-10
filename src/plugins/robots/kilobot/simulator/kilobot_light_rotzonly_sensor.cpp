@@ -24,16 +24,18 @@ namespace argos {
    /****************************************/
 
    /* This function models the actual response of the sensor to
-      distance and direction. In should match the specific conditions
+      distance and direction. It should match the specific conditions
       used in experiments */
-   static SInt16 ComputeReading(const Real f_distance, const CRadians& c_angular_distance) {
-      Real f_reading = 0;
+   static SInt16 ComputeReading(const Real f_distance,
+                                const CRadians& c_angular_distance) {
       if(f_distance < 2.5f) {
-         f_reading =  ::exp(-f_distance * 2.0f);
-         f_reading *= 1.0f - c_angular_distance/CRadians::PI;
+         Real fReading = Exp(-f_distance * 2.0f);
+         fReading *= 1.0f - c_angular_distance / CRadians::PI;
+         fReading *= 1024.0;
+         return Floor(fReading);
       }
-
-      return (SInt16) ::floor(f_reading*1024);
+      else
+         return 0;
    }
 
    /****************************************/
@@ -89,20 +91,16 @@ namespace argos {
    /****************************************/
    
    void CKilobotLightRotZOnlySensor::Update() {
-      /* Erase readings */
-      m_tReading.Value = 0;
-      /* Get kilobot orientation */
-      CRadians cTmp1, cTmp2, cOrientationZ;
-      m_pcEmbodiedEntity->GetOriginAnchor().Orientation.ToEulerAngles(cOrientationZ, cTmp1, cTmp2);
-      /* Compute light sensor position */
-      CVector3 c_sensor_position = CVector3(0,0,LIGHT_SENSOR_ELEVATION) +
-         CVector3(LIGHT_SENSOR_RADIUS*Cos(LIGHT_SENSOR_ANGLE), LIGHT_SENSOR_RADIUS*Sin(LIGHT_SENSOR_ANGLE), 0) +
-         CVector3(KILOBOT_ECCENTRICITY,0,0);
-      c_sensor_position.Rotate(m_pcEmbodiedEntity->GetOriginAnchor().Orientation);
-      c_sensor_position += m_pcEmbodiedEntity->GetOriginAnchor().Position;
+      /* Erase reading */
+      m_nReading = 0;
+      /* Get kilobot orientation in the world */
+      CRadians cOrientationZ, cOrientationY, cOrientationX;
+      m_pcEmbodiedEntity->GetOriginAnchor().Orientation.ToEulerAngles(cOrientationZ,
+                                                                      cOrientationY,
+                                                                      cOrientationX);
       /* Ray used for scanning the environment for obstacles */
       CRay3 cOcclusionCheckRay;
-      cOcclusionCheckRay.SetStart(c_sensor_position);
+      cOcclusionCheckRay.SetStart(m_pcLightEntity->GetSensor(0).Anchor.Position);
       CVector3 cRobotToLight;
       /* Buffer for the angle of the light wrt to the kilobot */
       CRadians cAngleLightWrtKilobot;
@@ -129,9 +127,8 @@ namespace argos {
                                                           cOcclusionCheckRay,
                                                           *m_pcEmbodiedEntity)) {
                /* The light is not occluded */
-               if(m_bShowRays) {
+               if(m_bShowRays)
                   m_pcControllableEntity->AddCheckedRay(false, cOcclusionCheckRay);
-               }
                /* Get the distance between the light and the kilobot */
                cOcclusionCheckRay.ToVector(cRobotToLight);
                /*
@@ -144,31 +141,33 @@ namespace argos {
                cAngleLightWrtKilobot -= cOrientationZ;
                /* Set the actual readings */
                Real fReading = cRobotToLight.Length();
-               CRadians cAngularDistanceFromOptimalLightReceptionPoint = Abs((cAngleLightWrtKilobot - LIGHT_SENSOR_ANGLE).SignedNormalize());
-               m_tReading.Value += ComputeReading(fReading,cAngularDistanceFromOptimalLightReceptionPoint);
+               CRadians cAngularDistanceFromOptimalLightReceptionPoint =
+                  Abs((cAngleLightWrtKilobot - KILOBOT_LIGHT_SENSOR_ANGLE).SignedNormalize());
+               m_nReading += ComputeReading(fReading,
+                                            cAngularDistanceFromOptimalLightReceptionPoint);
             }
             else {
                /* The ray is occluded */
                if(m_bShowRays) {
                   m_pcControllableEntity->AddCheckedRay(true, cOcclusionCheckRay);
-                  m_pcControllableEntity->AddIntersectionPoint(cOcclusionCheckRay, sIntersection.TOnRay);
+                  m_pcControllableEntity->AddIntersectionPoint(cOcclusionCheckRay,
+                                                               sIntersection.TOnRay);
                }
             }
          }
       }
       /* Apply noise to the sensors */
-      if(m_bAddNoise) {
-         m_tReading.Value += m_pcRNG->Uniform(m_cNoiseRange);
-      }
+      if(m_bAddNoise)
+         m_nReading += m_pcRNG->Uniform(m_cNoiseRange);
       /* Trunc the reading between 0 and 1 */
-      SENSOR_RANGE.TruncValue(m_tReading.Value);
+      SENSOR_RANGE.TruncValue(m_nReading);
    }
 
    /****************************************/
    /****************************************/
 
    void CKilobotLightRotZOnlySensor::Reset() {
-      m_tReading.Value = 0;
+      m_nReading = 0;
    }
 
    /****************************************/

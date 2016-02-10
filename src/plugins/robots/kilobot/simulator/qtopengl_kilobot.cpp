@@ -70,15 +70,15 @@ namespace argos {
    void CQTOpenGLKilobot::Draw(CKilobotEntity& c_entity) {
       /* Place the pins */
       glPushMatrix();
-      glTranslatef(FRONT_PIN_DISTANCE, 0.0, 0.0f);
+      glTranslatef(KILOBOT_FRONT_PIN_DISTANCE, 0.0, 0.0f);
       glCallList(m_unWheelList);
       glPopMatrix();
       glPushMatrix();
-      glTranslatef(0.0f, HALF_INTERPIN_DISTANCE, 0.0f);
+      glTranslatef(0.0f, KILOBOT_HALF_INTERPIN_DISTANCE, 0.0f);
       glCallList(m_unWheelList);
       glPopMatrix();
       glPushMatrix();
-      glTranslatef(0.0f, -HALF_INTERPIN_DISTANCE, 0.0f);
+      glTranslatef(0.0f, -KILOBOT_HALF_INTERPIN_DISTANCE, 0.0f);
       glCallList(m_unWheelList);
       glPopMatrix();
       /* Place the base */
@@ -157,7 +157,7 @@ namespace argos {
    void CQTOpenGLKilobot::RenderWheel() {
       /* Set material */
       SetWhitePlasticMaterial();
-      CVector2 cVertex(PIN_RADIUS, 0.0f);
+      CVector2 cVertex(KILOBOT_PIN_RADIUS, 0.0f);
       CRadians cAngle(-CRadians::TWO_PI / m_unVertices);
       /* Bottom side */
       glBegin(GL_POLYGON);
@@ -170,11 +170,11 @@ namespace argos {
       /* Side surface */
       cAngle = -cAngle;
       CVector2 cNormal(1.0f, 0.0f);
-      cVertex.Set(PIN_RADIUS, 0.0f);
+      cVertex.Set(KILOBOT_PIN_RADIUS, 0.0f);
       glBegin(GL_QUAD_STRIP);
       for(GLuint i = 0; i <= m_unVertices; i++) {
          glNormal3f(cNormal.GetX(), cNormal.GetY(), 0.0f);
-         glVertex3f(cVertex.GetX(), cVertex.GetY(), PIN_HEIGHT);
+         glVertex3f(cVertex.GetX(), cVertex.GetY(), KILOBOT_PIN_HEIGHT);
          glVertex3f(cVertex.GetX(), cVertex.GetY(), 0.0f);
          cVertex.Rotate(cAngle);
          cNormal.Rotate(cAngle);
@@ -183,9 +183,9 @@ namespace argos {
       /* Top part */
       glBegin(GL_POLYGON);
       glNormal3f(0.0f, 0.0f, 1.0f);
-      cVertex.Set(PIN_RADIUS, 0.0f);
+      cVertex.Set(KILOBOT_PIN_RADIUS, 0.0f);
       for(GLuint i = 0; i <= m_unVertices; i++) {
-         glVertex3f(cVertex.GetX(), cVertex.GetY(),  PIN_HEIGHT);
+         glVertex3f(cVertex.GetX(), cVertex.GetY(),  KILOBOT_PIN_HEIGHT);
          cVertex.Rotate(cAngle);
       }
       glEnd();
@@ -205,7 +205,7 @@ namespace argos {
       glBegin(GL_POLYGON);
       glNormal3f(0.0f, 0.0f, -1.0f);
       for(GLuint i = 0; i <= m_unVertices; i++) {
-         glVertex3f(cVertex.GetX(), cVertex.GetY(), PIN_HEIGHT);
+         glVertex3f(cVertex.GetX(), cVertex.GetY(), KILOBOT_PIN_HEIGHT);
          cVertex.Rotate(cAngle);
       }
       glEnd();
@@ -217,7 +217,7 @@ namespace argos {
       for(GLuint i = 0; i <= m_unVertices; i++) {
          glNormal3f(cNormal.GetX(), cNormal.GetY(), 0.0f);
          glVertex3f(cVertex.GetX(), cVertex.GetY(), KILOBOT_HEIGHT);
-         glVertex3f(cVertex.GetX(), cVertex.GetY(), PIN_HEIGHT);
+         glVertex3f(cVertex.GetX(), cVertex.GetY(), KILOBOT_PIN_HEIGHT);
          cVertex.Rotate(cAngle);
          cNormal.Rotate(cAngle);
       }
@@ -237,7 +237,7 @@ namespace argos {
    /****************************************/
 
    void CQTOpenGLKilobot::RenderLED() {
-      CVector2 cVertex(LED_RADIUS, 0.0f);
+      CVector2 cVertex(KILOBOT_LED_RADIUS, 0.0f);
       CRadians cAngle(-CRadians::TWO_PI / m_unVertices);
       /* Bottom part */
       glBegin(GL_POLYGON);
@@ -250,11 +250,11 @@ namespace argos {
       /* Side surface */
       cAngle = -cAngle;
       CVector2 cNormal(1.0f, 0.0f);
-      cVertex.Set(LED_RADIUS, 0.0f);
+      cVertex.Set(KILOBOT_LED_RADIUS, 0.0f);
       glBegin(GL_QUAD_STRIP);
       for(GLuint i = 0; i <= m_unVertices; i++) {
          glNormal3f(cNormal.GetX(), cNormal.GetY(), 0.0f);
-         glVertex3f(cVertex.GetX(), cVertex.GetY(), KILOBOT_HEIGHT + LED_HEIGHT);
+         glVertex3f(cVertex.GetX(), cVertex.GetY(), KILOBOT_HEIGHT + KILOBOT_LED_HEIGHT);
          glVertex3f(cVertex.GetX(), cVertex.GetY(), KILOBOT_HEIGHT);
          cVertex.Rotate(cAngle);
          cNormal.Rotate(cAngle);
@@ -263,9 +263,9 @@ namespace argos {
       /* Top part */
       glBegin(GL_POLYGON);
       glNormal3f(0.0f, 0.0f, 1.0f);
-      cVertex.Set(LED_RADIUS, 0.0f);
+      cVertex.Set(KILOBOT_LED_RADIUS, 0.0f);
       for(GLuint i = 0; i <= m_unVertices; i++) {
-         glVertex3f(cVertex.GetX(), cVertex.GetY(), KILOBOT_HEIGHT + LED_HEIGHT);
+         glVertex3f(cVertex.GetX(), cVertex.GetY(), KILOBOT_HEIGHT + KILOBOT_LED_HEIGHT);
          cVertex.Rotate(cAngle);
       }
       glEnd();

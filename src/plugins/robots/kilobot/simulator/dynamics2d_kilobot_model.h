@@ -30,6 +30,8 @@ namespace argos {
 
       virtual void UpdateFromEntityStatus();
 
+      void UpdateLightAnchor(SAnchor& s_anchor);
+
    private:
 
       CKilobotEntity& m_cKilobotEntity;

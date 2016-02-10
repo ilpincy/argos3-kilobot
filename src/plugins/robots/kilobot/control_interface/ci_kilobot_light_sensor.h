@@ -26,29 +26,14 @@ namespace argos {
 
    public:
 
-      /**
-       * The DTO of the light sensor, containing the sensor reading.
-       */
-      struct SReading {
-         SInt16 Value;
-
-         SReading() :
-            Value(-1) {}
-
-         SReading(SInt16 n_value) :
-            Value(n_value) {}
-      };
-
-   public:
-
       CCI_KilobotLightSensor();
       virtual ~CCI_KilobotLightSensor() {}
 
       /**
        * Returns the readings of this sensor
        */
-      inline const SReading& GetReading() const {
-         return m_tReading;
+      inline SInt16 GetReading() const {
+         return m_nReading;
       }
 
 #ifdef ARGOS_WITH_LUA
@@ -59,10 +44,8 @@ namespace argos {
 
    protected:
 
-      SReading m_tReading;
+      SInt16 m_nReading;
    };
-
-   std::ostream& operator<<(std::ostream& c_os, const CCI_KilobotLightSensor::SReading& s_reading);
 
 }
 

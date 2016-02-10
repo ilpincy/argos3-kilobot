@@ -33,8 +33,7 @@ namespace argos {
       m_cDiffSteering(c_engine,
                       KILOBOT_MAX_FORCE,
                       KILOBOT_MAX_TORQUE,
-                      INTERPIN_DISTANCE),
-      // m_fMass(KILOBOT_MASS),
+                      KILOBOT_INTERPIN_DISTANCE),
       m_fCurrentWheelVelocity(m_cWheeledEntity.GetWheelVelocities()) {
       /* Create the actual body with initial position and orientation */
       cpBody* ptBody =
@@ -57,10 +56,14 @@ namespace argos {
                                           cpv(KILOBOT_ECCENTRICITY,0)));
       ptShape->e = 0.0; // No elasticity
       ptShape->u = 0.7; // Lots of friction
-      /* Constrain the actual base body to follow the diff steering control */
+      /* Constrain the body to follow the diff steering control */
       m_cDiffSteering.AttachTo(ptBody);
       /* Set the body so that the default methods work as expected */
       SetBody(ptBody, KILOBOT_HEIGHT);
+      /* Set the light anchor updater */
+      RegisterAnchorMethod<CDynamics2DKilobotModel>(
+         GetEmbodiedEntity().GetAnchor("light"),
+         &CDynamics2DKilobotModel::UpdateLightAnchor);
    }
 
    /****************************************/
@@ -95,6 +98,19 @@ namespace argos {
       }
    }
 
+   /****************************************/
+   /****************************************/
+
+   void CDynamics2DKilobotModel::UpdateLightAnchor(SAnchor& s_anchor) {
+      /* Start in origin, put anchor in offset */
+      s_anchor.Position = s_anchor.OffsetPosition;
+      /* Rotate anchor by body orientation in world */
+      s_anchor.Orientation.FromAngleAxis(CRadians(GetBody()->a), CVector3::Z);
+      s_anchor.Position.Rotate(s_anchor.Orientation);
+      /* Translate anchor by body position in world */
+      s_anchor.Position.SetX(s_anchor.Position.GetX() + GetBody()->p.x);
+      s_anchor.Position.SetY(s_anchor.Position.GetY() + GetBody()->p.y);
+   }
 
    /****************************************/
    /****************************************/

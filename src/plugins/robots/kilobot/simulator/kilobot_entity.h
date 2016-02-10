@@ -14,7 +14,7 @@ namespace argos {
    class CKilobotEntity;
    class CLEDEquippedEntity;
    class CLightSensorEquippedEntity;
-   class CRABEquippedEntity;
+   class CKilobotCommunicationEntity;
 }
 
 #include <argos3/core/simulator/entity/composable_entity.h>
@@ -60,8 +60,8 @@ namespace argos {
          return *m_pcLightSensorEquippedEntity;
       }
 
-      inline CRABEquippedEntity& GetRABEquippedEntity() {
-         return *m_pcRABEquippedEntity;
+      inline CKilobotCommunicationEntity& GetKilobotCommunicationEntity() {
+         return *m_pcKilobotCommunicationEntity;
       }
 
       inline CWheeledEntity& GetWheeledEntity() {
@@ -74,12 +74,12 @@ namespace argos {
 
    private:
 
-      CControllableEntity*                   m_pcControllableEntity;
-      CEmbodiedEntity*                       m_pcEmbodiedEntity;
-      CLEDEquippedEntity*                    m_pcLEDEquippedEntity;
-      CLightSensorEquippedEntity*            m_pcLightSensorEquippedEntity;
-      CRABEquippedEntity*                    m_pcRABEquippedEntity;
-      CWheeledEntity*                        m_pcWheeledEntity;
+      CControllableEntity*         m_pcControllableEntity;
+      CEmbodiedEntity*             m_pcEmbodiedEntity;
+      CLEDEquippedEntity*          m_pcLEDEquippedEntity;
+      CLightSensorEquippedEntity*  m_pcLightSensorEquippedEntity;
+      CKilobotCommunicationEntity* m_pcKilobotCommunicationEntity;
+      CWheeledEntity*              m_pcWheeledEntity;
    };
 
 }

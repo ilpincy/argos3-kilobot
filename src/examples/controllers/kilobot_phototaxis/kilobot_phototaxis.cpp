@@ -83,9 +83,9 @@ void CKilobotPhototaxis::Reset() {
 /****************************************/
 
 void CKilobotPhototaxis::ControlStep() {
-   CCI_KilobotLightSensor::SReading s_reading = m_pcLightSensor->GetReading();
-   if( s_reading.Value > 0 ) {
-      LOG << s_reading.Value << std::endl;
+   SInt16 nReading = m_pcLightSensor->GetReading();
+   if( nReading > 0 ) {
+      LOG << nReading << std::endl;
    }
    m_pcMotors->SetLinearVelocity( PIN_TURN, PIN_STOP );
    return;
