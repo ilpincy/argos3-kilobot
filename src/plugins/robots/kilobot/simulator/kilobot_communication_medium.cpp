@@ -58,6 +58,12 @@ namespace argos {
          else {
             THROW_ARGOSEXCEPTION("Unknown method \"" << strPosIndexMethod << "\" for the positional index.");
          }
+         /* Set probability of receiving a message */
+         m_fRxProb = 0.0;
+         GetNodeAttributeOrDefault(t_tree, "message_drop_prob", m_fRxProb, m_fRxProb);
+         m_fRxProb = 1.0 - m_fRxProb;
+         /* Create random number generator */
+         m_pcRNG = CRandom::CreateRNG("argos");
       }
       catch(CARGoSException& ex) {
          THROW_ARGOSEXCEPTION_NESTED("Error in initialization of the range-and-bearing medium", ex);
@@ -77,9 +83,9 @@ namespace argos {
    void CKilobotCommunicationMedium::Reset() {
       /* Reset positional index of Kilobot entities */
       m_pcKilobotIndex->Reset();
-      /* Delete routing table */
-      for(TRoutingTable::iterator it = m_tRoutingTable.begin();
-          it != m_tRoutingTable.end();
+      /* Delete adjacency matrix */
+      for(TAdjacencyMatrix::iterator it = m_tCommMatrix.begin();
+          it != m_tCommMatrix.end();
           ++it) {
          it->second.clear();
       }
@@ -90,9 +96,8 @@ namespace argos {
 
    void CKilobotCommunicationMedium::Destroy() {
       delete m_pcKilobotIndex;
-      if(m_pcGridUpdateOperation != NULL) {
+      if(m_pcGridUpdateOperation != NULL)
          delete m_pcGridUpdateOperation;
-      }
    }
 
    /****************************************/
@@ -105,14 +110,28 @@ namespace argos {
    }
 
    void CKilobotCommunicationMedium::Update() {
-      /* Update positional index of Kilobot entities */
+      /*
+       * Update positional index of Kilobot entities
+       */
       m_pcKilobotIndex->Update();
-      /* Delete routing table */
-      for(TRoutingTable::iterator it = m_tRoutingTable.begin();
-          it != m_tRoutingTable.end();
+      /*
+       * Delete obsolete adjacency matrices
+       */
+      for(TAdjacencyMatrix::iterator it = m_tCommMatrix.begin();
+          it != m_tCommMatrix.end();
           ++it) {
          it->second.clear();
       }
+      for(TAdjacencyMatrix::iterator it = m_tTxNeighbors.begin();
+          it != m_tTxNeighbors.end();
+          ++it) {
+         it->second.clear();
+      }
+      /*
+       * Construct the adjacency matrix of transmitting robots
+       */
+      /* Buffer for the communicating entities */
+      CSet<CKilobotCommunicationEntity*> cOtherKilobots;
       /* This map contains the pairs that have already been checked */
       std::map<UInt64, std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*> > mapPairsAlreadyChecked;
       /* Iterator for the above structure */
@@ -121,79 +140,116 @@ namespace argos {
       std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*> cTestKey;
       /* Used as hash for the test key */
       UInt64 unTestHash;
-      /* The ray to use for occlusion checking */
-      CRay3 cOcclusionCheckRay;
-      /* Buffer for the communicating entities */
-      CSet<CKilobotCommunicationEntity*> cOtherKilobots;
-      /* Buffer to store the intersection data */
-      SEmbodiedEntityIntersectionItem sIntersectionItem;
       /* The distance between two Kilobots in line of sight */
       Real fDistance;
       /* Go through the Kilobot entities */
-      for(TRoutingTable::iterator it = m_tRoutingTable.begin();
-          it != m_tRoutingTable.end();
+      for(TAdjacencyMatrix::iterator it = m_tTxNeighbors.begin();
+          it != m_tTxNeighbors.end();
           ++it) {
          /* Get a reference to the current Kilobot entity */
          CKilobotCommunicationEntity& cKilobot = *(it->first);
-         /* Initialize the occlusion check ray start to the position of the robot */
-         cOcclusionCheckRay.SetStart(cKilobot.GetPosition());
-         /* For each Kilobot entity, get the list of Kilobot entities in range */
-         cOtherKilobots.clear();
-         m_pcKilobotIndex->GetEntitiesAt(cOtherKilobots, cKilobot.GetPosition());
-         /* Go through the Kilobot entities in range */
-         for(CSet<CKilobotCommunicationEntity*>::iterator it2 = cOtherKilobots.begin();
-             it2 != cOtherKilobots.end();
-             ++it2) {
-            /* Get a reference to the Kilobot entity */
-            CKilobotCommunicationEntity& cOtherKilobot = **it2;
-            /* First, make sure the entities are not the same */
-            if(&cKilobot != &cOtherKilobot) {
-               /* Proceed if the pair has not been checked already */
-               if(&cKilobot < &cOtherKilobot) {
-                  cTestKey.first = &cKilobot;
-                  cTestKey.second = &cOtherKilobot;
-               }
-               else {
-                  cTestKey.first = &cOtherKilobot;
-                  cTestKey.second = &cKilobot;
-               }
-               unTestHash = HashKilobotPair(cTestKey);
-               itPair = mapPairsAlreadyChecked.find(unTestHash);
-               if(itPair == mapPairsAlreadyChecked.end() ||   /* Pair does not exist */
-                  itPair->second.first != cTestKey.first ||   /* Pair exists, but first Kilobot involved is different */
-                  itPair->second.second != cTestKey.second) { /* Pair exists, but second Kilobot involved is different */
-                  /* Mark this pair as already checked */
-                  mapPairsAlreadyChecked[unTestHash] = cTestKey;
-                  /* Proceed if the two entities are not obstructed by another object */
-                  cOcclusionCheckRay.SetEnd(cOtherKilobot.GetPosition());
-                  if((!GetClosestEmbodiedEntityIntersectedByRay(sIntersectionItem,
-                                                                cOcclusionCheckRay,
-                                                                cKilobot.GetEntityBody())) ||
-                     (&cOtherKilobot.GetEntityBody() == sIntersectionItem.IntersectedEntity)) {
-                     /* If we get here, the two Kilobot entities are in direct line of sight */
-                     /* cKilobot can receive cOtherKilobot's message if it is in range, and viceversa */
+         /* Is this robot trying to transmit? */
+         if(cKilobot.CanTransmit()) {
+            /* Get the list of Kilobots in range */
+            cOtherKilobots.clear();
+            m_pcKilobotIndex->GetEntitiesAt(cOtherKilobots, cKilobot.GetPosition());
+            /* Go through the Kilobots in range */
+            for(CSet<CKilobotCommunicationEntity*>::iterator it2 = cOtherKilobots.begin();
+                it2 != cOtherKilobots.end();
+                ++it2) {
+               /* Get a reference to the neighboring Kilobot */
+               CKilobotCommunicationEntity& cOtherKilobot = **it2;
+               /* First, make sure the entities are not the same and
+                  that they are both transmitting */
+               if(&cKilobot != &cOtherKilobot &&
+                  cOtherKilobot.CanTransmit()) {
+                  /* Proceed if the pair has not been checked already */
+                  if(&cKilobot < &cOtherKilobot) {
+                     cTestKey.first = &cKilobot;
+                     cTestKey.second = &cOtherKilobot;
+                  }
+                  else {
+                     cTestKey.first = &cOtherKilobot;
+                     cTestKey.second = &cKilobot;
+                  }
+                  unTestHash = HashKilobotPair(cTestKey);
+                  itPair = mapPairsAlreadyChecked.find(unTestHash);
+                  if(itPair == mapPairsAlreadyChecked.end() ||   /* Pair does not exist */
+                     itPair->second.first != cTestKey.first ||   /* Pair exists, but first Kilobot involved is different */
+                     itPair->second.second != cTestKey.second) { /* Pair exists, but second Kilobot involved is different */
+                     /* Mark this pair as already checked */
+                     mapPairsAlreadyChecked[unTestHash] = cTestKey;
                      /* Calculate distance */
-                     fDistance = cOcclusionCheckRay.GetLength();
-                     if(fDistance < cOtherKilobot.GetTxRange()) {
+                     fDistance = Distance(cKilobot.GetPosition(),
+                                          cOtherKilobot.GetPosition());
+                     if(fDistance < cOtherKilobot.GetTxRange())
                         /* cKilobot receives cOtherKilobot's message */
                         it->second.insert(&cOtherKilobot);
-                     }
-                     if(fDistance < cKilobot.GetTxRange()) {
+                     if(fDistance < cKilobot.GetTxRange())
                         /* cOtherKilobot receives cKilobot's message */
-                        m_tRoutingTable[&cOtherKilobot].insert(&cKilobot);
-                     }
-                  }
-               }
-            }
-         }
-      }
+                        m_tTxNeighbors[&cOtherKilobot].insert(&cKilobot);
+                  } /* pair check */
+               } /* entity identity + transmit check */
+            } /* neighbors loop */
+         } /* transmission check */
+      } /* robot loop */
+      /*
+       * Go through transmitting robots and broadcast messages
+       */
+      /* The ray to use for occlusion checking */
+      CRay3 cOcclusionCheckRay;
+      /* Buffer to store the intersection data */
+      SEmbodiedEntityIntersectionItem sIntersectionItem;
+      /* Loop over transmitting robots */
+      for(TAdjacencyMatrix::iterator it = m_tTxNeighbors.begin();
+          it != m_tTxNeighbors.end();
+          ++it) {
+         /* Is this robot conflicting? */
+         if(it->second.empty() ||
+            m_pcRNG->Uniform(CRange<UInt32>(0, it->second.size() + 1)) == 0) {
+            /* The robot can transmit */
+            /* Get a reference to the current Kilobot entity */
+            CKilobotCommunicationEntity& cKilobot = *(it->first);
+            /* Increment its tick */
+            cKilobot.IncrementTxTick();
+            /* Go through its neighbors */
+            cOtherKilobots.clear();
+            m_pcKilobotIndex->GetEntitiesAt(cOtherKilobots, cKilobot.GetPosition());
+            for(CSet<CKilobotCommunicationEntity*>::iterator it2 = cOtherKilobots.begin();
+                it2 != cOtherKilobots.end();
+                ++it2) {
+               /* Get a reference to the neighboring Kilobot entity */
+               CKilobotCommunicationEntity& cOtherKilobot = **it2;
+               /* Initialize the occlusion check ray start to the position of the robot */
+               cOcclusionCheckRay.SetStart(cKilobot.GetPosition());
+               /* Proceed if the two entities are not obstructed by another object */
+               cOcclusionCheckRay.SetEnd(cOtherKilobot.GetPosition());
+               if((!GetClosestEmbodiedEntityIntersectedByRay(sIntersectionItem,
+                                                             cOcclusionCheckRay,
+                                                             cKilobot.GetEntityBody())) ||
+                  (&cOtherKilobot.GetEntityBody() == sIntersectionItem.IntersectedEntity)) {
+                  /* If we get here, the two Kilobot entities are in direct line of sight */
+                  /* Calculate distance */
+                  fDistance = cOcclusionCheckRay.GetLength();
+                  /* If robots are within transmission range and transmission succeeds... */
+                  if(fDistance < cKilobot.GetTxRange() &&
+                     m_pcRNG->Bernoulli(m_fRxProb))
+                     /* cOtherKilobot receives cKilobot's message */
+                     m_tCommMatrix[&cOtherKilobot].insert(&cKilobot);
+               } /* occlusion check */
+            } /* neighbor loop */
+         } /* conflict check */
+      } /* transmitters loop */
    }
 
    /****************************************/
    /****************************************/
 
    void CKilobotCommunicationMedium::AddEntity(CKilobotCommunicationEntity& c_entity) {
-      m_tRoutingTable.insert(
+      m_tCommMatrix.insert(
+         std::make_pair<CKilobotCommunicationEntity*, CSet<CKilobotCommunicationEntity*> >(
+            &c_entity, CSet<CKilobotCommunicationEntity*>()));
+      m_tTxNeighbors.insert(
          std::make_pair<CKilobotCommunicationEntity*, CSet<CKilobotCommunicationEntity*> >(
             &c_entity, CSet<CKilobotCommunicationEntity*>()));
       m_pcKilobotIndex->AddEntity(c_entity);
@@ -203,22 +259,25 @@ namespace argos {
    /****************************************/
 
    void CKilobotCommunicationMedium::RemoveEntity(CKilobotCommunicationEntity& c_entity) {
-      TRoutingTable::iterator it = m_tRoutingTable.find(&c_entity);
-      if(it != m_tRoutingTable.end()) {
-         m_pcKilobotIndex->RemoveEntity(c_entity);
-         m_tRoutingTable.erase(it);
-      }
-      else {
+      m_pcKilobotIndex->RemoveEntity(c_entity);
+      TAdjacencyMatrix::iterator it = m_tCommMatrix.find(&c_entity);
+      if(it != m_tCommMatrix.end())
+         m_tCommMatrix.erase(it);
+      else
          THROW_ARGOSEXCEPTION("Can't erase entity \"" << c_entity.GetId() << "\" from Kilobot medium \"" << GetId() << "\"");
-      }
+      it = m_tTxNeighbors.find(&c_entity);
+      if(it != m_tTxNeighbors.end())
+         m_tTxNeighbors.erase(it);
+      else
+         THROW_ARGOSEXCEPTION("Can't erase entity \"" << c_entity.GetId() << "\" from Kilobot medium \"" << GetId() << "\"");
    }
 
    /****************************************/
    /****************************************/
 
    const CSet<CKilobotCommunicationEntity*>& CKilobotCommunicationMedium::GetKilobotsCommunicatingWith(CKilobotCommunicationEntity& c_entity) const {
-      TRoutingTable::const_iterator it = m_tRoutingTable.find(&c_entity);
-      if(it != m_tRoutingTable.end()) {
+      TAdjacencyMatrix::const_iterator it = m_tCommMatrix.find(&c_entity);
+      if(it != m_tCommMatrix.end()) {
          return it->second;
       }
       else {
@@ -233,14 +292,26 @@ namespace argos {
                    "kilobot_communication",
                    "Carlo Pinciroli [ilpincy@gmail.com]",
                    "1.0",
-                   "It simulates the communication across Kilobot robots.",
-                   "This medium is required to simulate communication across kilobots. You need to\n"
-                   "add it to the <media> section every time you add a range-and-bearing-equipped\n"
-                   "entity whose controller has a range-and-bearing device activated.\n\n"
+                   "It simulates communication across Kilobot robots.",
+                   "This medium is required to simulate communication across Kilobots. It works as\n"
+                   "follows:\n"
+                   "1. The medium calculates which robots can transmit at each time step. Every\n"
+                   "   robot is assigned a non-transmission period. At the end of this period, the\n"
+                   "   robot attempts transmission. It is successful with a probability that is\n"
+                   "   inversely proportional to the number of transmitting robots in range. If\n"
+                   "   successful, robot waits until the next period to transmit again. Otherwise\n"
+                   "   it tries at the next time step.\n"
+                   "2. It broadcasts the messages of the robots that can transmit. It is possible\n"
+                   "   to specify the probability of message dropping by a robot as an optional\n"
+                   "   parameter (see below).\n\n"
                    "REQUIRED XML CONFIGURATION\n\n"
                    "<kilobot_communication id=\"kbc\" />\n\n"
                    "OPTIONAL XML CONFIGURATION\n\n"
-                   "None for the time being\n",
+                   "It is possible to specify the probability with which a robot a drops an incoming\n"
+                   "message. This is done by setting the attribute \"message_drop_prob\". When set\n"
+                   "to 0, no message is ever dropped; when set to 1, every message is dropped.\n\n"
+                   "<kilobot_communication id=\"kbc\" message_drop_prob=\"0.25\" />\n"
+                   ,
                    "Under development"
       );
 

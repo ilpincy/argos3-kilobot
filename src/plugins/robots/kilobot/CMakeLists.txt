@@ -3,10 +3,12 @@
 #
 # argos3/plugins/robots/kilobot/control_interface
 set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_CONTROLINTERFACE
+  control_interface/ci_kilobot_communication_sensor.h
   control_interface/ci_kilobot_light_sensor.h)
 # argos3/plugins/robots/kilobot/simulator
 if(ARGOS_BUILD_FOR_SIMULATOR)
   set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR
+    control_interface/ci_kilobot_communication_sensor.cpp
     simulator/dynamics2d_kilobot_model.h
     simulator/kilobot_entity.h
     simulator/kilobot_measures.h

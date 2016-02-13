@@ -72,6 +72,12 @@ namespace argos {
          m_unTxPeriod = un_tx_period;
       }
 
+      inline void IncrementTxTick() {
+         m_unTxTick += m_unTxPeriod;
+      }
+
+      bool CanTransmit() const;
+
       inline const SAnchor& GetAnchor() const {
          return *m_psAnchor;
       }

@@ -51,6 +51,13 @@ namespace argos {
    /****************************************/
    /****************************************/
 
+   bool CKilobotCommunicationEntity::CanTransmit() const {
+      return CSimulator::GetInstance().GetSpace().GetSimulationClock() > m_unTxTick;
+   }
+
+   /****************************************/
+   /****************************************/
+
    void CKilobotCommunicationEntitySpaceHashUpdater::operator()(CAbstractSpaceHash<CKilobotCommunicationEntity>& c_space_hash,
                                                        CKilobotCommunicationEntity& c_element) {
       /* Calculate the position of the center of the kilobot communication entity in the space hash */
