@@ -1,8 +1,11 @@
 #include "ci_kilobot_controller.h"
 #include <argos3/core/utility/logging/argos_log.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <cerrno>
 
 /****************************************/
 /****************************************/

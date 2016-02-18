@@ -75,6 +75,7 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
   add_library(argos3plugin_simulator_kilolib
     control_interface/kilolib.c
     control_interface/message_crc.c)
+  target_link_libraries(argos3plugin_simulator_kilolib rt)
 endif(ARGOS_BUILD_FOR_SIMULATOR)
 
 #

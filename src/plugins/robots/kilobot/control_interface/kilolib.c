@@ -51,7 +51,8 @@ void preloop() {
    }
    /* Message received? */
    if(kilo_state->rx_state > 0) {
-      for(uint8_t i = 0; i < kilo_state->rx_state; ++i) {
+      uint8_t i;
+      for(i = 0; i < kilo_state->rx_state; ++i) {
          kilo_message_rx(&kilo_state->rx_message[i], &kilo_state->rx_distance[i]);
       }
       kilo_state->rx_state = 0;
@@ -184,12 +185,14 @@ static uint16_t argos_id_to_kilo_uid(const char* argos_id) {
 }
 
 /* main() wrapper */
+int __kilobot_main(int argc, char* argv[]);
 #undef main
 int main(int argc, char* argv[]) {
    /* Parse arguments */
    if(argc != 3) {
+      int i;
       fprintf(stderr, "Error: %s was given %d arguments\n", argv[0], argc);
-      for(int i = 0; i < argc; ++i) {
+      for(i = 0; i < argc; ++i) {
          fprintf(stderr, "\tARG %d: %s\n", i, argv[i]);
       }
       fprintf(stderr, "Usage: <script> <robot_id> <tick_length>\n");
