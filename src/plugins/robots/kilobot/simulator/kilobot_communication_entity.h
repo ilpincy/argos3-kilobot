@@ -13,10 +13,11 @@ namespace argos {
 
 #include <argos3/core/utility/datatypes/byte_array.h>
 #include <argos3/core/utility/datatypes/set.h>
-#include <argos3/core/simulator/entity/positional_entity.h>
 #include <argos3/core/utility/math/vector3.h>
+#include <argos3/core/simulator/entity/positional_entity.h>
 #include <argos3/core/simulator/space/positional_indices/space_hash.h>
 #include <argos3/core/simulator/space/positional_indices/grid.h>
+#include <argos3/plugins/robots/kilobot/control_interface/kilolib.h>
 
 namespace argos {
 
@@ -29,13 +30,19 @@ namespace argos {
       typedef std::vector<CKilobotCommunicationEntity*> TVector;
       typedef CSet<CKilobotCommunicationEntity*> TSet;
 
+      enum ETxStatus {
+         TX_NONE,
+         TX_ATTEMPT,
+         TX_SUCCESS
+      };
+
    public:
 
       CKilobotCommunicationEntity(CComposableEntity* pc_parent,
                                   const std::string& str_id,
                                   size_t un_msg_size,
                                   Real f_range,
-                                  const SAnchor& s_anchor,
+                                  SAnchor& s_anchor,
                                   CEmbodiedEntity& c_entity_body);
 
       virtual ~CKilobotCommunicationEntity() {}
@@ -43,6 +50,8 @@ namespace argos {
       virtual void Reset();
 
       virtual void Update();
+
+      virtual void SetEnabled(bool b_enabled);
 
       inline CEmbodiedEntity& GetEntityBody() {
          return *m_pcEntityBody;
@@ -56,27 +65,21 @@ namespace argos {
          m_fTxRange = f_range;
       }
 
-      inline UInt64 GetTxTick() const {
-         return m_unTxTick;
+      inline ETxStatus GetTxStatus() const {
+         return m_eTxStatus;
       }
 
-      inline void SetTxTick(UInt64 un_tx_tick) {
-         m_unTxTick = un_tx_tick;
+      inline void SetTxStatus(ETxStatus e_tx_status) {
+         m_eTxStatus = e_tx_status;
       }
 
-      inline UInt64 GetTxPeriod() const {
-         return m_unTxPeriod;
+      inline const message_t* GetTxMessage() const {
+         return m_ptMessage;
       }
 
-      inline void SetTxPeriod(UInt64 un_tx_period) {
-         m_unTxPeriod = un_tx_period;
+      inline void SetTxMessage(message_t* pt_msg) {
+         m_ptMessage = pt_msg;
       }
-
-      inline void IncrementTxTick() {
-         m_unTxTick += m_unTxPeriod;
-      }
-
-      bool CanTransmit() const;
 
       inline const SAnchor& GetAnchor() const {
          return *m_psAnchor;
@@ -89,13 +92,7 @@ namespace argos {
    protected:
 
       /** Body anchor this entity is attached to */
-      const SAnchor* m_psAnchor;
-
-      /** Tick (time unit) of next transmission */
-      UInt64 m_unTxTick;
-      
-      /** Number of ticks (time units) between transmissions */
-      UInt64 m_unTxPeriod;
+      SAnchor* m_psAnchor;
 
       /** Transmission range */
       Real m_fTxRange;
@@ -103,6 +100,11 @@ namespace argos {
       /** Robot body */
       CEmbodiedEntity* m_pcEntityBody;
 
+      /** Current message transmission status */
+      ETxStatus m_eTxStatus;
+
+      /** The message to send */
+      message_t* m_ptMessage;
    };
 
    /****************************************/

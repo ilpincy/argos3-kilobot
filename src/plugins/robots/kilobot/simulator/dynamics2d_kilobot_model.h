@@ -31,6 +31,7 @@ namespace argos {
       virtual void UpdateFromEntityStatus();
 
       void UpdateLightAnchor(SAnchor& s_anchor);
+      void UpdateCommAnchor(SAnchor& s_anchor);
 
    private:
 

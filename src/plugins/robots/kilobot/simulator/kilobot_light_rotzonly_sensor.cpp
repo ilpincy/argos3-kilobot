@@ -174,7 +174,7 @@ namespace argos {
    /****************************************/
 
    REGISTER_SENSOR(CKilobotLightRotZOnlySensor,
-                   "kilobot_light", "default",
+                   "kilobot_light", "rot_z_only",
                    "Carlo Pinciroli [ilpincy@gmail.com] - Vito Trianni [vito.trianni@istc.cnr.it]",
                    "1.0",
                    "The kilobot light sensor (optimized for 2D).",

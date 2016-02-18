@@ -15,14 +15,22 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   CCI_KilobotCommunicationSensor::CCI_KilobotCommunicationSensor() {
+   CCI_KilobotCommunicationSensor::CCI_KilobotCommunicationSensor() :
+      m_bMessageSent(false) {
    }
 
    /****************************************/
    /****************************************/
 
-   const CCI_KilobotCommunicationSensor::TReadings& CCI_KilobotCommunicationSensor::GetMessages() const {
-      return m_vecMessages;
+   const CCI_KilobotCommunicationSensor::TPackets& CCI_KilobotCommunicationSensor::GetPackets() const {
+      return m_tPackets;
+   }
+
+   /****************************************/
+   /****************************************/
+
+   bool CCI_KilobotCommunicationSensor::MessageSent() const {
+      return m_bMessageSent;
    }
 
    /****************************************/

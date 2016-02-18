@@ -54,6 +54,7 @@ namespace argos {
           */
          m_pcEmbodiedEntity = new CEmbodiedEntity(this, "body_0", c_position, c_orientation);
          SAnchor& cLightAnchor = m_pcEmbodiedEntity->AddAnchor("light", KILOBOT_LIGHT_SENSOR_OFFSET);
+         SAnchor& cCommAnchor = m_pcEmbodiedEntity->AddAnchor("comm", CVector3(0.0, 0.0, KILOBOT_RAB_ELEVATION));
          AddComponent(*m_pcEmbodiedEntity);
          /* Wheeled entity and wheel positions (left, right) */
          m_pcWheeledEntity = new CWheeledEntity(this, "wheels_0", 2);
@@ -75,9 +76,9 @@ namespace argos {
          m_pcKilobotCommunicationEntity =
             new CKilobotCommunicationEntity(this,
                                             "kilocomm_0",
-                                            9, 
+                                            9,
                                             f_communication_range,
-                                            m_pcEmbodiedEntity->GetOriginAnchor(),
+                                            cCommAnchor,
                                             *m_pcEmbodiedEntity);
          AddComponent(*m_pcKilobotCommunicationEntity);
 
@@ -113,6 +114,7 @@ namespace argos {
          m_pcEmbodiedEntity->Init(GetNode(t_tree, "body"));
          /* Create an anchor for the light sensor - must be done after initializing the body */
          SAnchor& cLightAnchor = m_pcEmbodiedEntity->AddAnchor("light", KILOBOT_LIGHT_SENSOR_OFFSET);
+         SAnchor& cCommAnchor = m_pcEmbodiedEntity->AddAnchor("comm", CVector3(0.0, 0.0, KILOBOT_RAB_ELEVATION));
          /* Wheeled entity and wheel positions (left, right) */
          m_pcWheeledEntity = new CWheeledEntity(this, "wheels_0", 2);
          AddComponent(*m_pcWheeledEntity);
@@ -137,7 +139,7 @@ namespace argos {
                                             "kilocomm_0",
                                             9,
                                             fRange,
-                                            m_pcEmbodiedEntity->GetOriginAnchor(),
+                                            cCommAnchor,
                                             *m_pcEmbodiedEntity);
          AddComponent(*m_pcKilobotCommunicationEntity);
          /* Controllable entity. It must be the last one, for
@@ -190,7 +192,8 @@ namespace argos {
                    "1.0",
                    "The Kilobot robot, developed at Harvard University.",
                    "The Kilobot is a low-cost robot designed to make testing collective algorithms\n"
-                   "on hundreds or thousands (\"kilos\") of robots accessible to robotics researchers." 
+                   "on hundreds or thousands (\"kilos\") of robots accessible to robotics\n"
+                   "researchers.\n"
                    "For more information, refer to the dedicated web page\n"
                    "(http://www.eecs.harvard.edu/ssr/projects/progSA/kilobot.html).\n\n"
                    "REQUIRED XML CONFIGURATION\n\n"
@@ -207,9 +210,9 @@ namespace argos {
                    "The 'body/position' attribute specifies the position of the bottom point of the\n"
                    "Kilobot in the arena. When the robot is untranslated and unrotated, the\n"
                    "bottom point is in the origin and it is defined as the middle point between\n"
-                   "the two actuated pins on the XY plane and the lowest point of the robot on the Z\n"
-                   "axis, that is the point where the robot touches the floor. The attribute values\n"
-                   "are in the X,Y,Z order.\n"
+                   "the two actuated pins on the XY plane and the lowest point of the robot on the\n"
+                   "Z axis, that is the point where the robot touches the floor. The attribute\n"
+                   "values are in the X,Y,Z order.\n"
                    "The 'body/orientation' attribute specifies the orientation of the Kilobot. All\n"
                    "rotations are performed with respect to the bottom point. The order of the\n"
                    "angles is Z,Y,X, which means that the first number corresponds to the rotation\n"
@@ -222,8 +225,8 @@ namespace argos {
                    "defined controller. Controllers are defined in the <controllers> XML subtree.\n\n"
                    "OPTIONAL XML CONFIGURATION\n\n"
                    "You can set the emission range of the communication system. By default, a\n"
-                   "message sent by a Kilobot can be received up to 10cm. By using the 'communication_range'\n"
-                   "attribute, you can change it to, i.e., 15cm as follows:\n\n"
+                   "message sent by a Kilobot can be received up to 10cm. By using the\n"
+                   "'communication_range' attribute, you can change it to, i.e., 15cm as follows:\n\n"
                    "  <arena ...>\n"
                    "    ...\n"
                    "    <kilobot id=\"fb0\" communication_range=\"0.15\">\n"

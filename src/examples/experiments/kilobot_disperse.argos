@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+
+  <!-- ************************* -->
+  <!-- * General configuration * -->
+  <!-- ************************* -->
+  <framework>
+    <system threads="0" />
+    <experiment length="0"
+                ticks_per_second="10"
+                random_seed="124" />
+  </framework>
+
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+
+    <kilobot_controller id="kbc">
+      <actuators>
+        <differential_steering implementation="default" />
+        <leds implementation="default" medium="leds" />
+        <kilobot_communication implementation="default" />
+      </actuators>
+      <sensors>
+        <kilobot_communication implementation="default" medium="kilocomm" show_rays="true" />
+        <kilobot_light implementation="rot_z_only" />
+      </sensors>
+      <params behavior="build/examples/behaviors/disperse" />
+    </kilobot_controller>
+
+  </controllers>
+
+  <!-- *********************** -->
+  <!-- * Arena configuration * -->
+  <!-- *********************** -->
+  <arena size="2, 2, 1" center="0,0,0.5">
+    <light id="l0"
+           position="0,0,0.95"
+           orientation="0,0,0"
+           color="yellow"
+           intensity="1.0"
+           medium="leds"/>
+
+    <distribute>
+      <position method="uniform" min="-0.5,-0.5,0" max="0.5,0.5,0" />
+      <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
+      <entity quantity="10" max_trials="100">
+        <kilobot id="kb">
+          <controller config="kbc" />>
+        </kilobot>
+      </entity>
+    </distribute>
+
+  </arena>
+
+  <!-- ******************* -->
+  <!-- * Physics engines * -->
+  <!-- ******************* -->
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  <!-- ********* -->
+  <!-- * Media * -->
+  <!-- ********* -->
+  <media>
+    <kilobot_communication id="kilocomm" />
+    <led id="leds" />
+  </media>
+
+  <!-- ****************** -->
+  <!-- * Visualization * -->
+  <!-- ****************** -->
+  <visualization>
+    <qt-opengl>
+      <camera>
+        <placement idx="0" position="-0.660983,0,0.6875" look_at="0.0531593,0,-0.0125011" lens_focal_length="20" />
+      </camera>
+    </qt-opengl>
+  </visualization>
+
+</argos-configuration>

@@ -122,11 +122,7 @@ namespace argos {
           ++it) {
          it->second.clear();
       }
-      for(TAdjacencyMatrix::iterator it = m_tTxNeighbors.begin();
-          it != m_tTxNeighbors.end();
-          ++it) {
-         it->second.clear();
-      }
+      m_tTxNeighbors.clear();
       /*
        * Construct the adjacency matrix of transmitting robots
        */
@@ -143,13 +139,15 @@ namespace argos {
       /* The distance between two Kilobots in line of sight */
       Real fDistance;
       /* Go through the Kilobot entities */
-      for(TAdjacencyMatrix::iterator it = m_tTxNeighbors.begin();
-          it != m_tTxNeighbors.end();
+      for(TAdjacencyMatrix::iterator it = m_tCommMatrix.begin();
+          it != m_tCommMatrix.end();
           ++it) {
          /* Get a reference to the current Kilobot entity */
          CKilobotCommunicationEntity& cKilobot = *(it->first);
          /* Is this robot trying to transmit? */
-         if(cKilobot.CanTransmit()) {
+         if(cKilobot.GetTxStatus() == CKilobotCommunicationEntity::TX_ATTEMPT) {
+            /* Yes, add it to the list of transmitting robots */
+            m_tTxNeighbors[&cKilobot];
             /* Get the list of Kilobots in range */
             cOtherKilobots.clear();
             m_pcKilobotIndex->GetEntitiesAt(cOtherKilobots, cKilobot.GetPosition());
@@ -162,7 +160,7 @@ namespace argos {
                /* First, make sure the entities are not the same and
                   that they are both transmitting */
                if(&cKilobot != &cOtherKilobot &&
-                  cOtherKilobot.CanTransmit()) {
+                  cOtherKilobot.GetTxStatus() == CKilobotCommunicationEntity::TX_ATTEMPT) {
                   /* Proceed if the pair has not been checked already */
                   if(&cKilobot < &cOtherKilobot) {
                      cTestKey.first = &cKilobot;
@@ -184,7 +182,7 @@ namespace argos {
                                           cOtherKilobot.GetPosition());
                      if(fDistance < cOtherKilobot.GetTxRange())
                         /* cKilobot receives cOtherKilobot's message */
-                        it->second.insert(&cOtherKilobot);
+                        m_tTxNeighbors[&cKilobot].insert(&cOtherKilobot);
                      if(fDistance < cKilobot.GetTxRange())
                         /* cOtherKilobot receives cKilobot's message */
                         m_tTxNeighbors[&cOtherKilobot].insert(&cKilobot);
@@ -210,8 +208,8 @@ namespace argos {
             /* The robot can transmit */
             /* Get a reference to the current Kilobot entity */
             CKilobotCommunicationEntity& cKilobot = *(it->first);
-            /* Increment its tick */
-            cKilobot.IncrementTxTick();
+            /* Change its transmission status */
+            cKilobot.SetTxStatus(CKilobotCommunicationEntity::TX_SUCCESS);
             /* Go through its neighbors */
             cOtherKilobots.clear();
             m_pcKilobotIndex->GetEntitiesAt(cOtherKilobots, cKilobot.GetPosition());
@@ -220,23 +218,27 @@ namespace argos {
                 ++it2) {
                /* Get a reference to the neighboring Kilobot entity */
                CKilobotCommunicationEntity& cOtherKilobot = **it2;
-               /* Initialize the occlusion check ray start to the position of the robot */
-               cOcclusionCheckRay.SetStart(cKilobot.GetPosition());
-               /* Proceed if the two entities are not obstructed by another object */
-               cOcclusionCheckRay.SetEnd(cOtherKilobot.GetPosition());
-               if((!GetClosestEmbodiedEntityIntersectedByRay(sIntersectionItem,
-                                                             cOcclusionCheckRay,
-                                                             cKilobot.GetEntityBody())) ||
-                  (&cOtherKilobot.GetEntityBody() == sIntersectionItem.IntersectedEntity)) {
-                  /* If we get here, the two Kilobot entities are in direct line of sight */
-                  /* Calculate distance */
-                  fDistance = cOcclusionCheckRay.GetLength();
-                  /* If robots are within transmission range and transmission succeeds... */
-                  if(fDistance < cKilobot.GetTxRange() &&
-                     m_pcRNG->Bernoulli(m_fRxProb))
-                     /* cOtherKilobot receives cKilobot's message */
-                     m_tCommMatrix[&cOtherKilobot].insert(&cKilobot);
-               } /* occlusion check */
+               /* Make sure the robots are different */
+               if(&cKilobot != &cOtherKilobot) {
+                  /* Initialize the occlusion check ray start to the position of the robot */
+                  cOcclusionCheckRay.SetStart(cKilobot.GetPosition());
+                  /* Proceed if the two entities are not obstructed by another object */
+                  cOcclusionCheckRay.SetEnd(cOtherKilobot.GetPosition());
+                  if((!GetClosestEmbodiedEntityIntersectedByRay(sIntersectionItem,
+                                                                cOcclusionCheckRay,
+                                                                cKilobot.GetEntityBody())) ||
+                     (&cOtherKilobot.GetEntityBody() == sIntersectionItem.IntersectedEntity)) {
+                     /* If we get here, the two Kilobot entities are in direct line of sight */
+                     /* Calculate distance */
+                     fDistance = cOcclusionCheckRay.GetLength();
+                     /* If robots are within transmission range and transmission succeeds... */
+                     if(fDistance < cKilobot.GetTxRange() &&
+                        m_pcRNG->Bernoulli(m_fRxProb)) {
+                        /* cOtherKilobot receives cKilobot's message */
+                        m_tCommMatrix[&cOtherKilobot].insert(&cKilobot);
+                     }
+                  } /* occlusion check */
+               } /* identity check */
             } /* neighbor loop */
          } /* conflict check */
       } /* transmitters loop */
@@ -247,9 +249,6 @@ namespace argos {
 
    void CKilobotCommunicationMedium::AddEntity(CKilobotCommunicationEntity& c_entity) {
       m_tCommMatrix.insert(
-         std::make_pair<CKilobotCommunicationEntity*, CSet<CKilobotCommunicationEntity*> >(
-            &c_entity, CSet<CKilobotCommunicationEntity*>()));
-      m_tTxNeighbors.insert(
          std::make_pair<CKilobotCommunicationEntity*, CSet<CKilobotCommunicationEntity*> >(
             &c_entity, CSet<CKilobotCommunicationEntity*>()));
       m_pcKilobotIndex->AddEntity(c_entity);
@@ -263,11 +262,6 @@ namespace argos {
       TAdjacencyMatrix::iterator it = m_tCommMatrix.find(&c_entity);
       if(it != m_tCommMatrix.end())
          m_tCommMatrix.erase(it);
-      else
-         THROW_ARGOSEXCEPTION("Can't erase entity \"" << c_entity.GetId() << "\" from Kilobot medium \"" << GetId() << "\"");
-      it = m_tTxNeighbors.find(&c_entity);
-      if(it != m_tTxNeighbors.end())
-         m_tTxNeighbors.erase(it);
       else
          THROW_ARGOSEXCEPTION("Can't erase entity \"" << c_entity.GetId() << "\" from Kilobot medium \"" << GetId() << "\"");
    }

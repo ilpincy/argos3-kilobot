@@ -16,6 +16,7 @@ namespace argos {
 }
 
 #include <argos3/core/control_interface/ci_sensor.h>
+#include <argos3/plugins/robots/kilobot/control_interface/kilolib.h>
 #include <argos3/core/utility/datatypes/datatypes.h>
 #include <vector>
 
@@ -25,22 +26,21 @@ namespace argos {
 
    public:
 
-      typedef UInt8 TPayload[12];
-
-      struct SMessage {
-         Real Distance;
-         TPayload Payload;
-         SMessage();
+      struct SPacket {
+         const message_t* Message;
+         distance_measurement_t Distance;
       };
 
-      typedef std::vector<const SMessage*> TReadings;
+      typedef std::vector<SPacket> TPackets;
 
    public:
 
       CCI_KilobotCommunicationSensor();
       virtual ~CCI_KilobotCommunicationSensor() {}
 
-      const TReadings& GetMessages() const;
+      const TPackets& GetPackets() const;
+
+      bool MessageSent() const;
 
 #ifdef ARGOS_WITH_LUA
       virtual void CreateLuaState(lua_State* pt_lua_state);
@@ -50,7 +50,9 @@ namespace argos {
 
    protected:
 
-      TReadings m_vecMessages;
+      TPackets m_tPackets;
+      bool m_bMessageSent;
+
    };
 
 }

@@ -18,15 +18,14 @@ namespace argos {
                                                             const std::string& str_id,
                                                             size_t un_msg_size,
                                                             Real f_range,
-                                                            const SAnchor& s_anchor,
+                                                            SAnchor& s_anchor,
                                                             CEmbodiedEntity& c_entity_body) :
       CPositionalEntity(pc_parent,
                         str_id),
       m_psAnchor(&s_anchor),
-      m_unTxTick(0),
-      m_unTxPeriod(0),
       m_fTxRange(f_range),
-      m_pcEntityBody(&c_entity_body) {
+      m_pcEntityBody(&c_entity_body),
+      m_eTxStatus(TX_NONE) {
       Disable();
       SetInitPosition(s_anchor.Position);
       SetPosition(GetInitPosition());
@@ -37,7 +36,15 @@ namespace argos {
    /****************************************/
    /****************************************/
 
+   void CKilobotCommunicationEntity::Reset() {
+      m_eTxStatus = TX_NONE;
+   }
+
+   /****************************************/
+   /****************************************/
+
    void CKilobotCommunicationEntity::Update() {
+      if(m_eTxStatus == TX_SUCCESS) m_eTxStatus = TX_NONE;
       SetPosition(m_psAnchor->Position);
       SetOrientation(m_psAnchor->Orientation);
    }
@@ -45,14 +52,10 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   void CKilobotCommunicationEntity::Reset() {
-   }
-
-   /****************************************/
-   /****************************************/
-
-   bool CKilobotCommunicationEntity::CanTransmit() const {
-      return CSimulator::GetInstance().GetSpace().GetSimulationClock() > m_unTxTick;
+   void CKilobotCommunicationEntity::SetEnabled(bool b_enabled) {
+      CEntity::SetEnabled(b_enabled);
+      if(b_enabled) m_psAnchor->Enable();
+      else m_psAnchor->Disable();
    }
 
    /****************************************/
