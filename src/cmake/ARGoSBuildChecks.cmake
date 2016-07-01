@@ -13,11 +13,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ARGOS_PREFIX}/share/argos3/cmake)
 include(ARGoSCheckQTOpenGL)
 
 #
-# Find the GSL package
-#
-find_package(GSL REQUIRED)
-
-#
 # Find Lua
 #
 find_package(Lua52 REQUIRED)
