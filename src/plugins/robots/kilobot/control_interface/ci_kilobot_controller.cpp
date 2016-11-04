@@ -16,6 +16,7 @@ CCI_KilobotController::CCI_KilobotController() :
    m_pcLight(NULL),
    m_pcCommA(NULL),
    m_pcCommS(NULL),
+   m_pcRNG(NULL),
    m_nSharedMemFD(-1),
    m_ptRobotState(NULL),
    m_tBehaviorPID(-1) {}
@@ -34,6 +35,8 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       /* Parse XML parameters */
       std::string strBehavior;
       GetNodeAttribute(t_tree, "behavior", strBehavior);
+      /* Create a random number generator */
+      m_pcRNG = CRandom::CreateRNG("argos");
       /* Create shared memory area for master-slave communication */
       m_nSharedMemFD = ::shm_open(GetId().c_str(),
                                   O_RDWR | O_CREAT,
@@ -61,7 +64,13 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       }
       /* Execute the behavior */
       if(m_tBehaviorPID == 0) {
-         ::execl(strBehavior.c_str(), strBehavior.c_str(), GetId().c_str(), ToString(100).c_str(), NULL);
+         ::execl(strBehavior.c_str(),
+                 strBehavior.c_str(),                                                 // Script name
+                 GetId().c_str(),                                                     // Robot id
+                 ToString(100).c_str(),                                               // Control step duration in ms
+                 ToString(m_pcRNG->Uniform(CRange<UInt32>(0, 0xFFFFFFFFUL))).c_str(), // Random seed for rand_hard()
+                 NULL
+            );
       }
    }
    catch(CARGoSException& ex) {
