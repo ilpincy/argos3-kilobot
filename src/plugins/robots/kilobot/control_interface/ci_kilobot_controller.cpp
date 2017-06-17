@@ -38,7 +38,7 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       /* Create a random number generator */
       m_pcRNG = CRandom::CreateRNG("argos");
       /* Create shared memory area for master-slave communication */
-      m_nSharedMemFD = ::shm_open(GetId().c_str(),
+      m_nSharedMemFD = ::shm_open(("/" + GetId()).c_str(),
                                   O_RDWR | O_CREAT,
                                   S_IRUSR | S_IWUSR);
       if(m_nSharedMemFD < 0) {
