@@ -214,7 +214,7 @@ void kilo_start(void (*setup)(void), void (*loop)(void)) {
    /* Continue working until killed by ARGoS controller */
    while(1) {
       /* Suspend yourself, waiting for ARGoS controller's resume signal */
-      raise(SIGTSTP);
+      raise(SIGSTOP);
       /* Resumed */
       /* Execute loop */
       preloop();

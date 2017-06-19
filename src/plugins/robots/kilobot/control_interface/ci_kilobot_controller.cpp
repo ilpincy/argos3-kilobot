@@ -134,7 +134,8 @@ void CCI_KilobotController::Destroy() {
    close(m_nSharedMemFD);
    shm_unlink(GetId().c_str());
    ::kill(m_tBehaviorPID, SIGTERM);
-   ::waitpid(m_tBehaviorPID, NULL, WUNTRACED);
+   int nStatus;
+   ::waitpid(m_tBehaviorPID, &nStatus, WIFEXITED(nStatus));
 }
 
 /****************************************/
