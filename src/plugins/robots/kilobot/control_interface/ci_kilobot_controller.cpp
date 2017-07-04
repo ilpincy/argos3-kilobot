@@ -133,7 +133,7 @@ void CCI_KilobotController::Destroy() {
    munmap(m_ptRobotState, sizeof(kilobot_state_t));
    close(m_nSharedMemFD);
    shm_unlink(GetId().c_str());
-   ::kill(m_tBehaviorPID, SIGTERM);
+   ::kill(m_tBehaviorPID, SIGKILL);
    int nStatus;
    ::waitpid(m_tBehaviorPID, &nStatus, WIFEXITED(nStatus));
 }
