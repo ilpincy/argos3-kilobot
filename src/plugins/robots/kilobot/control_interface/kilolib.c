@@ -202,13 +202,14 @@ void cleanup() {
    shm_unlink(kilo_str_id);
 }
 
-void sigkill_handler(int s) {
+void sigterm_handler(int s) {
    cleanup();
+   exit(0);
 }
 
 void kilo_start(void (*setup)(void), void (*loop)(void)) {
-   /* Install handler for SIGKILL */
-   signal(SIGKILL, sigkill_handler);
+   /* Install handler for SIGTERM */
+   signal(SIGTERM, sigterm_handler);
    /* Execute setup() */
    setup();
    /* Continue working until killed by ARGoS controller */
