@@ -253,7 +253,12 @@ int main(int argc, char* argv[]) {
    }
    kilo_str_id = strdup(argv[1]);
    /* Open shared memory */
-   kilo_state_fd = shm_open(kilo_str_id, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+   char* shm_fname = malloc(strlen(kilo_str_id) + 2);
+   shm_fname[0] = '/';
+   shm_fname[1] = 0;
+   strcat(shm_fname + 1, kilo_str_id);
+   kilo_state_fd = shm_open(shm_fname, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+   free(shm_fname);
    if(kilo_state_fd < 0) {
       fprintf(stderr, "Opening the shared memory file of %s: %s\n", kilo_str_id, strerror(errno));
       exit(1);
