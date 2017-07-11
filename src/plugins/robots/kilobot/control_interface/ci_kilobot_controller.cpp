@@ -60,7 +60,7 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       if(m_nSharedMemFD < 0) {
          THROW_ARGOSEXCEPTION("Creating a shared memory area for " << GetId() << ": " << ::strerror(errno));
       }
-      /* Resize shared memory area to contain the robot state, filling it with zeros */
+      /* Resize shared memory area to contain the robot state */
       ::ftruncate(m_nSharedMemFD, sizeof(kilobot_state_t));
       /* Get pointer to shared memory area */
       m_ptRobotState = reinterpret_cast<kilobot_state_t*>(
@@ -73,6 +73,7 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       if(m_ptRobotState == MAP_FAILED) {
          THROW_ARGOSEXCEPTION("Mmapping the shared memory area of " << GetId() << ": " << ::strerror(errno));
       }
+      ::memset(m_ptRobotState, 0, sizeof(kilobot_state_t));
       /* Define the signal handler that manages dead children */
       // ::signal(SIGCHLD, HandleDeadChild);
       /* Fork this process */
