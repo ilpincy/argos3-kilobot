@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/mman.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <cerrno>
@@ -152,8 +153,8 @@ void CCI_KilobotController::Reset() {
 /****************************************/
 
 void CCI_KilobotController::Destroy() {
-   ::kill(m_tBehaviorPID, SIGCONT);
    ::kill(m_tBehaviorPID, SIGTERM);
+   ::kill(m_tBehaviorPID, SIGCONT);
    int nStatus;
    ::waitpid(m_tBehaviorPID, &nStatus, WIFEXITED(nStatus));
    munmap(m_ptRobotState, sizeof(kilobot_state_t));
