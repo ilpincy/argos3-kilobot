@@ -52,12 +52,20 @@ namespace argos {
        * @throws CARGoSException If the passed entity is not managed by this medium.
        */
       const CSet<CKilobotCommunicationEntity*>& GetKilobotsCommunicatingWith(CKilobotCommunicationEntity& c_entity) const;
-
-   private:
-
+      
       /** Defines the adjacency matrix */
       typedef std::map<CKilobotCommunicationEntity*, CSet<CKilobotCommunicationEntity*> > TAdjacencyMatrix;
-
+      
+      /**
+       * Returns a refrence to the adjacency matrix.
+       * @return A refrence to the adjacency matrix.
+       */
+      TAdjacencyMatrix& GetCommMatrix(){
+          return m_tCommMatrix;
+      }
+      
+   private:
+      
       /** The adjacency matrix, that associates each entity with the entities that communicate with it */
       TAdjacencyMatrix m_tCommMatrix;
 
