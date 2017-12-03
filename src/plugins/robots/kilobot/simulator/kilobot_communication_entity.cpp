@@ -3,6 +3,7 @@
  */
 
 #include "kilobot_communication_entity.h"
+#include "kilobot_communication_medium.h"
 #include <argos3/core/utility/string_utilities.h>
 #include <argos3/core/simulator/simulator.h>
 #include <argos3/core/simulator/space/space.h>
@@ -25,7 +26,8 @@ namespace argos {
       m_psAnchor(&s_anchor),
       m_fTxRange(f_range),
       m_pcEntityBody(&c_entity_body),
-      m_eTxStatus(TX_NONE) {
+      m_eTxStatus(TX_NONE),
+      m_pcMedium(NULL) {
       Disable();
       SetInitPosition(s_anchor.Position);
       SetPosition(GetInitPosition());
@@ -53,9 +55,46 @@ namespace argos {
    /****************************************/
 
    void CKilobotCommunicationEntity::SetEnabled(bool b_enabled) {
+      /* Perform generic enable behavior */
       CEntity::SetEnabled(b_enabled);
-      if(b_enabled) m_psAnchor->Enable();
-      else m_psAnchor->Disable();
+      /* Perform specific enable behavior */
+      if(b_enabled) {
+         /* Enable body anchor */
+         if(m_psAnchor)
+            m_psAnchor->Enable();
+         /* Enable entity in medium */
+         if(m_pcMedium && GetIndex() >= 0)
+            m_pcMedium->AddEntity(*this);
+      }
+      else {
+         /* Disable body anchor */
+         if(m_psAnchor)
+            m_psAnchor->Disable();
+         /* Disable entity in medium */
+         if(m_pcMedium)
+            m_pcMedium->RemoveEntity(*this);
+      }
+   }
+
+   /****************************************/
+   /****************************************/
+
+   bool CKilobotCommunicationEntity::HasMedium() const {
+      return m_pcMedium != NULL;
+   }
+
+   /****************************************/
+   /****************************************/
+
+   CKilobotCommunicationMedium& CKilobotCommunicationEntity::GetMedium() {
+      return *m_pcMedium;
+   }
+
+   /****************************************/
+   /****************************************/
+
+   void CKilobotCommunicationEntity::SetMedium(CKilobotCommunicationMedium& c_medium) {
+      m_pcMedium = &c_medium;
    }
 
    /****************************************/
@@ -214,7 +253,31 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   REGISTER_STANDARD_SPACE_OPERATIONS_ON_ENTITY(CKilobotCommunicationEntity);
+   class CSpaceOperationAddCKilobotCommunicationEntity : public CSpaceOperationAddEntity {
+   public:
+      void ApplyTo(CSpace& c_space, CKilobotCommunicationEntity& c_entity) {
+         /* Add entity to space - this ensures that the RAB entity
+          * gets an id before being added to the RAB medium */
+         c_space.AddEntity(c_entity);
+         /* Enable the RAB entity, if it's enabled - this ensures that
+          * the entity gets added to the RAB if it's enabled */
+         c_entity.SetEnabled(c_entity.IsEnabled());
+      }
+   };
+
+   class CSpaceOperationRemoveCKilobotCommunicationEntity : public CSpaceOperationRemoveEntity {
+   public:
+      void ApplyTo(CSpace& c_space, CKilobotCommunicationEntity& c_entity) {
+         /* Disable the entity - this ensures that the entity is
+          * removed from the RAB medium */
+         c_entity.Disable();
+         /* Remove the RAB entity from space */
+         c_space.RemoveEntity(c_entity);
+      }
+   };
+
+   REGISTER_SPACE_OPERATION(CSpaceOperationAddEntity, CSpaceOperationAddCKilobotCommunicationEntity, CKilobotCommunicationEntity);
+   REGISTER_SPACE_OPERATION(CSpaceOperationRemoveEntity, CSpaceOperationRemoveCKilobotCommunicationEntity, CKilobotCommunicationEntity);
 
    /****************************************/
    /****************************************/

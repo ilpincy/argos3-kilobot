@@ -8,15 +8,7 @@
 #include <signal.h>
 #include <cerrno>
 #include <fcntl.h>
-
-/****************************************/
-/****************************************/
-
-void HandleDeadChild(int) {
-   int nWStat;
-   pid_t tPID = wait(&nWStat);
-   fprintf(stderr, "Kilobot process PID %d died unexpectedly (exit status = %d)\n", tPID, nWStat);
-}
+#include <unistd.h>
 
 /****************************************/
 /****************************************/
@@ -55,7 +47,8 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       /* Create a random number generator */
       m_pcRNG = CRandom::CreateRNG("argos");
       /* Create shared memory area for master-slave communication */
-      m_nSharedMemFD = ::shm_open(("/" + GetId()).c_str(),
+      pid_t tParentPID = getpid();
+      m_nSharedMemFD = ::shm_open(("/" + ToString<pid_t>(tParentPID) + "_" + GetId()).c_str(),
                                   O_RDWR | O_CREAT,
                                   S_IRUSR | S_IWUSR);
       if(m_nSharedMemFD < 0) {
@@ -75,8 +68,6 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
          THROW_ARGOSEXCEPTION("Mmapping the shared memory area of " << GetId() << ": " << ::strerror(errno));
       }
       ::memset(m_ptRobotState, 0, sizeof(kilobot_state_t));
-      /* Define the signal handler that manages dead children */
-      // ::signal(SIGCHLD, HandleDeadChild);
       /* Fork this process */
       m_tBehaviorPID = ::fork();
       if(m_tBehaviorPID < 0) {
@@ -86,6 +77,7 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       if(m_tBehaviorPID == 0) {
          ::execl(strBehavior.c_str(),
                  strBehavior.c_str(),                                                 // Script name
+                 ToString(tParentPID).c_str(),                                        // The parent process' PID
                  GetId().c_str(),                                                     // Robot id
                  ToString(100).c_str(),                                               // Control step duration in ms
                  ToString(m_pcRNG->Uniform(CRange<UInt32>(0, 0xFFFFFFFFUL))).c_str(), // Random seed for rand_hard()

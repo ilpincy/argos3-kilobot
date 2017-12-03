@@ -51,12 +51,12 @@ namespace argos {
        * @return An immutable vector of entities that can communicate with the given entity.       
        * @throws CARGoSException If the passed entity is not managed by this medium.
        */
-      const CSet<CKilobotCommunicationEntity*>& GetKilobotsCommunicatingWith(CKilobotCommunicationEntity& c_entity) const;
+      const CSet<CKilobotCommunicationEntity*,SEntityComparator>& GetKilobotsCommunicatingWith(CKilobotCommunicationEntity& c_entity) const;
 
    private:
 
       /** Defines the adjacency matrix */
-      typedef std::map<CKilobotCommunicationEntity*, CSet<CKilobotCommunicationEntity*> > TAdjacencyMatrix;
+      typedef unordered_map<ssize_t, CSet<CKilobotCommunicationEntity*,SEntityComparator> > TAdjacencyMatrix;
 
       /** The adjacency matrix, that associates each entity with the entities that communicate with it */
       TAdjacencyMatrix m_tCommMatrix;

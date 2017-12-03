@@ -23,8 +23,6 @@ namespace argos {
    void CKilobotCommunicationDefaultSensor::SetRobot(CComposableEntity& c_entity) {
       /* Assign Kilobot communication entity to this sensor */
       m_pcCommEntity = &c_entity.GetComponent<CKilobotCommunicationEntity>("kilocomm");
-      /* Enable the Kilobot communication entity */
-      m_pcCommEntity->Enable();
       /* Get reference to controllable entity */
       m_pcControllableEntity = &c_entity.GetComponent<CControllableEntity>("controller");
    }
@@ -46,8 +44,9 @@ namespace argos {
          std::string strMedium;
          GetNodeAttribute(t_tree, "medium", strMedium);
          m_pcMedium = &(CSimulator::GetInstance().GetMedium<CKilobotCommunicationMedium>(strMedium));
-         /* Assign Kilobot communication entity to the medium */
-         m_pcMedium->AddEntity(*m_pcCommEntity);
+         /* Enable the Kilobot communication entity */
+         m_pcCommEntity->SetMedium(*m_pcMedium);
+         m_pcCommEntity->Enable();
       }
       catch(CARGoSException& ex) {
          THROW_ARGOSEXCEPTION_NESTED("Error initializing the Kilobot communication medium sensor", ex);
@@ -63,13 +62,13 @@ namespace argos {
       /* Delete old readings */
       m_tPackets.clear();
       /* Get list of communicating RABs */
-      const CSet<CKilobotCommunicationEntity*>& setComms = m_pcMedium->GetKilobotsCommunicatingWith(*m_pcCommEntity);
+      const CSet<CKilobotCommunicationEntity*,SEntityComparator>& setComms = m_pcMedium->GetKilobotsCommunicatingWith(*m_pcCommEntity);
       /* Buffer for calculating the message--robot distance */
       CVector3 cVectorRobotToMessage;
       /* Buffer for the received packet */
       CCI_KilobotCommunicationSensor::SPacket sPacket;
       /* Go through communicating RABs and create packets */
-      for(CSet<CKilobotCommunicationEntity*>::iterator it = setComms.begin();
+      for(CSet<CKilobotCommunicationEntity*,SEntityComparator>::iterator it = setComms.begin();
           it != setComms.end(); ++it) {
          /* Create a reference to the Kilobot communication entity to process */
          CKilobotCommunicationEntity& cOtherCommEntity = **it;
@@ -104,7 +103,7 @@ namespace argos {
    /****************************************/
 
    void CKilobotCommunicationDefaultSensor::Destroy() {
-      m_pcMedium->RemoveEntity(*m_pcCommEntity);
+      m_pcCommEntity->Disable();
    }
 
    /****************************************/

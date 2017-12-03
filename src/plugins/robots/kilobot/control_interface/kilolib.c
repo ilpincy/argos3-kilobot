@@ -243,21 +243,23 @@ int __kilobot_main(int argc, char* argv[]);
 #undef main
 int main(int argc, char* argv[]) {
    /* Parse arguments */
-   if(argc != 4) {
+   if(argc != 5) {
       int i;
       fprintf(stderr, "Error: %s was given %d arguments\n", argv[0], argc);
       for(i = 0; i < argc; ++i) {
          fprintf(stderr, "\tARG %d: %s\n", i, argv[i]);
       }
-      fprintf(stderr, "Usage: <script> <robot_id> <tick_length> <random_seed>\n");
+      fprintf(stderr, "Usage: <script> <pid> <robot_id> <tick_length> <random_seed>\n");
       exit(1);
    }
-   kilo_str_id = strdup(argv[1]);
+   kilo_str_id = strdup(argv[2]);
    /* Open shared memory */
-   char* shm_fname = malloc(strlen(kilo_str_id) + 2);
+   char* shm_fname = malloc(strlen(argv[1]) + strlen(argv[2]) + 3);
    shm_fname[0] = '/';
    shm_fname[1] = 0;
-   strcat(shm_fname + 1, kilo_str_id);
+   strcat(shm_fname, argv[1]);
+   strcat(shm_fname, "_");
+   strcat(shm_fname, argv[2]);
    kilo_state_fd = shm_open(shm_fname, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
    free(shm_fname);
    if(kilo_state_fd < 0) {
@@ -284,11 +286,11 @@ int main(int argc, char* argv[]) {
    atexit(cleanup);
    /* Initialize variables */
    kilo_uid = argos_id_to_kilo_uid(kilo_str_id);
-   argos_tick_length = strtoul(argv[2], NULL, 10);
+   argos_tick_length = strtoul(argv[3], NULL, 10);
    /* Initialize random number generator */
    mt_rngstate = (int32_t*)malloc(MT_N * sizeof(int32_t));
    mt_rngidx = MT_N + 1;
-   mt_setseed(strtoul(argv[3], NULL, 10));
+   mt_setseed(strtoul(argv[4], NULL, 10));
    /* Call main of behavior */
    return __kilobot_main(argc, argv);
 }
