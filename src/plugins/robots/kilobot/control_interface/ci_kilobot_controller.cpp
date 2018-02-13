@@ -151,7 +151,8 @@ void CCI_KilobotController::Destroy() {
    ::waitpid(m_tBehaviorPID, &nStatus, WIFEXITED(nStatus));
    munmap(m_ptRobotState, sizeof(kilobot_state_t));
    close(m_nSharedMemFD);
-   shm_unlink(GetId().c_str());
+   pid_t tParentPID = getpid();
+   ::shm_unlink(("/" + ToString<pid_t>(tParentPID) + "_" + GetId()).c_str());
 }
 
 /****************************************/
