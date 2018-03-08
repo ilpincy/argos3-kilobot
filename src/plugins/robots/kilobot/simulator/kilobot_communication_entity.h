@@ -7,6 +7,7 @@
 
 namespace argos {
    class CKilobotCommunicationEntity;
+   class CKilobotCommunicationMedium;
    class CEmbodiedEntity;
    struct SAnchor;
 }
@@ -85,6 +86,12 @@ namespace argos {
          return *m_psAnchor;
       }
 
+      bool HasMedium() const;
+
+      CKilobotCommunicationMedium& GetMedium();
+
+      void SetMedium(CKilobotCommunicationMedium& c_medium);
+
       virtual std::string GetTypeDescription() const {
          return "kilocomm";
       }
@@ -105,6 +112,9 @@ namespace argos {
 
       /** The message to send */
       message_t* m_ptMessage;
+
+      /** The communication medium associated to this entity */
+      CKilobotCommunicationMedium* m_pcMedium;
    };
 
    /****************************************/

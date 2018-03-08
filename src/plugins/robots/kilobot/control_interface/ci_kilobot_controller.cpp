@@ -3,9 +3,12 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/mman.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <cerrno>
+#include <fcntl.h>
+#include <unistd.h>
 
 /****************************************/
 /****************************************/
@@ -16,6 +19,7 @@ CCI_KilobotController::CCI_KilobotController() :
    m_pcLight(NULL),
    m_pcCommA(NULL),
    m_pcCommS(NULL),
+   m_pcRNG(NULL),
    m_nSharedMemFD(-1),
    m_ptRobotState(NULL),
    m_tBehaviorPID(-1) {}
@@ -34,14 +38,23 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       /* Parse XML parameters */
       std::string strBehavior;
       GetNodeAttribute(t_tree, "behavior", strBehavior);
+      /* Make sure script file exists */
+      int nBehaviorFD = open(strBehavior.c_str(), O_RDONLY);
+      if(nBehaviorFD < 0) {
+         THROW_ARGOSEXCEPTION("Opening behavior file \"" << strBehavior << "\": " << strerror(errno));
+      }
+      close(nBehaviorFD);
+      /* Create a random number generator */
+      m_pcRNG = CRandom::CreateRNG("argos");
       /* Create shared memory area for master-slave communication */
-      m_nSharedMemFD = ::shm_open(GetId().c_str(),
+      pid_t tParentPID = getpid();
+      m_nSharedMemFD = ::shm_open(("/" + ToString<pid_t>(tParentPID) + "_" + GetId()).c_str(),
                                   O_RDWR | O_CREAT,
                                   S_IRUSR | S_IWUSR);
       if(m_nSharedMemFD < 0) {
          THROW_ARGOSEXCEPTION("Creating a shared memory area for " << GetId() << ": " << ::strerror(errno));
       }
-      /* Resize shared memory area to contain the robot state, filling it with zeros */
+      /* Resize shared memory area to contain the robot state */
       ::ftruncate(m_nSharedMemFD, sizeof(kilobot_state_t));
       /* Get pointer to shared memory area */
       m_ptRobotState = reinterpret_cast<kilobot_state_t*>(
@@ -54,6 +67,7 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       if(m_ptRobotState == MAP_FAILED) {
          THROW_ARGOSEXCEPTION("Mmapping the shared memory area of " << GetId() << ": " << ::strerror(errno));
       }
+      ::memset(m_ptRobotState, 0, sizeof(kilobot_state_t));
       /* Fork this process */
       m_tBehaviorPID = ::fork();
       if(m_tBehaviorPID < 0) {
@@ -61,7 +75,17 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       }
       /* Execute the behavior */
       if(m_tBehaviorPID == 0) {
-         ::execl(strBehavior.c_str(), strBehavior.c_str(), GetId().c_str(), ToString(100).c_str(), NULL);
+         ::execl(strBehavior.c_str(),
+                 strBehavior.c_str(),                                                 // Script name
+                 ToString(tParentPID).c_str(),                                        // The parent process' PID
+                 GetId().c_str(),                                                     // Robot id
+                 ToString(100).c_str(),                                               // Control step duration in ms
+                 ToString(m_pcRNG->Uniform(CRange<UInt32>(0, 0xFFFFFFFFUL))).c_str(), // Random seed for rand_hard()
+                 NULL
+            );
+         /* If the next line is executed, it's because execl did not succeed */
+         THROW_ARGOSEXCEPTION("Executing the behavior process of " << GetId() << ": " << strBehavior << ": " << ::strerror(errno));
+         ::exit(1);
       }
    }
    catch(CARGoSException& ex) {
@@ -121,9 +145,14 @@ void CCI_KilobotController::Reset() {
 /****************************************/
 
 void CCI_KilobotController::Destroy() {
+   ::kill(m_tBehaviorPID, SIGTERM);
+   ::kill(m_tBehaviorPID, SIGCONT);
+   int nStatus;
+   ::waitpid(m_tBehaviorPID, &nStatus, WIFEXITED(nStatus));
    munmap(m_ptRobotState, sizeof(kilobot_state_t));
    close(m_nSharedMemFD);
-   shm_unlink(GetId().c_str());
+   pid_t tParentPID = getpid();
+   ::shm_unlink(("/" + ToString<pid_t>(tParentPID) + "_" + GetId()).c_str());
 }
 
 /****************************************/

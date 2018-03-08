@@ -12,6 +12,7 @@
 #define CCI_KILOBOT_CONTROLLER_H
 
 #include <argos3/core/control_interface/ci_controller.h>
+#include <argos3/core/utility/math/rng.h>
 #include <argos3/plugins/robots/kilobot/control_interface/kilolib.h>
 #include <argos3/plugins/robots/generic/control_interface/ci_differential_steering_actuator.h>
 #include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
@@ -61,6 +62,9 @@ private:
 
    /** Pointer to the communication sensor */
    CCI_KilobotCommunicationSensor* m_pcCommS;
+
+   /* The random number generator */
+   CRandom::CRNG* m_pcRNG;
 
    /** File descriptor for shared memory area */
    int m_nSharedMemFD;

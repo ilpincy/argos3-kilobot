@@ -103,10 +103,10 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   static UInt64 HashKilobotPair(const std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*>& c_pair) {
-      UInt64 unA = *reinterpret_cast<unsigned long long*>(c_pair.first) & 0xFFFFFFFF;
-      UInt64 unB = *reinterpret_cast<unsigned long long*>(c_pair.second) & 0xFFFFFFFF;
-      return (unA << 32) | unB;
+   static size_t HashKilobotPair(const std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*>& c_pair) {
+      return
+         reinterpret_cast<size_t>(c_pair.first) ^
+         reinterpret_cast<size_t>(c_pair.second);
    }
 
    void CKilobotCommunicationMedium::Update() {
@@ -127,15 +127,15 @@ namespace argos {
        * Construct the adjacency matrix of transmitting robots
        */
       /* Buffer for the communicating entities */
-      CSet<CKilobotCommunicationEntity*> cOtherKilobots;
+      CSet<CKilobotCommunicationEntity*,SEntityComparator> cOtherKilobots;
       /* This map contains the pairs that have already been checked */
-      std::map<UInt64, std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*> > mapPairsAlreadyChecked;
+      unordered_map<size_t, std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*> > mapPairsAlreadyChecked;
       /* Iterator for the above structure */
-      std::map<UInt64, std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*> >::iterator itPair;
+      unordered_map<size_t, std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*> >::iterator itPair;
       /* Used as test key */
       std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*> cTestKey;
       /* Used as hash for the test key */
-      UInt64 unTestHash;
+      size_t unTestHash;
       /* The distance between two Kilobots in line of sight */
       Real fDistance;
       /* Go through the Kilobot entities */
@@ -143,16 +143,16 @@ namespace argos {
           it != m_tCommMatrix.end();
           ++it) {
          /* Get a reference to the current Kilobot entity */
-         CKilobotCommunicationEntity& cKilobot = *(it->first);
+         CKilobotCommunicationEntity& cKilobot = *reinterpret_cast<CKilobotCommunicationEntity*>(GetSpace().GetEntityVector()[it->first]);
          /* Is this robot trying to transmit? */
          if(cKilobot.GetTxStatus() == CKilobotCommunicationEntity::TX_ATTEMPT) {
             /* Yes, add it to the list of transmitting robots */
-            m_tTxNeighbors[&cKilobot];
+            m_tTxNeighbors[cKilobot.GetIndex()];
             /* Get the list of Kilobots in range */
             cOtherKilobots.clear();
             m_pcKilobotIndex->GetEntitiesAt(cOtherKilobots, cKilobot.GetPosition());
             /* Go through the Kilobots in range */
-            for(CSet<CKilobotCommunicationEntity*>::iterator it2 = cOtherKilobots.begin();
+            for(CSet<CKilobotCommunicationEntity*,SEntityComparator>::iterator it2 = cOtherKilobots.begin();
                 it2 != cOtherKilobots.end();
                 ++it2) {
                /* Get a reference to the neighboring Kilobot */
@@ -180,12 +180,14 @@ namespace argos {
                      /* Calculate distance */
                      fDistance = Distance(cKilobot.GetPosition(),
                                           cOtherKilobot.GetPosition());
-                     if(fDistance < cOtherKilobot.GetTxRange())
+                     if(fDistance < cOtherKilobot.GetTxRange()) {
                         /* cKilobot receives cOtherKilobot's message */
-                        m_tTxNeighbors[&cKilobot].insert(&cOtherKilobot);
-                     if(fDistance < cKilobot.GetTxRange())
+                        m_tTxNeighbors[cKilobot.GetIndex()].insert(&cOtherKilobot);
+                     }
+                     if(fDistance < cKilobot.GetTxRange()) {
                         /* cOtherKilobot receives cKilobot's message */
-                        m_tTxNeighbors[&cOtherKilobot].insert(&cKilobot);
+                        m_tTxNeighbors[cOtherKilobot.GetIndex()].insert(&cKilobot);
+                     }
                   } /* pair check */
                } /* entity identity + transmit check */
             } /* neighbors loop */
@@ -207,13 +209,13 @@ namespace argos {
             m_pcRNG->Uniform(CRange<UInt32>(0, it->second.size() + 1)) == 0) {
             /* The robot can transmit */
             /* Get a reference to the current Kilobot entity */
-            CKilobotCommunicationEntity& cKilobot = *(it->first);
+            CKilobotCommunicationEntity& cKilobot = *reinterpret_cast<CKilobotCommunicationEntity*>(GetSpace().GetEntityVector()[it->first]);
             /* Change its transmission status */
             cKilobot.SetTxStatus(CKilobotCommunicationEntity::TX_SUCCESS);
             /* Go through its neighbors */
             cOtherKilobots.clear();
             m_pcKilobotIndex->GetEntitiesAt(cOtherKilobots, cKilobot.GetPosition());
-            for(CSet<CKilobotCommunicationEntity*>::iterator it2 = cOtherKilobots.begin();
+            for(CSet<CKilobotCommunicationEntity*,SEntityComparator>::iterator it2 = cOtherKilobots.begin();
                 it2 != cOtherKilobots.end();
                 ++it2) {
                /* Get a reference to the neighboring Kilobot entity */
@@ -235,7 +237,7 @@ namespace argos {
                      if(fDistance < cKilobot.GetTxRange() &&
                         m_pcRNG->Bernoulli(m_fRxProb)) {
                         /* cOtherKilobot receives cKilobot's message */
-                        m_tCommMatrix[&cOtherKilobot].insert(&cKilobot);
+                        m_tCommMatrix[cOtherKilobot.GetIndex()].insert(&cKilobot);
                      }
                   } /* occlusion check */
                } /* identity check */
@@ -249,8 +251,8 @@ namespace argos {
 
    void CKilobotCommunicationMedium::AddEntity(CKilobotCommunicationEntity& c_entity) {
       m_tCommMatrix.insert(
-         std::make_pair<CKilobotCommunicationEntity*, CSet<CKilobotCommunicationEntity*> >(
-            &c_entity, CSet<CKilobotCommunicationEntity*>()));
+         std::make_pair<ssize_t, CSet<CKilobotCommunicationEntity*,SEntityComparator> >(
+            c_entity.GetIndex(), CSet<CKilobotCommunicationEntity*,SEntityComparator>()));
       m_pcKilobotIndex->AddEntity(c_entity);
    }
 
@@ -259,18 +261,16 @@ namespace argos {
 
    void CKilobotCommunicationMedium::RemoveEntity(CKilobotCommunicationEntity& c_entity) {
       m_pcKilobotIndex->RemoveEntity(c_entity);
-      TAdjacencyMatrix::iterator it = m_tCommMatrix.find(&c_entity);
+      TAdjacencyMatrix::iterator it = m_tCommMatrix.find(c_entity.GetIndex());
       if(it != m_tCommMatrix.end())
          m_tCommMatrix.erase(it);
-      else
-         THROW_ARGOSEXCEPTION("Can't erase entity \"" << c_entity.GetId() << "\" from Kilobot medium \"" << GetId() << "\"");
    }
 
    /****************************************/
    /****************************************/
 
-   const CSet<CKilobotCommunicationEntity*>& CKilobotCommunicationMedium::GetKilobotsCommunicatingWith(CKilobotCommunicationEntity& c_entity) const {
-      TAdjacencyMatrix::const_iterator it = m_tCommMatrix.find(&c_entity);
+   const CSet<CKilobotCommunicationEntity*,SEntityComparator>& CKilobotCommunicationMedium::GetKilobotsCommunicatingWith(CKilobotCommunicationEntity& c_entity) const {
+      TAdjacencyMatrix::const_iterator it = m_tCommMatrix.find(c_entity.GetIndex());
       if(it != m_tCommMatrix.end()) {
          return it->second;
       }

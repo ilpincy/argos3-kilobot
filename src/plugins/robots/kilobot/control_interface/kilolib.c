@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/mman.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
@@ -9,6 +10,59 @@
 #include <signal.h>
 #include <ctype.h>
 
+/*
+ * Mersenne-Twister-related constants
+ *
+ * These variables and constants are used to implement the
+ * Mersenne-Twister random number generation algorithm. The algorithm
+ * is used in rand_hard().
+ */
+#define MT_N          624
+#define MT_M          397
+#define MT_MATRIX_A   0x9908b0dfUL /* constant vector a */
+#define MT_UPPER_MASK 0x80000000UL /* most significant w-r bits */
+#define MT_LOWER_MASK 0x7fffffffUL /* least significant r bits */
+#define MT_INT_MAX    0xFFFFFFFFUL
+int32_t* mt_rngstate; /* Random number generator state */
+uint32_t mt_rngidx;   /* Random number generator index */
+
+/* Sets the seed of a Mersenne-Twister random number generator */
+void mt_setseed(uint32_t seed) {
+   mt_rngstate[0] = seed & 0xffffffffUL;
+   for(mt_rngidx = 1; mt_rngidx < MT_N; ++mt_rngidx) {
+      mt_rngstate[mt_rngidx] =
+         (1812433253UL * (mt_rngstate[mt_rngidx-1] ^ (mt_rngstate[mt_rngidx-1] >> 30)) + mt_rngidx);
+      mt_rngstate[mt_rngidx] &= 0xffffffffUL;
+   }
+}
+
+/* Return a random number on 32 bits */
+uint32_t mt_uniform32() {
+   uint32_t y;
+   static uint32_t mag01[2] = { 0x0UL, MT_MATRIX_A };
+   /* mag01[x] = x * MT_MATRIX_A  for x=0,1 */
+   if (mt_rngidx >= MT_N) { /* generate N words at one time */
+      int32_t kk;
+      for (kk = 0; kk < MT_N - MT_M; ++kk) {
+         y = (mt_rngstate[kk] & MT_UPPER_MASK) | (mt_rngstate[kk+1] & MT_LOWER_MASK);
+         mt_rngstate[kk] = mt_rngstate[kk+MT_M] ^ (y >> 1) ^ mag01[y & 0x1UL];
+      }
+      for (; kk < MT_N - 1; ++kk) {
+         y = (mt_rngstate[kk] & MT_UPPER_MASK) | (mt_rngstate[kk+1] & MT_LOWER_MASK);
+         mt_rngstate[kk] = mt_rngstate[kk+(MT_M-MT_N)] ^ (y >> 1) ^ mag01[y & 0x1UL];
+      }
+      y = (mt_rngstate[MT_N-1] & MT_UPPER_MASK) | (mt_rngstate[0] & MT_LOWER_MASK);
+      mt_rngstate[MT_N-1] = mt_rngstate[MT_M-1] ^ (y >> 1) ^ mag01[y & 0x1UL];
+      mt_rngidx = 0;
+   }
+   y = mt_rngstate[mt_rngidx++];
+   /* Tempering */
+   y ^= (y >> 11);
+   y ^= (y << 7) & 0x9d2c5680UL;
+   y ^= (y << 15) & 0xefc60000UL;
+   y ^= (y >> 18);
+   return y;
+}
 
 /* Kilolib original variables */
 uint32_t kilo_ticks                = 0;
@@ -101,7 +155,7 @@ void delay(uint16_t ms) {
 }
 
 uint8_t rand_hard() {
-   return rand_soft();
+   return mt_uniform32();
 }
 
 uint8_t rand_soft() {
@@ -141,7 +195,6 @@ void set_color(uint8_t color) {
 }
 
 void kilo_init() {
-   // Nothing to do
 }
 
 void cleanup() {
@@ -150,19 +203,20 @@ void cleanup() {
    shm_unlink(kilo_str_id);
 }
 
-void sigkill_handler(int s) {
+void sigterm_handler(int s) {
    cleanup();
+   exit(0);
 }
 
 void kilo_start(void (*setup)(void), void (*loop)(void)) {
-   /* Install handler for SIGKILL */
-   signal(SIGKILL, sigkill_handler);
+   /* Install handler for SIGTERM */
+   signal(SIGTERM, sigterm_handler);
    /* Execute setup() */
    setup();
    /* Continue working until killed by ARGoS controller */
    while(1) {
       /* Suspend yourself, waiting for ARGoS controller's resume signal */
-      raise(SIGTSTP);
+      raise(SIGSTOP);
       /* Resumed */
       /* Execute loop */
       preloop();
@@ -189,18 +243,25 @@ int __kilobot_main(int argc, char* argv[]);
 #undef main
 int main(int argc, char* argv[]) {
    /* Parse arguments */
-   if(argc != 3) {
+   if(argc != 5) {
       int i;
       fprintf(stderr, "Error: %s was given %d arguments\n", argv[0], argc);
       for(i = 0; i < argc; ++i) {
          fprintf(stderr, "\tARG %d: %s\n", i, argv[i]);
       }
-      fprintf(stderr, "Usage: <script> <robot_id> <tick_length>\n");
+      fprintf(stderr, "Usage: <script> <pid> <robot_id> <tick_length> <random_seed>\n");
       exit(1);
    }
-   kilo_str_id = strdup(argv[1]);
+   kilo_str_id = strdup(argv[2]);
    /* Open shared memory */
-   kilo_state_fd = shm_open(kilo_str_id, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+   char* shm_fname = malloc(strlen(argv[1]) + strlen(argv[2]) + 3);
+   shm_fname[0] = '/';
+   shm_fname[1] = 0;
+   strcat(shm_fname, argv[1]);
+   strcat(shm_fname, "_");
+   strcat(shm_fname, argv[2]);
+   kilo_state_fd = shm_open(shm_fname, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+   free(shm_fname);
    if(kilo_state_fd < 0) {
       fprintf(stderr, "Opening the shared memory file of %s: %s\n", kilo_str_id, strerror(errno));
       exit(1);
@@ -225,7 +286,11 @@ int main(int argc, char* argv[]) {
    atexit(cleanup);
    /* Initialize variables */
    kilo_uid = argos_id_to_kilo_uid(kilo_str_id);
-   argos_tick_length = strtoul(argv[2], NULL, 10);
+   argos_tick_length = strtoul(argv[3], NULL, 10);
+   /* Initialize random number generator */
+   mt_rngstate = (int32_t*)malloc(MT_N * sizeof(int32_t));
+   mt_rngidx = MT_N + 1;
+   mt_setseed(strtoul(argv[4], NULL, 10));
    /* Call main of behavior */
    return __kilobot_main(argc, argv);
 }

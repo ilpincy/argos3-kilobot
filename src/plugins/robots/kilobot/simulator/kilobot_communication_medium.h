@@ -17,6 +17,11 @@ namespace argos {
 
    public:
 
+      /** Defines the adjacency matrix */
+      typedef unordered_map<ssize_t, CSet<CKilobotCommunicationEntity*,SEntityComparator> > TAdjacencyMatrix;
+
+   public:
+
       /**
        * Class constructor.
        */
@@ -51,12 +56,17 @@ namespace argos {
        * @return An immutable vector of entities that can communicate with the given entity.       
        * @throws CARGoSException If the passed entity is not managed by this medium.
        */
-      const CSet<CKilobotCommunicationEntity*>& GetKilobotsCommunicatingWith(CKilobotCommunicationEntity& c_entity) const;
+      const CSet<CKilobotCommunicationEntity*,SEntityComparator>& GetKilobotsCommunicatingWith(CKilobotCommunicationEntity& c_entity) const;
+
+      /**
+       * Returns a reference to the adjacency matrix.
+       * @return A reference to the adjacency matrix.
+       */
+      TAdjacencyMatrix& GetCommMatrix(){
+          return m_tCommMatrix;
+      }
 
    private:
-
-      /** Defines the adjacency matrix */
-      typedef std::map<CKilobotCommunicationEntity*, CSet<CKilobotCommunicationEntity*> > TAdjacencyMatrix;
 
       /** The adjacency matrix, that associates each entity with the entities that communicate with it */
       TAdjacencyMatrix m_tCommMatrix;

@@ -2,7 +2,7 @@
   to 0 (NULL pointer) the kilobot should not send any message. This is
   the way in which you can stop sending messages on the real kilobot, by
   clearing its memory.
-         
+
 * Make it possible to cross-compile between ARGoS and the real robot
   by integrating the real kilobot compulation within the CMake
   structure.
@@ -21,7 +21,7 @@
   visualised on a window of the kilogui. It would be nice if we could
   send the debug messages to the ARGoS GUI, in a way or the other. As
   a first step, debug messages could just be discarded when compiling
-  against ARGoS, so that the code is still compatible. 
+  against ARGoS, so that the code is still compatible.
 
 * Make it possible to have an immobile kilobot (i.e., a kilobot that
   cannot be pushed away, but serves as beacon). This is very useful in
