@@ -86,6 +86,9 @@ namespace argos {
       /** Probability of receiving a message */
       Real m_fRxProb;
 
+      /** Whether to ignore communication conflicts due to channel congestion */
+      bool m_bIgnoreConflicts;
+
    };
 
 }

@@ -11,7 +11,13 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   CKilobotCommunicationMedium::CKilobotCommunicationMedium() {
+   CKilobotCommunicationMedium::CKilobotCommunicationMedium() :
+      m_pcKilobotIndex(NULL),
+      m_pcGridUpdateOperation(NULL),
+      m_pcRNG(NULL),
+      m_fRxProb(0.0),
+      m_bIgnoreConflicts(false)
+   {
    }
 
    /****************************************/
@@ -59,11 +65,12 @@ namespace argos {
             THROW_ARGOSEXCEPTION("Unknown method \"" << strPosIndexMethod << "\" for the positional index.");
          }
          /* Set probability of receiving a message */
-         m_fRxProb = 0.0;
          GetNodeAttributeOrDefault(t_tree, "message_drop_prob", m_fRxProb, m_fRxProb);
          m_fRxProb = 1.0 - m_fRxProb;
          /* Create random number generator */
          m_pcRNG = CRandom::CreateRNG("argos");
+         /* Whether or not to ignore conflicts due to channel congestion */
+         GetNodeAttributeOrDefault(t_tree, "ignore_conflicts", m_bIgnoreConflicts, m_bIgnoreConflicts);
       }
       catch(CARGoSException& ex) {
          THROW_ARGOSEXCEPTION_NESTED("Error in initialization of the range-and-bearing medium", ex);
@@ -136,8 +143,8 @@ namespace argos {
       std::pair<CKilobotCommunicationEntity*, CKilobotCommunicationEntity*> cTestKey;
       /* Used as hash for the test key */
       size_t unTestHash;
-      /* The distance between two Kilobots in line of sight */
-      Real fDistance;
+      /* The square distance between two Kilobots */
+      Real fSqDistance;
       /* Go through the Kilobot entities */
       for(TAdjacencyMatrix::iterator it = m_tCommMatrix.begin();
           it != m_tCommMatrix.end();
@@ -177,14 +184,14 @@ namespace argos {
                      itPair->second.second != cTestKey.second) { /* Pair exists, but second Kilobot involved is different */
                      /* Mark this pair as already checked */
                      mapPairsAlreadyChecked[unTestHash] = cTestKey;
-                     /* Calculate distance */
-                     fDistance = Distance(cKilobot.GetPosition(),
-                                          cOtherKilobot.GetPosition());
-                     if(fDistance < cOtherKilobot.GetTxRange()) {
+                     /* Calculate square distance */
+                     fSqDistance = SquareDistance(cKilobot.GetPosition(),
+                                                  cOtherKilobot.GetPosition());
+                     if(fSqDistance < Square(cOtherKilobot.GetTxRange())) {
                         /* cKilobot receives cOtherKilobot's message */
                         m_tTxNeighbors[cKilobot.GetIndex()].insert(&cOtherKilobot);
                      }
-                     if(fDistance < cKilobot.GetTxRange()) {
+                     if(fSqDistance < Square(cKilobot.GetTxRange())) {
                         /* cOtherKilobot receives cKilobot's message */
                         m_tTxNeighbors[cOtherKilobot.GetIndex()].insert(&cKilobot);
                      }
@@ -196,8 +203,6 @@ namespace argos {
       /*
        * Go through transmitting robots and broadcast messages
        */
-      /* The ray to use for occlusion checking */
-      CRay3 cOcclusionCheckRay;
       /* Buffer to store the intersection data */
       SEmbodiedEntityIntersectionItem sIntersectionItem;
       /* Loop over transmitting robots */
@@ -205,7 +210,8 @@ namespace argos {
           it != m_tTxNeighbors.end();
           ++it) {
          /* Is this robot conflicting? */
-         if(it->second.empty() ||
+         if(m_bIgnoreConflicts ||
+            it->second.empty() ||
             m_pcRNG->Uniform(CRange<UInt32>(0, it->second.size() + 1)) == 0) {
             /* The robot can transmit */
             /* Get a reference to the current Kilobot entity */
@@ -222,24 +228,15 @@ namespace argos {
                CKilobotCommunicationEntity& cOtherKilobot = **it2;
                /* Make sure the robots are different */
                if(&cKilobot != &cOtherKilobot) {
-                  /* Initialize the occlusion check ray start to the position of the robot */
-                  cOcclusionCheckRay.SetStart(cKilobot.GetPosition());
-                  /* Proceed if the two entities are not obstructed by another object */
-                  cOcclusionCheckRay.SetEnd(cOtherKilobot.GetPosition());
-                  if((!GetClosestEmbodiedEntityIntersectedByRay(sIntersectionItem,
-                                                                cOcclusionCheckRay,
-                                                                cKilobot.GetEntityBody())) ||
-                     (&cOtherKilobot.GetEntityBody() == sIntersectionItem.IntersectedEntity)) {
-                     /* If we get here, the two Kilobot entities are in direct line of sight */
-                     /* Calculate distance */
-                     fDistance = cOcclusionCheckRay.GetLength();
-                     /* If robots are within transmission range and transmission succeeds... */
-                     if(fDistance < cKilobot.GetTxRange() &&
-                        m_pcRNG->Bernoulli(m_fRxProb)) {
-                        /* cOtherKilobot receives cKilobot's message */
-                        m_tCommMatrix[cOtherKilobot.GetIndex()].insert(&cKilobot);
-                     }
-                  } /* occlusion check */
+                  /* Calculate distance */
+                  fSqDistance = SquareDistance(cKilobot.GetPosition(),
+                                               cOtherKilobot.GetPosition());
+                  /* If robots are within transmission range and transmission succeeds... */
+                  if(fSqDistance < Square(cKilobot.GetTxRange()) &&
+                     m_pcRNG->Bernoulli(m_fRxProb)) {
+                     /* cOtherKilobot receives cKilobot's message */
+                     m_tCommMatrix[cOtherKilobot.GetIndex()].insert(&cKilobot);
+                  }
                } /* identity check */
             } /* neighbor loop */
          } /* conflict check */
@@ -304,7 +301,13 @@ namespace argos {
                    "It is possible to specify the probability with which a robot a drops an incoming\n"
                    "message. This is done by setting the attribute \"message_drop_prob\". When set\n"
                    "to 0, no message is ever dropped; when set to 1, every message is dropped.\n\n"
-                   "<kilobot_communication id=\"kbc\" message_drop_prob=\"0.25\" />\n"
+                   "<kilobot_communication id=\"kbc\" message_drop_prob=\"0.25\" />\n\n"
+                   "It is also possible to ignore the effect of channel congestion. When two robots\n"
+                   "are trying to send a message at the same time, a message conflict occurs. The\n"
+                   "default behavior is to allow robots to complete message delivery according to a\n"
+                   "random choice. If you don't want conflicts to be simulated, set the flag\n"
+                   "'ignore_conflicts' to 'true':\n\n"
+                   "<kilobot_communication id=\"kbc\" ignore_conflicts=\"true\" />\n"
                    ,
                    "Under development"
       );

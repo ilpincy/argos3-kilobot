@@ -1,5 +1,6 @@
 #include "ci_kilobot_controller.h"
 #include <argos3/core/utility/logging/argos_log.h>
+#include <argos3/core/simulator/physics_engine/physics_engine.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/mman.h>
@@ -79,7 +80,7 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
                  strBehavior.c_str(),                                                 // Script name
                  ToString(tParentPID).c_str(),                                        // The parent process' PID
                  GetId().c_str(),                                                     // Robot id
-                 ToString(100).c_str(),                                               // Control step duration in ms
+                 ToString(static_cast<UInt32>(CPhysicsEngine::GetSimulationClockTick() * 1000)).c_str(), // Control step duration in ms
                  ToString(m_pcRNG->Uniform(CRange<UInt32>(0, 0xFFFFFFFFUL))).c_str(), // Random seed for rand_hard()
                  NULL
             );
