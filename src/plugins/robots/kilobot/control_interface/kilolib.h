@@ -101,6 +101,7 @@ typedef void (*message_tx_success_t)(void);
  * @endcode
  */
 
+extern char* kilo_str_id; // kilobot id as string
 extern uint32_t kilo_ticks;
 extern uint16_t kilo_tx_period;
 /**

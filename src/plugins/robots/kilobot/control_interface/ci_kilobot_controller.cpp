@@ -1,20 +1,12 @@
 #include "ci_kilobot_controller.h"
 #include <argos3/core/utility/logging/argos_log.h>
 #include <argos3/core/simulator/physics_engine/physics_engine.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <cerrno>
-#include <fcntl.h>
-#include <unistd.h>
 
 /****************************************/
 /****************************************/
 
 CCI_KilobotController::CCI_KilobotController() :
+   m_ptRobotState(NULL),
    m_pcMotors(NULL),
    m_pcLED(NULL),
    m_pcLight(NULL),
@@ -22,7 +14,7 @@ CCI_KilobotController::CCI_KilobotController() :
    m_pcCommS(NULL),
    m_pcRNG(NULL),
    m_nSharedMemFD(-1),
-   m_ptRobotState(NULL),
+   m_nDebugInfoFD(-1),
    m_tBehaviorPID(-1) {}
 
 /****************************************/

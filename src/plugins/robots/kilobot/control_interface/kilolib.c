@@ -85,9 +85,9 @@ static uint32_t  kilo_tx_clock     = 0;    // message tx clock
 static uint32_t  kilo_delay        = 0;    // delay clock
 static uint8_t   kilo_seed         = 0xAA; // default random seed
 static uint8_t   kilo_accumulator  = 0;    // rng accumulator
-static char*     kilo_str_id       = NULL; // kilobot id as string
 static int       kilo_state_fd     = -1;   // shared memory file
 kilobot_state_t* kilo_state        = NULL; // shared robot state
+char*            kilo_str_id       = NULL; // kilobot id as string
 
 void preloop() {
    /* Update tick count */

@@ -8,6 +8,7 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_CONTROLINTERFACE
   control_interface/ci_kilobot_controller.h
   control_interface/ci_kilobot_light_sensor.h
   control_interface/kilolib.h
+  control_interface/debug.h
   control_interface/message.h
   control_interface/message_crc.h)
 # argos3/plugins/robots/kilobot/simulator
