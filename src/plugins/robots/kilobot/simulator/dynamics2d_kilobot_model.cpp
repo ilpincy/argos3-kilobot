@@ -14,8 +14,8 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   static const Real KILOBOT_MAX_FORCE                = 0.001f;
-   static const Real KILOBOT_MAX_TORQUE               = 0.001f;
+   static const Real KILOBOT_MAX_FORCE  = 0.001f;
+   static const Real KILOBOT_MAX_TORQUE = 0.001f;
 
    enum KILOBOT_WHEELS {
       KILOBOT_LEFT_WHEEL = 0,
@@ -33,7 +33,8 @@ namespace argos {
       m_cDiffSteering(c_engine,
                       KILOBOT_MAX_FORCE,
                       KILOBOT_MAX_TORQUE,
-                      KILOBOT_INTERPIN_DISTANCE),
+                      KILOBOT_INTERPIN_DISTANCE,
+                      c_entity.GetConfigurationNode()),
       m_fCurrentWheelVelocity(m_cWheeledEntity.GetWheelVelocities()) {
       /* Create the actual body with initial position and orientation */
       cpBody* ptBody =
