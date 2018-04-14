@@ -31,11 +31,21 @@ CCI_KilobotController::CCI_KilobotController() :
 void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
    try {
       /* Initialize devices */
-      m_pcMotors = GetActuator<CCI_DifferentialSteeringActuator>("differential_steering");
-      m_pcLED    = GetActuator<CCI_LEDsActuator                >("leds"                 );
-      m_pcCommA  = GetActuator<CCI_KilobotCommunicationActuator>("kilobot_communication");
-      m_pcCommS  = GetSensor  <CCI_KilobotCommunicationSensor  >("kilobot_communication");
-      m_pcLight  = GetSensor  <CCI_KilobotLightSensor          >("kilobot_light"        );
+      try {
+         m_pcMotors = GetActuator<CCI_DifferentialSteeringActuator>("differential_steering");
+      } catch(CARGoSException&) {}
+      try {
+         m_pcLED    = GetActuator<CCI_LEDsActuator                >("leds"                 );
+      } catch(CARGoSException&) {}
+      try {
+         m_pcCommA  = GetActuator<CCI_KilobotCommunicationActuator>("kilobot_communication");
+      } catch(CARGoSException&) {}
+      try {
+         m_pcCommS  = GetSensor  <CCI_KilobotCommunicationSensor  >("kilobot_communication");
+      } catch(CARGoSException&) {}
+      try {
+         m_pcLight  = GetSensor  <CCI_KilobotLightSensor          >("kilobot_light"        );
+      } catch(CARGoSException&) {}
       /* Parse XML parameters */
       std::string strBehavior;
       GetNodeAttribute(t_tree, "behavior", strBehavior);
@@ -99,22 +109,25 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
 
 void CCI_KilobotController::ControlStep() {
    /* Set light reading */
-   m_ptRobotState->ambientlight = m_pcLight->GetReading();
+   if(m_pcLight)
+      m_ptRobotState->ambientlight = m_pcLight->GetReading();
    /* Set received message */
-   if(!m_pcCommS->GetPackets().empty()) {
-      m_ptRobotState->rx_state = Min<UInt8>(m_pcCommS->GetPackets().size(), KILOBOT_MAX_RX);
-      for(size_t i = 0; i < m_ptRobotState->rx_state; ++i) {
-         ::memcpy(&m_ptRobotState->rx_message[i],
-                  m_pcCommS->GetPackets()[i].Message,
-                  sizeof(message_t));
-         ::memcpy(&m_ptRobotState->rx_distance[i],
-                  &m_pcCommS->GetPackets()[i].Distance,
-                  sizeof(distance_measurement_t));
+   if(m_pcCommS) {
+      if(!m_pcCommS->GetPackets().empty()) {
+         m_ptRobotState->rx_state = Min<UInt8>(m_pcCommS->GetPackets().size(), KILOBOT_MAX_RX);
+         for(size_t i = 0; i < m_ptRobotState->rx_state; ++i) {
+            ::memcpy(&m_ptRobotState->rx_message[i],
+                     m_pcCommS->GetPackets()[i].Message,
+                     sizeof(message_t));
+            ::memcpy(&m_ptRobotState->rx_distance[i],
+                     &m_pcCommS->GetPackets()[i].Distance,
+                     sizeof(distance_measurement_t));
+         }
       }
-   }
-   /* Was last message sent? */
-   if(m_pcCommS->MessageSent()) {
-      m_ptRobotState->tx_state = 2;
+      /* Was last message sent? */
+      if(m_pcCommS->MessageSent()) {
+         m_ptRobotState->tx_state = 2;
+      }
    }
    // TODO m_ptRobotState->voltage
    // TODO m_ptRobotState->temperature
@@ -124,13 +137,17 @@ void CCI_KilobotController::ControlStep() {
    ::waitpid(m_tBehaviorPID, NULL, WUNTRACED);
    /* Set actuator values */
    // TODO set proper conversion factors
-   m_pcMotors->SetLinearVelocity(3.0 * m_ptRobotState->right_motor / 255.0,
-                                 3.0 * m_ptRobotState->left_motor / 255.0);
-   m_pcLED->SetSingleColor(0, CColor(255 * RED(m_ptRobotState->color)   / 3,
-                                     255 * GREEN(m_ptRobotState->color) / 3,
-                                     255 * BLUE(m_ptRobotState->color)  / 3));
+   if(m_pcMotors) {
+      m_pcMotors->SetLinearVelocity(3.0 * m_ptRobotState->right_motor / 255.0,
+                                    3.0 * m_ptRobotState->left_motor / 255.0);
+   }
+   if(m_pcLED) {
+      m_pcLED->SetSingleColor(0, CColor(255 * RED(m_ptRobotState->color)   / 3,
+                                        255 * GREEN(m_ptRobotState->color) / 3,
+                                        255 * BLUE(m_ptRobotState->color)  / 3));
+   }
    /* Set message to send */
-   if(m_ptRobotState->tx_state == 1) {
+   if(m_pcCommA && m_ptRobotState->tx_state == 1) {
       m_pcCommA->SetMessage(&m_ptRobotState->tx_message);
    }
 }
