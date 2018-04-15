@@ -38,20 +38,18 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       try {
          m_pcLight  = GetSensor  <CCI_KilobotLightSensor          >("kilobot_light"        );
       } catch(CARGoSException&) {}
-      /* Parse XML parameters */
-      std::string strBehavior;
-      GetNodeAttribute(t_tree, "behavior", strBehavior);
-      /* Make sure script file exists */
-      int nBehaviorFD = open(strBehavior.c_str(), O_RDONLY);
-      if(nBehaviorFD < 0) {
-         THROW_ARGOSEXCEPTION("Opening behavior file \"" << strBehavior << "\": " << strerror(errno));
-      }
-      close(nBehaviorFD);
       /* Create a random number generator */
       m_pcRNG = CRandom::CreateRNG("argos");
+      /* Parse XML parameters */
+      GetNodeAttribute(t_tree, "behavior", m_strBehaviorFName);
+      /* Make sure script file exists */
+      int nBehaviorFD = open(m_strBehaviorFName.c_str(), O_RDONLY);
+      if(nBehaviorFD < 0) {
+         THROW_ARGOSEXCEPTION("Opening behavior file \"" << m_strBehaviorFName << "\": " << strerror(errno));
+      }
+      close(nBehaviorFD);
       /* Create shared memory area for master-slave communication */
-      pid_t tParentPID = getpid();
-      m_nSharedMemFD = ::shm_open(("/" + ToString<pid_t>(tParentPID) + "_" + GetId()).c_str(),
+      m_nSharedMemFD = ::shm_open(("/" + ToString<pid_t>(getpid()) + "_" + GetId()).c_str(),
                                   O_RDWR | O_CREAT,
                                   S_IRUSR | S_IWUSR);
       if(m_nSharedMemFD < 0) {
@@ -70,26 +68,8 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
       if(m_ptRobotState == MAP_FAILED) {
          THROW_ARGOSEXCEPTION("Mmapping the shared memory area of " << GetId() << ": " << ::strerror(errno));
       }
-      ::memset(m_ptRobotState, 0, sizeof(kilobot_state_t));
-      /* Fork this process */
-      m_tBehaviorPID = ::fork();
-      if(m_tBehaviorPID < 0) {
-         THROW_ARGOSEXCEPTION("Forking the behavior process of " << GetId() << ": " << ::strerror(errno));
-      }
-      /* Execute the behavior */
-      if(m_tBehaviorPID == 0) {
-         ::execl(strBehavior.c_str(),
-                 strBehavior.c_str(),                                                 // Script name
-                 ToString(tParentPID).c_str(),                                        // The parent process' PID
-                 GetId().c_str(),                                                     // Robot id
-                 ToString(static_cast<UInt32>(CPhysicsEngine::GetSimulationClockTick() * 1000)).c_str(), // Control step duration in ms
-                 ToString(m_pcRNG->Uniform(CRange<UInt32>(0, 0xFFFFFFFFUL))).c_str(), // Random seed for rand_hard()
-                 NULL
-            );
-         /* If the next line is executed, it's because execl did not succeed */
-         THROW_ARGOSEXCEPTION("Executing the behavior process of " << GetId() << ": " << strBehavior << ": " << ::strerror(errno));
-         ::exit(1);
-      }
+      /* Create behavior */
+      CreateBehavior();
    }
    catch(CARGoSException& ex) {
       THROW_ARGOSEXCEPTION_NESTED("Error initializing the Kilobot controller for robot " << GetId(), ex);
@@ -148,13 +128,54 @@ void CCI_KilobotController::ControlStep() {
 /****************************************/
 
 void CCI_KilobotController::Reset() {
-   ::memset(m_ptRobotState, 0, sizeof(kilobot_state_t));
+   /* Kill kilobot process */
+   ::kill(m_tBehaviorPID, SIGTERM);
+   int nStatus;
+   ::waitpid(m_tBehaviorPID, &nStatus, WIFEXITED(nStatus));
+   /* Restart kilobot process */
+   CreateBehavior();
 }
 
 /****************************************/
 /****************************************/
 
 void CCI_KilobotController::Destroy() {
+   DestroyBehavior();
+}
+
+/****************************************/
+/****************************************/
+
+void CCI_KilobotController::CreateBehavior() {
+   /* Zero the robot state */
+   ::memset(m_ptRobotState, 0, sizeof(kilobot_state_t));
+   /* Fork this process */
+   pid_t tParentPID = getpid();
+   m_tBehaviorPID = ::fork();
+   if(m_tBehaviorPID < 0) {
+      THROW_ARGOSEXCEPTION("Forking the behavior process of " << GetId() << ": " << ::strerror(errno));
+   }
+   /* Execute the behavior */
+   if(m_tBehaviorPID == 0) {
+      /* Child process */
+      ::execl(m_strBehaviorFName.c_str(),
+              m_strBehaviorFName.c_str(),                                          // Script name
+              ToString(tParentPID).c_str(),                                        // The parent process' PID
+              GetId().c_str(),                                                     // Robot id
+              ToString(static_cast<UInt32>(CPhysicsEngine::GetSimulationClockTick() * 1000)).c_str(), // Control step duration in ms
+              ToString(m_pcRNG->Uniform(CRange<UInt32>(0, 0xFFFFFFFFUL))).c_str(), // Random seed for rand_hard()
+              NULL
+         );
+      /* If the next line is executed, it's because execl did not succeed */
+      THROW_ARGOSEXCEPTION("Executing the behavior process of " << GetId() << ": " << m_strBehaviorFName << ": " << ::strerror(errno));
+      ::exit(1);
+   }
+}
+
+/****************************************/
+/****************************************/
+
+void CCI_KilobotController::DestroyBehavior() {
    ::kill(m_tBehaviorPID, SIGTERM);
    ::kill(m_tBehaviorPID, SIGCONT);
    int nStatus;

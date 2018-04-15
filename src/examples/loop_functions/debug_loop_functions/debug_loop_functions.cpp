@@ -5,7 +5,20 @@
 /****************************************/
 
 void CDebugLoopFunctions::Init(TConfigurationNode& t_tree) {
-   /* Get debug info from the robots */
+   Reset();
+}
+
+/****************************************/
+/****************************************/
+
+void CDebugLoopFunctions::Reset() {
+   /*
+    * When the 'reset' method is called on the kilobot controller, the
+    * kilobot state is destroyed and recreated. Thus, we need to
+    * recreate the list of controllers and debugging info from scratch
+    * as well.
+    */
+   m_tKBs.clear();
    /* Get the map of all kilobots from the space */
    CSpace::TMapPerType& tKBMap = GetSpace().GetEntitiesByType("kilobot");
    /* Go through them */
@@ -20,12 +33,6 @@ void CDebugLoopFunctions::Init(TConfigurationNode& t_tree) {
       /* Append to list */
       m_tKBs.push_back(std::make_pair(pcKBC, ptDebugInfo));
    }
-}
-
-/****************************************/
-/****************************************/
-
-void CDebugLoopFunctions::Reset() {
 }
 
 /****************************************/

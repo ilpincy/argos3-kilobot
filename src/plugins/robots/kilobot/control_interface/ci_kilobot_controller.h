@@ -94,6 +94,12 @@ public:
          ("/ARGoS_DEBUG_" + ToString<pid_t>(getpid()) + "_" + GetId()).c_str());
    }
 
+protected:
+
+   virtual void CreateBehavior();
+
+   virtual void DestroyBehavior();
+
 private:
 
    /** Pointer to the shared memory area */
@@ -125,6 +131,9 @@ private:
 
    /** PID of the process executing the behavior */
    pid_t m_tBehaviorPID;
+
+   /** File name of the behavior to load */
+   std::string m_strBehaviorFName;
 
 };
 
