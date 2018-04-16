@@ -110,8 +110,8 @@ void CCI_KilobotController::ControlStep() {
    /* Set actuator values */
    // TODO set proper conversion factors
    if(m_pcMotors) {
-      m_pcMotors->SetLinearVelocity(3.0 * m_ptRobotState->right_motor / 255.0,
-                                    3.0 * m_ptRobotState->left_motor / 255.0);
+      m_pcMotors->SetLinearVelocity(6.0 * m_ptRobotState->right_motor / 255.0,
+                                    6.0 * m_ptRobotState->left_motor / 255.0);
    }
    if(m_pcLED) {
       m_pcLED->SetColor(CColor(255 * RED(m_ptRobotState->color)   / 3,
