@@ -16,7 +16,7 @@ namespace argos {
 
    static const Real KILOBOT_MAX_FORCE  = 0.001f;
    static const Real KILOBOT_MAX_TORQUE = 0.001f;
-   static const Real KILOBOT_FRICTION   = 0.7f;
+   static const Real KILOBOT_FRICTION   = 2.5f;
 
    enum KILOBOT_WHEELS {
       KILOBOT_LEFT_WHEEL = 0,
@@ -43,7 +43,6 @@ namespace argos {
          NodeExists(*c_entity.GetConfigurationNode(), "dynamics2d")) {
          TConfigurationNode& tDyn2D = GetNode(*c_entity.GetConfigurationNode(), "dynamics2d");
          GetNodeAttributeOrDefault(tDyn2D, "friction", fFriction, fFriction);
-         DEBUG("Kilobot dynamics 2D model using friction = %f\n", fFriction);
       }
       /* Create the actual body with initial position and orientation */
       cpBody* ptBody =
