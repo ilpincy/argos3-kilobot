@@ -162,7 +162,7 @@ void CCI_KilobotController::CreateBehavior() {
               m_strBehaviorFName.c_str(),                                          // Script name
               ToString(tParentPID).c_str(),                                        // The parent process' PID
               GetId().c_str(),                                                     // Robot id
-              ToString(static_cast<UInt32>(CPhysicsEngine::GetSimulationClockTick() * 1000)).c_str(), // Control step duration in ms
+              ToString(CPhysicsEngine::GetSimulationClockTick()).c_str(),          // Control step duration in sec
               ToString(m_pcRNG->Uniform(CRange<UInt32>(0, 0xFFFFFFFFUL))).c_str(), // Random seed for rand_hard()
               NULL
          );

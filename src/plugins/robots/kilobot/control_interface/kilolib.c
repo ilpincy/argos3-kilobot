@@ -65,8 +65,8 @@ uint32_t mt_uniform32() {
 }
 
 /* Kilolib original variables */
-uint32_t kilo_ticks                = 0;
-uint16_t kilo_tx_period            = 100;
+uint32_t kilo_ticks                = 0;   // current number of elapsed ticks
+uint16_t kilo_tx_period            = 100; // message transmission period in ms
 uint16_t kilo_uid                  = 0;
 uint8_t  kilo_turn_left            = 255;
 uint8_t  kilo_turn_right           = 255;
@@ -80,9 +80,11 @@ message_tx_t kilo_message_tx = message_tx_dummy;
 message_tx_success_t kilo_message_tx_success = message_tx_success_dummy;
 
 /* Variables necessary here */
-static uint32_t  argos_tick_length = 0;    // length of an argos tick in ms
-static uint32_t  kilo_tx_clock     = 0;    // message tx clock
-static uint32_t  kilo_delay        = 0;    // delay clock
+static float     kilo_ticks_delta  = 0.0f; // how much to increase the kilo_ticks every argos tick
+static float     kilo_ticks_frac   = 0;    // fractional part of kilo_ticks to account for non-integer delta
+static float     kilo_ms_delta     = 0.0f; // how much to decrease delay and tx clocks in ms
+static float     kilo_tx_clock     = 0.0f; // message transmission clock in ms
+static float     kilo_delay        = 0.0f; // delay clock in ms
 static uint8_t   kilo_seed         = 0xAA; // default random seed
 static uint8_t   kilo_accumulator  = 0;    // rng accumulator
 static int       kilo_state_fd     = -1;   // shared memory file
@@ -91,16 +93,16 @@ char*            kilo_str_id       = NULL; // kilobot id as string
 
 void preloop() {
    /* Update tick count */
-   // TODO: this is approximated, and works only if (argos_tick_length > TICKS_PER_SEC)
-   kilo_ticks += argos_tick_length / TICKS_PER_SEC;
+   kilo_ticks_frac += kilo_ticks_delta;
+   kilo_ticks += (uint32_t)kilo_ticks_frac;
    /* Message sent? */
    if(kilo_state->tx_state != 2) {
       /* No message sent */
-      kilo_tx_clock += argos_tick_length;
+      kilo_tx_clock += kilo_ms_delta;
    } else {
       /* Message sent */
       kilo_state->tx_state = 0;
-      kilo_tx_clock = 0;
+      kilo_tx_clock = 0.0f;
       kilo_message_tx_success();
    }
    /* Message received? */
@@ -111,6 +113,7 @@ void preloop() {
       }
       kilo_state->rx_state = 0;
    }
+   kilo_ticks_frac -= (uint32_t)kilo_ticks_frac;
 }
 
 void postloop() {
@@ -132,24 +135,24 @@ uint8_t estimate_distance(const distance_measurement_t* d) {
 
 void delay(uint16_t ms) {
    /* If the delay is shorter than the tick length, it's no delay at all */
-   if(ms < argos_tick_length) return;
+   if(ms < kilo_ms_delta) return;
    /* Set delay counter and wait */
    kilo_delay = ms;
    postloop();
-   while(kilo_delay > 0) {
+   while(kilo_delay > 0.0f) {
       /* Suspend process, waiting for ARGoS controller's resume signal */
       raise(SIGTSTP);
       /* Update state */
       preloop();
       /* Are we done waiting? */
-      if(kilo_delay > argos_tick_length) {
+      if(kilo_delay > kilo_ms_delta) {
          /* No, keep going */
-         kilo_delay -= argos_tick_length;
+         kilo_delay -= kilo_ms_delta;
          postloop();
       }
       else {
          /* Done waiting! */
-         kilo_delay = 0;
+         kilo_delay = 0.0f;
       }
    }
 }
@@ -284,9 +287,11 @@ int main(int argc, char* argv[]) {
    }
    /* Install cleanup function */
    atexit(cleanup);
-   /* Initialize variables */
+   /* Set uid */
    kilo_uid = argos_id_to_kilo_uid(kilo_str_id);
-   argos_tick_length = strtoul(argv[3], NULL, 10);
+   /* Set kilo_ticks delta */
+   kilo_ticks_delta = (strtof(argv[3], NULL) * TICKS_PER_SEC);
+   kilo_ms_delta = kilo_ticks_delta / TICKS_PER_SEC * 1000.0;
    /* Initialize random number generator */
    mt_rngstate = (int32_t*)malloc(MT_N * sizeof(int32_t));
    mt_rngidx = MT_N + 1;
