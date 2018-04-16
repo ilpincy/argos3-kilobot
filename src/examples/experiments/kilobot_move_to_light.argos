@@ -7,7 +7,7 @@
   <framework>
     <system threads="0" />
     <experiment length="0"
-                ticks_per_second="10"
+                ticks_per_second="31"
                 random_seed="124" />
   </framework>
 
@@ -19,11 +19,8 @@
     <kilobot_controller id="kbc">
       <actuators>
         <differential_steering implementation="default" />
-        <leds implementation="default" medium="leds" />
-        <kilobot_communication implementation="default" />
       </actuators>
       <sensors>
-        <kilobot_communication implementation="default" medium="kilocomm" />
         <kilobot_light implementation="rot_z_only" show_rays="true" />
       </sensors>
       <params behavior="build/examples/behaviors/move_to_light" />
@@ -59,7 +56,6 @@
   <!-- * Media * -->
   <!-- ********* -->
   <media>
-    <kilobot_communication id="kilocomm" />
     <led id="leds" />
   </media>
 

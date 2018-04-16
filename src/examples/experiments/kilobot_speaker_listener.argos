@@ -7,7 +7,7 @@
   <framework>
     <system threads="0" />
     <experiment length="0"
-                ticks_per_second="10"
+                ticks_per_second="31"
                 random_seed="124" />
   </framework>
 
@@ -18,26 +18,22 @@
 
     <kilobot_controller id="speaker">
       <actuators>
-        <differential_steering implementation="default" />
-        <leds implementation="default" medium="leds" />
+        <kilobot_led implementation="default" />
         <kilobot_communication implementation="default" />
       </actuators>
       <sensors>
         <kilobot_communication implementation="default" medium="kilocomm" show_rays="true" />
-        <kilobot_light implementation="rot_z_only" />
       </sensors>
       <params behavior="build/examples/behaviors/test_speaker" />
     </kilobot_controller>
 
     <kilobot_controller id="listener">
       <actuators>
-        <differential_steering implementation="default" />
-        <leds implementation="default" medium="leds" />
+        <kilobot_led implementation="default" />
         <kilobot_communication implementation="default" />
       </actuators>
       <sensors>
         <kilobot_communication implementation="default" medium="kilocomm" show_rays="true" />
-        <kilobot_light implementation="rot_z_only" />
       </sensors>
       <params behavior="build/examples/behaviors/test_listener" />
     </kilobot_controller>
@@ -48,13 +44,6 @@
   <!-- * Arena configuration * -->
   <!-- *********************** -->
   <arena size="2, 2, 1" center="0,0,0.5">
-    <light id="l0"
-           position="0,0,0.95"
-           orientation="0,0,0"
-           color="yellow"
-           intensity="1.0"
-           medium="leds"/>
-
     <kilobot id="kb1">
       <body position="-0.025,0,0" orientation="0,0,0" />
       <controller config="speaker" />>
@@ -79,7 +68,6 @@
   <!-- ********* -->
   <media>
     <kilobot_communication id="kilocomm" />
-    <led id="leds" />
   </media>
 
   <!-- ****************** -->

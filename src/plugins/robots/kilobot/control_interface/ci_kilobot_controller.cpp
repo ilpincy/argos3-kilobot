@@ -27,7 +27,7 @@ void CCI_KilobotController::Init(TConfigurationNode& t_tree) {
          m_pcMotors = GetActuator<CCI_DifferentialSteeringActuator>("differential_steering");
       } catch(CARGoSException&) {}
       try {
-         m_pcLED    = GetActuator<CCI_LEDsActuator                >("leds"                 );
+         m_pcLED    = GetActuator<CCI_KilobotLEDActuator          >("kilobot_led"          );
       } catch(CARGoSException&) {}
       try {
          m_pcCommA  = GetActuator<CCI_KilobotCommunicationActuator>("kilobot_communication");
@@ -114,9 +114,9 @@ void CCI_KilobotController::ControlStep() {
                                     3.0 * m_ptRobotState->left_motor / 255.0);
    }
    if(m_pcLED) {
-      m_pcLED->SetSingleColor(0, CColor(255 * RED(m_ptRobotState->color)   / 3,
-                                        255 * GREEN(m_ptRobotState->color) / 3,
-                                        255 * BLUE(m_ptRobotState->color)  / 3));
+      m_pcLED->SetColor(CColor(255 * RED(m_ptRobotState->color)   / 3,
+                               255 * GREEN(m_ptRobotState->color) / 3,
+                               255 * BLUE(m_ptRobotState->color)  / 3));
    }
    /* Set message to send */
    if(m_pcCommA && m_ptRobotState->tx_state == 1) {

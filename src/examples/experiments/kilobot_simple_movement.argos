@@ -19,13 +19,9 @@
     <kilobot_controller id="kbc">
       <actuators>
         <differential_steering implementation="default" />
-        <leds implementation="default" medium="leds" />
-        <kilobot_communication implementation="default" />
+        <kilobot_led implementation="default" />
       </actuators>
-      <sensors>
-        <kilobot_communication implementation="default" medium="kilocomm" />
-        <kilobot_light implementation="rot_z_only" />
-      </sensors>
+      <sensors />
       <params behavior="build/examples/behaviors/simple_movement" />
     </kilobot_controller>
 
@@ -35,13 +31,6 @@
   <!-- * Arena configuration * -->
   <!-- *********************** -->
   <arena size="2, 2, 1" center="0,0,0.5">
-    <light id="l0"
-           position="0,0,0.95"
-           orientation="0,0,0"
-           color="yellow"
-           intensity="1.0"
-           medium="leds"/>
-
     <kilobot id="kb1">
       <body position="0,0,0" orientation="0,0,0" />
       <controller config="kbc" />>
@@ -58,10 +47,7 @@
   <!-- ********* -->
   <!-- * Media * -->
   <!-- ********* -->
-  <media>
-    <kilobot_communication id="kilocomm" />
-    <led id="leds" />
-  </media>
+  <media />
 
   <!-- ****************** -->
   <!-- * Visualization * -->

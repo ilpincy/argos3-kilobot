@@ -20,7 +20,7 @@
     <kilobot_controller id="kbc">
       <actuators>
         <differential_steering implementation="default" />
-        <leds implementation="default" medium="leds" />
+        <kilobot_led implementation="default" />
       </actuators>
       <sensors />
       <params behavior="build/examples/behaviors/simple_movement" />
@@ -74,9 +74,7 @@
   <!-- ********* -->
   <!-- * Media * -->
   <!-- ********* -->
-  <media>
-    <led id="leds" />
-  </media>
+  <media />
 
   <!-- ****************** -->
   <!-- * Visualization * -->

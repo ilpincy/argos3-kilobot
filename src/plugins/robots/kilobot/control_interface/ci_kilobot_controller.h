@@ -15,7 +15,7 @@
 #include <argos3/core/utility/math/rng.h>
 #include <argos3/plugins/robots/kilobot/control_interface/kilolib.h>
 #include <argos3/plugins/robots/generic/control_interface/ci_differential_steering_actuator.h>
-#include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
+#include <argos3/plugins/robots/kilobot/control_interface/ci_kilobot_led_actuator.h>
 #include <argos3/plugins/robots/kilobot/control_interface/ci_kilobot_light_sensor.h>
 #include <argos3/plugins/robots/kilobot/control_interface/ci_kilobot_communication_actuator.h>
 #include <argos3/plugins/robots/kilobot/control_interface/ci_kilobot_communication_sensor.h>
@@ -109,7 +109,7 @@ private:
    CCI_DifferentialSteeringActuator* m_pcMotors;
 
    /** Pointer to LED actuator */
-   CCI_LEDsActuator* m_pcLED;
+   CCI_KilobotLEDActuator* m_pcLED;
 
    /** Pointer to the light sensor */
    CCI_KilobotLightSensor* m_pcLight;
