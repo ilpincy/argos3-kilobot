@@ -5,6 +5,7 @@
 #include <argos3/core/simulator/space/positional_indices/grid.h>
 #include <argos3/core/utility/configuration/argos_exception.h>
 #include <argos3/core/utility/logging/argos_log.h>
+#include <argos3/plugins/robots/kilobot/simulator/kilobot_measures.h>
 
 namespace argos {
 
@@ -32,9 +33,6 @@ namespace argos {
    void CKilobotCommunicationMedium::Init(TConfigurationNode& t_tree) {
       try {
          CMedium::Init(t_tree);
-         /* Get the positional index method */
-         std::string strPosIndexMethod("grid");
-         GetNodeAttributeOrDefault(t_tree, "index", strPosIndexMethod, strPosIndexMethod);
          /* Get the arena center and size */
          CVector3 cArenaCenter;
          CVector3 cArenaSize;
@@ -42,28 +40,14 @@ namespace argos {
          GetNodeAttribute(tArena, "size", cArenaSize);
          GetNodeAttributeOrDefault(tArena, "center", cArenaCenter, cArenaCenter);
          /* Create the positional index for embodied entities */
-         if(strPosIndexMethod == "grid") {
-            size_t punGridSize[3];
-            if(!NodeAttributeExists(t_tree, "grid_size")) {
-               punGridSize[0] = cArenaSize.GetX();
-               punGridSize[1] = cArenaSize.GetY();
-               punGridSize[2] = cArenaSize.GetZ();
-            }
-            else {
-               std::string strPosGridSize;
-               GetNodeAttribute(t_tree, "grid_size", strPosGridSize);
-               ParseValues<size_t>(strPosGridSize, 3, punGridSize, ',');
-            }
-            CGrid<CKilobotCommunicationEntity>* pcGrid = new CGrid<CKilobotCommunicationEntity>(
-               cArenaCenter - cArenaSize * 0.5f, cArenaCenter + cArenaSize * 0.5f,
-               punGridSize[0], punGridSize[1], punGridSize[2]);
-            m_pcGridUpdateOperation = new CKilobotCommunicationEntityGridEntityUpdater(*pcGrid);
-            pcGrid->SetUpdateEntityOperation(m_pcGridUpdateOperation);
-            m_pcKilobotIndex = pcGrid;
-         }
-         else {
-            THROW_ARGOSEXCEPTION("Unknown method \"" << strPosIndexMethod << "\" for the positional index.");
-         }
+         UInt32 unXCells = Ceil(cArenaSize.GetX() / (KILOBOT_RADIUS+KILOBOT_RADIUS));
+         UInt32 unYCells = Ceil(cArenaSize.GetY() / (KILOBOT_RADIUS+KILOBOT_RADIUS));
+         CGrid<CKilobotCommunicationEntity>* pcGrid = new CGrid<CKilobotCommunicationEntity>(
+            cArenaCenter - cArenaSize * 0.5f, cArenaCenter + cArenaSize * 0.5f,
+            unXCells, unYCells, 1);
+         m_pcGridUpdateOperation = new CKilobotCommunicationEntityGridEntityUpdater(*pcGrid);
+         pcGrid->SetUpdateEntityOperation(m_pcGridUpdateOperation);
+         m_pcKilobotIndex = pcGrid;
          /* Set probability of receiving a message */
          GetNodeAttributeOrDefault(t_tree, "message_drop_prob", m_fRxProb, m_fRxProb);
          m_fRxProb = 1.0 - m_fRxProb;
