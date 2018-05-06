@@ -19,6 +19,11 @@ include(ARGoSCheckQTOpenGL)
 find_package(Lua52 REQUIRED)
 
 #
+# Look for librt, necessary on some platforms
+#
+find_package(rt)
+
+#
 # Set ARGoS include dir
 #
 include_directories(${CMAKE_SOURCE_DIR} ${ARGOS_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})

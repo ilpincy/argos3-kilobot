@@ -83,9 +83,9 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
   add_library(argos3plugin_simulator_kilolib
     control_interface/kilolib.c
     control_interface/message_crc.c)
-  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    target_link_libraries(argos3plugin_simulator_kilolib rt)
-  endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  if(RT_FOUND)
+    target_link_libraries(argos3plugin_simulator_kilolib ${RT_LIBRARIES})
+  endif(RT_FOUND)
 endif(ARGOS_BUILD_FOR_SIMULATOR)
 
 #
