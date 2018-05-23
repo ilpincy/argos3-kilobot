@@ -21,7 +21,7 @@ find_package(Lua52 REQUIRED)
 #
 # Look for librt, necessary on some platforms
 #
-find_package(rt)
+find_package(RT)
 
 #
 # Set ARGoS include dir
