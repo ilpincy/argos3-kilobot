@@ -1,6 +1,6 @@
 # Compiling the code
 
-Make sure you have ARGoS >= 3.0.0-beta40 installed!
+Make sure you have ARGoS >= 3.0.0-beta52 installed!
 
 Commands:
 ```shell
@@ -8,18 +8,8 @@ mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release ../src
 make
+sudo make install
 ```
-
-# Running the examples
-
-The examples work if you run them from the base directory (argos3-kilobot).
-
-To run the examples, set the ARGOS_PLUGIN_PATH variable as follows:
-```shell
-export ARGOS_PLUGIN_PATH=/PATH/TO/argos3-kilobot/build/plugins/robots/kilobot
-```
-
-Change /PATH/TO with the full path to the argos3-kilobot directory.
 
 ## Lab 0
 ```shell
