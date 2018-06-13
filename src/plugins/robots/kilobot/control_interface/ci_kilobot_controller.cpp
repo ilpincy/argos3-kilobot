@@ -17,8 +17,8 @@ CCI_KilobotController::CCI_KilobotController() :
     m_nSharedMemFD(-1),
     m_nDebugInfoFD(-1),
     m_tBehaviorPID(-1),
-    m_fLinearVelocity(-1),
-    m_fAngularVelocity(-1){}
+    m_fLinearVelocity(1),
+    m_fAngularVelocity(45){}
 
 /****************************************/
 /****************************************/
@@ -114,28 +114,19 @@ void CCI_KilobotController::ControlStep() {
     ::waitpid(m_tBehaviorPID, NULL, WUNTRACED);
     /* Set actuator values */
     // TODO set proper conversion factors
-    if(m_fLinearVelocity<0 || m_fLinearVelocity<0){
-        if(m_pcMotors) {
-            m_pcMotors->SetLinearVelocity(6.0 * m_ptRobotState->right_motor / 255.0,
-                                          6.0 * m_ptRobotState->left_motor / 255.0);
-        }
+    if((m_ptRobotState->right_motor!=0)&&(m_ptRobotState->left_motor!=0)){
+        m_pcMotors->SetLinearVelocity(m_fLinearVelocity,m_fLinearVelocity);
     }
     else{
-        if((m_ptRobotState->right_motor!=0)&&(m_ptRobotState->left_motor!=0)){
-            m_pcMotors->SetLinearVelocity(m_fLinearVelocity,m_fLinearVelocity);
+        if(m_ptRobotState->right_motor!=0){
+            Real RightMotorVelocity=ToRadians(m_fAngularVelocity).GetValue()*KILOBOT_INTERPIN_DISTANCE*100;
+            m_pcMotors->SetLinearVelocity(RightMotorVelocity,0);
         }
-        else{
-            if(m_ptRobotState->right_motor!=0){
-                Real RightMotorVelocity=ToRadians(m_fAngularVelocity).GetValue()*KILOBOT_INTERPIN_DISTANCE*100;
-                m_pcMotors->SetLinearVelocity(RightMotorVelocity,0);
-            }
-            if(m_ptRobotState->left_motor!=0){
-                Real LeftMotorVelocity=ToRadians(m_fAngularVelocity).GetValue()*KILOBOT_INTERPIN_DISTANCE*100;
-                m_pcMotors->SetLinearVelocity(0,LeftMotorVelocity);
-            }
+        if(m_ptRobotState->left_motor!=0){
+            Real LeftMotorVelocity=ToRadians(m_fAngularVelocity).GetValue()*KILOBOT_INTERPIN_DISTANCE*100;
+            m_pcMotors->SetLinearVelocity(0,LeftMotorVelocity);
         }
     }
-
 
     if(m_pcLED) {
         m_pcLED->SetColor(CColor(255 * RED(m_ptRobotState->color)   / 3,
