@@ -4,6 +4,7 @@
 namespace argos {
    class CKilobotCommunicationMedium;
    class CKilobotCommunicationEntity;
+   class CKilobotEntity;
 }
 
 #include <argos3/core/utility/math/rng.h>
@@ -18,7 +19,7 @@ namespace argos {
    public:
 
       /** Defines the adjacency matrix */
-      typedef unordered_map<ssize_t, CSet<CKilobotCommunicationEntity*,SEntityComparator> > TAdjacencyMatrix;
+      typedef unordered_map<ssize_t, CSet<CKilobotCommunicationEntity*, SEntityComparator> > TAdjacencyMatrix;
 
    public:
 
@@ -66,6 +67,34 @@ namespace argos {
           return m_tCommMatrix;
       }
 
+      /**
+       * Sends a message to the given robot, as if it were done by the overhead controller.
+       * Only one message per time step can be set.
+       * Once set, a message stays until explicitly erased.
+       * To erase a message, set it to NULL.
+       * @param c_robot The message recipient.
+       * @param pt_message The message payload.
+       */
+      void SendOHCMessageTo(CKilobotEntity& c_robot,
+                            message_t* pt_message);
+
+      /**
+       * Sends a message to the given robots, as if it were done by the overhead controller.
+       * Only one message per time step can be set.
+       * Once set, a message stays until explicitly erased.
+       * To erase a message, set it to NULL.
+       * @param vec_robots The message recipients.
+       * @param pt_message The message payload.
+       */
+      void SendOHCMessageTo(std::vector<CKilobotEntity*>& vec_robots,
+                            message_t* Message);
+
+      /**
+       * Returns the OHC message for the given Kilobot.
+       * @returns the OHC message payload (or NULL if no message is associated to the given robot)
+       */
+      message_t* GetOHCMessageFor(CKilobotEntity& c_robot);
+
    private:
 
       /** The adjacency matrix, that associates each entity with the entities that communicate with it */
@@ -79,6 +108,9 @@ namespace argos {
 
       /** The update operation for the grid positional index */
       CKilobotCommunicationEntityGridEntityUpdater* m_pcGridUpdateOperation;
+
+      /** A queue of messages set through SendMessageTo() */
+      std::unordered_map<ssize_t, message_t*> m_mapOHCMessages;
 
       /** Random number generator */
       CRandom::CRNG* m_pcRNG;

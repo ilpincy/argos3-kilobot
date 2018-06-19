@@ -15,6 +15,7 @@ namespace argos {
    class CKilobotCommunicationDefaultSensor;
    class CKilobotCommunicationEntity;
    class CKilobotCommunicationMedium;
+   class CKilobotEntity;
    class CControllableEntity;
 }
 
@@ -41,6 +42,7 @@ namespace argos {
 
    private:
 
+      CKilobotEntity*              m_pcRobot;
       CKilobotCommunicationEntity* m_pcCommEntity;
       CKilobotCommunicationMedium* m_pcMedium;
       CControllableEntity*         m_pcControllableEntity;
