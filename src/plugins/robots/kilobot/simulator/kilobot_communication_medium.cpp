@@ -289,6 +289,14 @@ namespace argos {
    void CKilobotCommunicationMedium::SendOHCMessageTo(std::vector<CKilobotEntity*>& vec_robots,
                                                       message_t* pt_message) {
       for(size_t i = 0; i < vec_robots.size(); ++i) {
+         /*
+          * old   | new   | action
+          * ------+-------+---------------------
+          * ~null | ~null | delete old, copy new
+          * ~null |  null | delete old, set null
+          *  null | ~null | copy new
+          *  null |  null | nothing to do
+          */
          /* Get old message and delete it if necessary */
          message_t* ptOldMsg = GetOHCMessageFor(*vec_robots[i]);
          if(ptOldMsg != NULL) delete ptOldMsg;

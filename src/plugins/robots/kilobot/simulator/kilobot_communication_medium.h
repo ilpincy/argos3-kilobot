@@ -109,7 +109,7 @@ namespace argos {
       /** The update operation for the grid positional index */
       CKilobotCommunicationEntityGridEntityUpdater* m_pcGridUpdateOperation;
 
-      /** A queue of messages set through SendMessageTo() */
+      /** A list of messages set through SendOHCMessageTo() */
       std::unordered_map<ssize_t, message_t*> m_mapOHCMessages;
 
       /** Random number generator */
