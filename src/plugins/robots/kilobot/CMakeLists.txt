@@ -68,7 +68,7 @@ endif(ARGOS_BUILD_FOR_SIMULATOR)
 # Create kilobot plugin
 #
 add_library(argos3plugin_${ARGOS_BUILD_FOR}_kilobot SHARED ${ARGOS3_SOURCES_PLUGINS_ROBOTS_KILOBOT})
-target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot
+target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot ${RT_LIBRARIES}
   argos3plugin_${ARGOS_BUILD_FOR}_genericrobot
   argos3plugin_${ARGOS_BUILD_FOR}_dynamics2d
   argos3plugin_${ARGOS_BUILD_FOR}_pointmass3d)
