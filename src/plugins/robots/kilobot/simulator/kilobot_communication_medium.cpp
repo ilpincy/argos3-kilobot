@@ -7,6 +7,7 @@
 #include <argos3/core/utility/configuration/argos_exception.h>
 #include <argos3/core/utility/logging/argos_log.h>
 #include <argos3/plugins/robots/kilobot/simulator/kilobot_measures.h>
+#include <unordered_map>
 
 namespace argos {
 
