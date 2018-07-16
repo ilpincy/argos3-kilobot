@@ -67,6 +67,14 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
   add_executable(sync sync.c)
   target_link_libraries(sync argos3plugin_simulator_kilolib)
 
+
+  #
+  # ARK loop function: demoC
+  #
+  add_executable(forager forager.c)  
+  target_link_libraries(forager argos3plugin_simulator_kilolib)
+
+
   #
   # Debugging example
   #
