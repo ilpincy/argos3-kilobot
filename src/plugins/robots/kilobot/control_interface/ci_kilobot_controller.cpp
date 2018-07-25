@@ -126,6 +126,9 @@ void CCI_KilobotController::ControlStep() {
             Real LeftMotorVelocity=ToRadians(m_fAngularVelocity).GetValue()*KILOBOT_INTERPIN_DISTANCE*100;
             m_pcMotors->SetLinearVelocity(0,LeftMotorVelocity);
         }
+        if((m_ptRobotState->right_motor==0)&&(m_ptRobotState->left_motor==0)){
+            m_pcMotors->SetLinearVelocity(0,0);
+        }
     }
 
     if(m_pcLED) {

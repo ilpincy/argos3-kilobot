@@ -74,10 +74,15 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
   add_executable(forager forager.c)  
   target_link_libraries(forager argos3plugin_simulator_kilolib)
 
+  #
+  # ARK loop function: clustering
+  #
+  add_executable(clustering clustering.c)  
+  target_link_libraries(clustering argos3plugin_simulator_kilolib)
 
   #
   # Debugging example
   #
   add_executable(test_debug test_debug.h test_debug.c)
   target_link_libraries(test_debug argos3plugin_simulator_kilolib)
-endif(ARGOS_BUILD_FOR_SIMULATOR)
+  endif(ARGOS_BUILD_FOR_SIMULATOR)

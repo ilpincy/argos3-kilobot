@@ -499,4 +499,4 @@ void CALF::PlotEnvironment(){
 /****************************************/
 
 
-REGISTER_LOOP_FUNCTIONS(CALF, "ALF_loop_functions")
+REGISTER_LOOP_FUNCTIONS(CALF, "ALF_demoC_loop_function")

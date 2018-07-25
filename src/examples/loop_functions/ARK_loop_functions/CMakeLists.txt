@@ -1,23 +1,5 @@
-include_directories(argos3/plugins/robot/kilobot/control_interface argos3/plugins/robot/kilobot/simulator)
-
-add_library(ALF_loop_functions MODULE ALF.h ALF.cpp)
-
-target_link_libraries(ALF_loop_functions
-  argos3core_simulator
-  argos3plugin_simulator_dynamics2d
-  argos3plugin_simulator_entities
-  argos3plugin_simulator_media
-  argos3plugin_simulator_kilobot
-  argos3plugin_simulator_kilolib
-)
-
-
-
+# If Qt+OpenGL dependencies were found, descend into these directories
 if(ARGOS_COMPILE_QTOPENGL)
-add_library(ALF_qt_user_functions MODULE ALF_qt_user_functions.h
-ALF_qt_user_functions.cpp)
-endif(ARGOS_COMPILE_QTOPENGL)
-
-if(ARGOS_COMPILE_QTOPENGL)
-  target_link_libraries(ALF_loop_functions argos3plugin_simulator_qtopengl)
+  	add_subdirectory(demoC)
+  	add_subdirectory(clustering)
 endif(ARGOS_COMPILE_QTOPENGL)

@@ -251,9 +251,11 @@ void setup()
     set_color(RGB(0,0,0));
     set_motors(0,0);
 
-    /* seed the c RNG well */
-    int temp = rand_hard();
-    srand(((temp<<8)|rand_hard()));
+    /* Initialise random seed */
+    uint8_t seed = rand_hard();
+    rand_seed(seed);
+    seed = rand_hard();
+    srand(seed);
 
     /* Initialise motion variables */
     last_motion_ticks=rand()%max_straight_ticks;

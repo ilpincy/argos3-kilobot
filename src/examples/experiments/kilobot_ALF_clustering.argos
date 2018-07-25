@@ -16,7 +16,7 @@
     <!-- *************** -->
     <controllers>
         
-        <kilobot_controller id="foraging">
+        <kilobot_controller id="listener">
             <actuators>
                 <differential_steering implementation="default"
                 bias_avg="0.000015"
@@ -27,7 +27,7 @@
             <sensors>
                 <kilobot_communication implementation="default" medium="kilocomm" show_rays="false" />
             </sensors>
-            <params behavior="build/examples/behaviors/forager" />
+            <params behavior="build/examples/behaviors/clustering" />
         </kilobot_controller>
         
     </controllers>
@@ -36,29 +36,25 @@
     <!-- * Loop functions * -->
     <!-- ****************** -->
     <loop_functions 
-        library="build/examples/loop_functions/ARK_loop_functions/demoC/libALF_demoC_loop_function"
-        label="ALF_demoC_loop_function" >
+        library="build/examples/loop_functions/ARK_loop_functions/clustering/libALF_clustering_loop_function"
+        label="ALF_clustering_loop_function" >
     
         <tracking
             position="true"
-            orientation="true"
-            color="true">
+            orientation="false"
+            color="false">
         </tracking>
 
         
         <variables
             datafilename="data_file.txt"
-            dataacquisitionfrequency="10"  
+            dataacquisitionfrequency="100"  
             environmentplotupdatefrequency="10"
-            gradientfieldradius="0.7"
-            gradientfieldcolor="223,255,219,255"
             timeforonemessage="0.05">
         </variables>
     
         <environments>
-            <Area type="0" position="0.253,-0.453" radius="0.05" color="255,255,0,255" >
-            </Area>
-            <Area type="1" position="-0.453,0.253" radius="0.2" color="50,171,65,255"  >
+            <Area position="0,0" radius="0.3" color="255,0,0,255" >
             </Area>
         </environments>
 
@@ -88,7 +84,7 @@
             <orientation method="uniform" min="0,0,0" max="360,0,0" />
             <entity quantity="50" max_trials="100">
                 <kilobot id="kb">
-                    <controller config="foraging"/> <dynamics2d friction="0.7" />
+                    <controller config="listener"/> <dynamics2d friction="0.7" />
                 </kilobot>
             </entity>
         </distribute>  
@@ -124,8 +120,6 @@
 
                 <placement idx="1" position="-0.0229259,-0.177184,0.0725521" look_at="0.0273839,0.812385,-0.0624333" lens_focal_length="20" />
             </camera>
-            <user_functions library="build/examples/loop_functions/ARK_loop_functions/demoC/libALF_qt_user_functions"
-            label="ALF_qt_user_functions" />
         </qt-opengl>
     </visualization>
     
