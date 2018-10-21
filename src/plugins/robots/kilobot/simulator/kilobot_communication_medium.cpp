@@ -312,7 +312,7 @@ namespace argos {
 
    message_t* CKilobotCommunicationMedium::GetOHCMessageFor(CKilobotEntity& c_robot) {
       /* Look for robot in map */
-      std::unordered_map<ssize_t, message_t*>::iterator it = m_mapOHCMessages.find(c_robot.GetIndex());
+      unordered_map<ssize_t, message_t*>::iterator it = m_mapOHCMessages.find(c_robot.GetIndex());
       /* Return entry if robot found, NULL otherwise */
       return (it == m_mapOHCMessages.end()) ? NULL : (it->second);
    }

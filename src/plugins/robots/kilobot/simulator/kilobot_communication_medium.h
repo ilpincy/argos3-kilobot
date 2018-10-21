@@ -110,7 +110,7 @@ namespace argos {
       CKilobotCommunicationEntityGridEntityUpdater* m_pcGridUpdateOperation;
 
       /** A list of messages set through SendOHCMessageTo() */
-      std::unordered_map<ssize_t, message_t*> m_mapOHCMessages;
+      unordered_map<ssize_t, message_t*> m_mapOHCMessages;
 
       /** Random number generator */
       CRandom::CRNG* m_pcRNG;
