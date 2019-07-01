@@ -15,6 +15,7 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_CONTROLINTERFACE
 # argos3/plugins/robots/kilobot/simulator
 if(ARGOS_BUILD_FOR_SIMULATOR)
   set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR
+    simulator/ALF.h
     simulator/dynamics2d_kilobot_model.h
     simulator/pointmass3d_kilobot_model.h
     simulator/kilobot_entity.h
@@ -42,6 +43,7 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
   set(ARGOS3_SOURCES_PLUGINS_ROBOTS_KILOBOT
     ${ARGOS3_SOURCES_PLUGINS_ROBOTS_KILOBOT}
     ${ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR}
+    simulator/ALF.cpp
     simulator/dynamics2d_kilobot_model.cpp
     simulator/pointmass3d_kilobot_model.cpp
     simulator/kilobot_entity.cpp

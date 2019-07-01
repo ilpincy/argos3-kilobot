@@ -1,6 +1,6 @@
 include_directories(argos3/plugins/robot/kilobot/control_interface argos3/plugins/robot/kilobot/simulator)
 
-add_library(ALF_demoC_loop_function MODULE ALF.h ALF.cpp)
+add_library(ALF_demoC_loop_function MODULE demoC_ALF.h demoC_ALF.cpp)
 
 target_link_libraries(ALF_demoC_loop_function
   argos3core_simulator
