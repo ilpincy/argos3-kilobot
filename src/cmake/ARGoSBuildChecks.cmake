@@ -16,7 +16,7 @@ include(ARGoSCheckQTOpenGL)
 #
 # Find Lua
 #
-find_package(Lua52 REQUIRED)
+find_package(Lua53 REQUIRED)
 
 #
 # Look for librt, necessary on some platforms
