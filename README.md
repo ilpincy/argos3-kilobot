@@ -1,9 +1,11 @@
 # Kilobot + SwarmTalk on ARGoS Simulation
 
 For more details about SwarmTalk: https://github.com/shzhangyihan/SwarmTalk
+
 For more details about ARGoS: https://github.com/ilpincy/argos3
 
 Please follow the ARGoS Kilobot plugin installation guide at https://github.com/ilpincy/argos3-kilobot
+
 Make sure the Kilobot simulation runs without SwarmTalk before proceeding.
 
 To build:
