@@ -1,12 +1,11 @@
-# Kilobot + SwarmTalk on ARGoS Simulation
+# SwarmTalk + Kilobot on ARGoS Simulation
 
 For more details about SwarmTalk: https://github.com/shzhangyihan/SwarmTalk
 
-For more details about ARGoS: https://github.com/ilpincy/argos3
+Make sure ARGoS and Kilobot plugin are installed correctly:
 
-Please follow the ARGoS Kilobot plugin installation guide at https://github.com/ilpincy/argos3-kilobot
-
-Make sure the Kilobot simulation runs without SwarmTalk before proceeding.
+1. ARGoS Core: https://github.com/ilpincy/argos3
+2. Kilobot plugin: https://github.com/ilpincy/argos3-kilobot
 
 To build:
 
@@ -24,6 +23,12 @@ cd ..
 argos3 -c src/examples/experiments/firefly.argos
 ```
 
+## Edge following
+
+```shell
+argos3 -c src/examples/experiments/edge_following.argos
+```
+
 ## Hop count with one seed
 
 ```shell
@@ -34,10 +39,4 @@ argos3 -c src/examples/experiments/hop_count_1_seed.argos
 
 ```shell
 argos3 -c src/examples/experiments/hop_count_2_seed.argos
-```
-
-## Edge following
-
-```shell
-argos3 -c src/examples/experiments/edge_following.argos
 ```
