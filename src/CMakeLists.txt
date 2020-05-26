@@ -55,11 +55,6 @@ include(${CMAKE_SOURCE_DIR}/cmake/ARGoSBuildChecks.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/ARGoSPackaging.cmake)
 
 #
-# Pull SwarmTalk as extern git submodule
-#
-include(${CMAKE_SOURCE_DIR}/cmake/AddSwarmTalk.cmake)
-
-#
 # Compile stuff
 #
 add_subdirectory(plugins)
