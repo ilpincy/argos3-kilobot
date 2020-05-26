@@ -55,7 +55,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/ARGoSBuildChecks.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/ARGoSPackaging.cmake)
 
 #
-# Update SwarmTalk submodule
+# Update SwarmTalk submodule to the latest
 #
 include(${CMAKE_SOURCE_DIR}/cmake/AddSwarmTalk.cmake)
 
