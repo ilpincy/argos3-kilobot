@@ -1,4 +1,4 @@
-# Kilobot + SwarmTalk Simulation on ARGoS
+# Kilobot + SwarmTalk on ARGoS Simulation
 
 For more details about SwarmTalk: https://github.com/shzhangyihan/SwarmTalk
 For more details about ARGoS: https://github.com/ilpincy/argos3
