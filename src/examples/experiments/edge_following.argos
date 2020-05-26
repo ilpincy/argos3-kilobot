@@ -16,7 +16,7 @@
   <!-- *************** -->
   <controllers>
 
-    <kilobot_controller id="speaker">
+    <kilobot_controller id="seed">
       <actuators>
         <kilobot_led implementation="default" />
         <kilobot_communication implementation="default" />
@@ -24,18 +24,19 @@
       <sensors>
         <kilobot_communication implementation="default" medium="kilocomm" show_rays="true" />
       </sensors>
-      <params behavior="build/examples/behaviors/test_speaker" />
+      <params behavior="build/examples/behaviors/edge_following/edge_following_seed" />
     </kilobot_controller>
 
-    <kilobot_controller id="listener">
+    <kilobot_controller id="follower">
       <actuators>
         <kilobot_led implementation="default" />
         <kilobot_communication implementation="default" />
+        <differential_steering implementation="default" />
       </actuators>
       <sensors>
         <kilobot_communication implementation="default" medium="kilocomm" show_rays="true" />
       </sensors>
-      <params behavior="build/examples/behaviors/test_listener" />
+      <params behavior="build/examples/behaviors/edge_following/edge_following_follower" />
     </kilobot_controller>
 
   </controllers>
@@ -44,16 +45,30 @@
   <!-- * Arena configuration * -->
   <!-- *********************** -->
   <arena size="2, 2, 1" center="0,0,0.5">
-    <kilobot id="kb1">
-      <body position="-0.025,0,0" orientation="0,0,0" />
-      <controller config="speaker" />>
-    </kilobot>
-
-    <kilobot id="kb2">
+    <kilobot id="kbs0">
       <body position="0.025,0,0" orientation="0,0,0" />
-      <controller config="listener" />>
+      <controller config="seed" />>
     </kilobot>
-
+    <kilobot id="kbs1">
+      <body position="-0.025,0,0" orientation="0,0,0" />
+      <controller config="seed" />>
+    </kilobot>
+    <kilobot id="kbs2">
+      <body position="0,0.025,0" orientation="0,0,0" />
+      <controller config="seed" />>
+    </kilobot>
+    <kilobot id="kbs3">
+      <body position="0,-0.025,0" orientation="0,0,0" />
+      <controller config="seed" />>
+    </kilobot>
+    <kilobot id="kbf0">
+      <body position="0,0.1,0" orientation="0,0,0" />
+      <controller config="follower" />>
+    </kilobot>
+    <kilobot id="kbf1">
+      <body position="-0.1,0,0" orientation="90,0,0" />
+      <controller config="follower" />>
+    </kilobot>
   </arena>
 
   <!-- ******************* -->
@@ -76,8 +91,7 @@
   <visualization>
     <qt-opengl>
       <camera>
-        <placement idx="0" position="-0.126801,-0.00109986,0.249553" look_at="0.303994,-0.00540795,-0.652886" lens_focal_length="20" />
-        <placement idx="1" position="-0.0229259,-0.177184,0.0725521" look_at="0.0273839,0.812385,-0.0624333" lens_focal_length="20" />
+        <placement idx="0" position="0,0,0.3" look_at="0,0,0" lens_focal_length="20" />
       </camera>
     </qt-opengl>
   </visualization>

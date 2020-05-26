@@ -1,0 +1,117 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+
+  <!-- ************************* -->
+  <!-- * General configuration * -->
+  <!-- ************************* -->
+  <framework>
+    <system threads="0" />
+    <experiment length="0"
+                ticks_per_second="31"
+                random_seed="124" />
+  </framework>
+
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+
+    <kilobot_controller id="seed1">
+      <actuators>
+        <kilobot_led implementation="default" />
+        <kilobot_communication implementation="default" />
+      </actuators>
+      <sensors>
+        <kilobot_communication implementation="default" medium="kilocomm" show_rays="true" />
+      </sensors>
+      <params behavior="build/examples/behaviors/hop_count/hop_count_seed_1" />
+    </kilobot_controller>
+
+    <kilobot_controller id="seed2">
+      <actuators>
+        <kilobot_led implementation="default" />
+        <kilobot_communication implementation="default" />
+      </actuators>
+      <sensors>
+        <kilobot_communication implementation="default" medium="kilocomm" show_rays="true" />
+      </sensors>
+      <params behavior="build/examples/behaviors/hop_count/hop_count_seed_2" />
+    </kilobot_controller>
+
+    <kilobot_controller id="follower">
+      <actuators>
+        <kilobot_led implementation="default" />
+        <kilobot_communication implementation="default" />
+      </actuators>
+      <sensors>
+        <kilobot_communication implementation="default" medium="kilocomm" show_rays="true" />
+      </sensors>
+      <params behavior="build/examples/behaviors/hop_count/hop_count_follower" />
+    </kilobot_controller>
+
+  </controllers>
+
+  <!-- *********************** -->
+  <!-- * Arena configuration * -->
+  <!-- *********************** -->
+  <arena size="2, 2, 1" center="0,0,0.5">
+    <distribute>
+      <position method="grid"
+                center="0,0,0"
+                distances="0.035,0.035,0"
+                layout="6,5,1" />
+      <orientation method="constant" values="0,0,0" />
+      <entity quantity="30" max_trials="1">
+        <kilobot id="kb">
+          <controller config="follower" />>
+        </kilobot>
+      </entity>
+    </distribute>
+    <distribute>
+      <position method="grid"
+                center="0,0.106,0"
+                distances="0.035,0.035,0"
+                layout="4,1,1" />
+      <orientation method="constant" values="0,0,0" />
+      <entity quantity="4" max_trials="1">
+        <kilobot id="kbf">
+          <controller config="follower" />>
+        </kilobot>
+      </entity>
+    </distribute>
+    <kilobot id="kbs0">
+      <body position="0.088,0.106,0" orientation="0,0,0" />
+      <controller config="seed1" />>
+    </kilobot>
+    <kilobot id="kbs1">
+      <body position="-0.088,0.106,0" orientation="0,0,0" />
+      <controller config="seed2" />>
+    </kilobot>
+  </arena>
+
+  <!-- ******************* -->
+  <!-- * Physics engines * -->
+  <!-- ******************* -->
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  <!-- ********* -->
+  <!-- * Media * -->
+  <!-- ********* -->
+  <media>
+    <kilobot_communication id="kilocomm" />
+  </media>
+
+  <!-- ****************** -->
+  <!-- * Visualization * -->
+  <!-- ****************** -->
+  <visualization>
+    <qt-opengl>
+      <camera>
+        <placement idx="0" position="-0.2,0,0.5" look_at="0,0,0" lens_focal_length="20" />
+      </camera>
+    </qt-opengl>
+  </visualization>
+
+</argos-configuration>
