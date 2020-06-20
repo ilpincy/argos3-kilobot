@@ -15,6 +15,7 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_CONTROLINTERFACE
 # argos3/plugins/robots/kilobot/simulator
 if(ARGOS_BUILD_FOR_SIMULATOR)
   set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR
+    simulator/ALF.h
     simulator/dynamics2d_kilobot_model.h
     simulator/pointmass3d_kilobot_model.h
     simulator/kilobot_entity.h
@@ -42,6 +43,7 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
   set(ARGOS3_SOURCES_PLUGINS_ROBOTS_KILOBOT
     ${ARGOS3_SOURCES_PLUGINS_ROBOTS_KILOBOT}
     ${ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR}
+    simulator/ALF.cpp
     simulator/dynamics2d_kilobot_model.cpp
     simulator/pointmass3d_kilobot_model.cpp
     simulator/kilobot_entity.cpp
@@ -68,10 +70,18 @@ endif(ARGOS_BUILD_FOR_SIMULATOR)
 # Create kilobot plugin
 #
 add_library(argos3plugin_${ARGOS_BUILD_FOR}_kilobot SHARED ${ARGOS3_SOURCES_PLUGINS_ROBOTS_KILOBOT})
-target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot
-  argos3plugin_${ARGOS_BUILD_FOR}_genericrobot
-  argos3plugin_${ARGOS_BUILD_FOR}_dynamics2d
-  argos3plugin_${ARGOS_BUILD_FOR}_pointmass3d)
+if(RT_FOUND)
+  target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot ${RT_LIBRARIES}
+    argos3plugin_${ARGOS_BUILD_FOR}_genericrobot
+    argos3plugin_${ARGOS_BUILD_FOR}_dynamics2d
+    argos3plugin_${ARGOS_BUILD_FOR}_pointmass3d)
+else(RT_FOUND)
+  target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot
+    argos3plugin_${ARGOS_BUILD_FOR}_genericrobot
+    argos3plugin_${ARGOS_BUILD_FOR}_dynamics2d
+    argos3plugin_${ARGOS_BUILD_FOR}_pointmass3d)
+endif(RT_FOUND)
+
 if(ARGOS_COMPILE_QTOPENGL)
   target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot argos3plugin_${ARGOS_BUILD_FOR}_qtopengl)
 endif(ARGOS_COMPILE_QTOPENGL)

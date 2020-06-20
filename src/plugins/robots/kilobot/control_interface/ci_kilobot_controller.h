@@ -120,7 +120,7 @@ private:
    /** Pointer to the communication sensor */
    CCI_KilobotCommunicationSensor* m_pcCommS;
 
-   /* The random number generator */
+   /** The random number generator */
    CRandom::CRNG* m_pcRNG;
 
    /** File descriptor for shared memory area */
@@ -134,6 +134,12 @@ private:
 
    /** File name of the behavior to load */
    std::string m_strBehaviorFName;
+
+   /** Linear velocity of the robots */
+   Real m_fLinearVelocity;
+
+   /** Angular velocity of the robots */
+   CDegrees m_fAngularVelocity;
 
 };
 

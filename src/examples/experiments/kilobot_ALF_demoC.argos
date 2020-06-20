@@ -1,0 +1,132 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+    
+    <!-- ************************* -->
+    <!-- * General configuration * -->
+    <!-- ************************* -->
+    <framework>
+        <system threads="0" />
+        <experiment length="0"
+        ticks_per_second="10"
+        random_seed="124" />
+    </framework>
+    
+    <!-- *************** -->
+    <!-- * Controllers * -->
+    <!-- *************** -->
+    <controllers>
+        
+        <kilobot_controller id="foraging">
+            <actuators>
+                <differential_steering implementation="default"
+                bias_avg="0.000015"
+                bias_stddev="0.00186"
+                />
+                <kilobot_led implementation="default" />
+            </actuators>
+            <sensors>
+                <kilobot_communication implementation="default" medium="kilocomm" show_rays="false" />
+            </sensors>
+            <params behavior="build/examples/behaviors/forager" />
+        </kilobot_controller>
+        
+    </controllers>
+
+    <!-- ****************** -->
+    <!-- * Loop functions * -->
+    <!-- ****************** -->
+    <loop_functions 
+        library="build/examples/loop_functions/ARK_loop_functions/demoC/libALF_demoC_loop_function"
+        label="ALF_demoC_loop_function" >
+    
+        <tracking
+            position="true"
+            orientation="true"
+            color="true">
+        </tracking>
+
+        
+        <variables
+            datafilename="data_file.txt"
+            dataacquisitionfrequency="10"  
+            environmentplotupdatefrequency="10"
+            gradientfieldradius="0.7"
+            gradientfieldcolor="223,255,219,255"
+            timeforonemessage="0.05">
+        </variables>
+    
+        <environments>
+            <Area type="0" position="0.253,-0.453" radius="0.05" color="255,255,0,255" >
+            </Area>
+            <Area type="1" position="-0.453,0.253" radius="0.2" color="50,171,65,255"  >
+            </Area>
+        </environments>
+
+    
+    </loop_functions>
+    <!-- *********************** -->
+    <!-- * Arena configuration * -->
+    <!-- *********************** -->
+    <arena size="2, 2, 4" center="0,0,0.5">
+        
+        <box id="wall_north" size="2,0.01,0.1" movable="false">
+            <body position="0,1,0" orientation="0,0,0" />
+        </box>
+        <box id="wall_south" size="2,0.01,0.1" movable="false">
+            <body position="0,-1,0" orientation="0,0,0" />
+        </box>
+        <box id="wall_east" size="0.01,2,0.1"  movable="false">
+            <body position="1,0,0" orientation="0,0,0" />
+        </box>
+        <box id="wall_west" size="0.01,2,0.1"  movable="false">
+            <body position="-1,0,0" orientation="0,0,0" />
+        </box>
+
+
+        <distribute>
+            <position method="uniform" min="0.2,-0.8,0" max="0.6,-0.4,0" />
+            <orientation method="uniform" min="0,0,0" max="360,0,0" />
+            <entity quantity="50" max_trials="100">
+                <kilobot id="kb">
+                    <controller config="foraging"/> <dynamics2d friction="0.7" />
+                </kilobot>
+            </entity>
+        </distribute>  
+
+        <floor id="floor"
+        source="loop_functions"
+        pixels_per_meter="100" />
+        
+    </arena>
+    
+    <!-- ******************* -->
+    <!-- * Physics engines * -->
+    <!-- ******************* -->
+    <physics_engines>
+        <dynamics2d id="dyn2d" />
+    </physics_engines>
+    
+    <!-- ********* -->
+    <!-- * Media * -->
+    <!-- ********* -->
+    
+    <media>
+        <kilobot_communication id="kilocomm" />
+    </media>
+    
+    <!-- ****************** -->
+    <!-- * Visualization  * -->
+    <!-- ****************** -->
+    <visualization>
+        <qt-opengl>
+            <camera>
+                <placement idx="0" position="0,0,1" look_at="0,0,0" lens_focal_length="12" />
+
+                <placement idx="1" position="-0.0229259,-0.177184,0.0725521" look_at="0.0273839,0.812385,-0.0624333" lens_focal_length="20" />
+            </camera>
+            <user_functions library="build/examples/loop_functions/ARK_loop_functions/demoC/libALF_qt_user_functions"
+            label="ALF_qt_user_functions" />
+        </qt-opengl>
+    </visualization>
+    
+</argos-configuration>

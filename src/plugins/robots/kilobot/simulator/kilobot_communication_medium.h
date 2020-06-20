@@ -11,6 +11,8 @@ namespace argos {
 #include <argos3/core/simulator/medium/medium.h>
 #include <argos3/core/simulator/space/positional_indices/positional_index.h>
 #include <argos3/plugins/robots/kilobot/simulator/kilobot_communication_entity.h>
+#include <unordered_map>
+
 
 namespace argos {
 
