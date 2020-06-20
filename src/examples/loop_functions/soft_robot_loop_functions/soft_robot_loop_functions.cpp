@@ -12,7 +12,7 @@ static const std::string KB_CONTROLLER       = "kbc";
 static const std::string PHYSICS_ENGINE      = "dyn2d";
 static const Real        SOFT_KILOBOT_RADIUS = 0.02; // 2 cm
 static const Real        SOFT_KILOBOT_MASS   = KILOBOT_MASS + 0.014; // grams
-static const Real        SPRING_MASS         = 0.02; // grams
+//static const Real        SPRING_MASS         = 0.02; // grams
 
 /****************************************/
 /****************************************/
@@ -66,8 +66,8 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
       CKilobotEntity* pcKB;
       std::ostringstream cKBId;
       CVector3 cPos;
-      for(size_t i = 0; i < m_unRobotsPerSide; ++i) {
-         for(size_t j = 0; j < m_unRobotsPerSide; ++j) {
+      for(size_t j = 0; j < m_unRobotsPerSide; ++j) {
+         for(size_t i = 0; i < m_unRobotsPerSide; ++i) {
             /* Make id */
             cKBId.str("");
             cKBId << "kb" << (i + m_unRobotsPerSide * j + 1);
@@ -77,9 +77,9 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
              *
              *      +x ->
              *
-             * -y   0 1 2
-             *  |   3 4 5
-             *  v   6 7 8
+             * -y   1 2 3
+             *  |   4 5 6
+             *  v   7 8 9
              */
             cPos.SetX( m_fRobotsDistance * i - fHalfSideLength + m_cRobotsCenter.GetX());
             cPos.SetY(-m_fRobotsDistance * j + fHalfSideLength + m_cRobotsCenter.GetY());

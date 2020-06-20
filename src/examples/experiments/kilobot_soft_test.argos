@@ -63,7 +63,7 @@
   <visualization>
     <qt-opengl>
       <camera>
-        <placement idx="0" position="-0.0718156,0,0.109999" look_at="0.642327,0,-0.590002" lens_focal_length="20" />
+        <placement idx="0" position="-0.500301,0,0.529999" look_at="0.213841,0,-0.170001" up="0.700001,0,0.714142" lens_focal_length="20" />
       </camera>
     </qt-opengl>
   </visualization>
