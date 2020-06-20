@@ -35,8 +35,8 @@
       label="soft_robot_loop_functions"
       robots_center = "0,0"
       robots_per_side = "2"
-      robots_distance = "0.5"
-      spring_stiffness = "1.0"
+      spring_rest_length = "0.031"
+      spring_stiffness = "0.6"
       spring_damping="0.01" />
 
  <!-- *********************** -->
