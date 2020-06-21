@@ -8,6 +8,19 @@
 /****************************************/
 /****************************************/
 
+/*
+ * To reduce the number of waypoints stored in memory,
+ * consider two robot positions distinct if they are
+ * at least MIN_DISTANCE away from each other
+ * This constant is expressed in meters
+ */
+static const Real MIN_DISTANCE = 0.01f;
+/* Convenience constant to avoid calculating the square root in PostStep() */
+static const Real MIN_DISTANCE_SQUARED = MIN_DISTANCE * MIN_DISTANCE;
+
+/****************************************/
+/****************************************/
+
 static const std::string KB_CONTROLLER  = "kbc";   // must match .argos file
 static const std::string PHYSICS_ENGINE = "dyn2d"; // must match .argos file
 
@@ -43,7 +56,15 @@ void CSoftRobotLoopFunctions::Init(TConfigurationNode& t_tree) {
 /****************************************/
 /****************************************/
 
-void CSoftRobotLoopFunctions::PostStep() {
+void CSoftRobotLoopFunctions::Reset() {
+   CKilobotEntity* pcKB;
+   for(size_t i = 0; i < m_vecRobots.size(); ++i) {
+      pcKB = m_vecRobots[i];
+      /* Clear the waypoint vector */
+      m_tWaypoints[pcKB].clear();
+      /* Add the initial position of the kilobot */
+      m_tWaypoints[pcKB].push_back(pcKB->GetEmbodiedEntity().GetOriginAnchor().Position);
+   }
 }
 
 /****************************************/
@@ -53,9 +74,26 @@ void CSoftRobotLoopFunctions::Destroy() {
    /* Destroy all the springs (not automatically done by Chipmunk!) */
    while(!m_vecSprings.empty()) {
       cpSpaceRemoveConstraint(m_pcDyn2DEngine->GetPhysicsSpace(),
-                              m_vecSprings.back());
-      cpConstraintFree(m_vecSprings.back());
+                              (cpConstraint*)m_vecSprings.back());
+      cpConstraintFree((cpConstraint*)m_vecSprings.back());
       m_vecSprings.pop_back();
+   }
+}
+
+/****************************************/
+/****************************************/
+
+void CSoftRobotLoopFunctions::PostStep() {
+   /* Update waypoint information */
+   CKilobotEntity* pcKB;
+   for(size_t i = 0; i < m_vecRobots.size(); ++i) {
+      /* Create a pointer to the current kilobot */
+      pcKB = m_vecRobots[i];
+      /* Add the current position of the kilobot if it's sufficiently far from the last */
+      if(SquareDistance(pcKB->GetEmbodiedEntity().GetOriginAnchor().Position,
+                        m_tWaypoints[pcKB].back()) > MIN_DISTANCE_SQUARED) {
+         m_tWaypoints[pcKB].push_back(pcKB->GetEmbodiedEntity().GetOriginAnchor().Position);
+      }
    }
 }
 
@@ -68,6 +106,7 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
       CKilobotEntity* pcKB;
       std::ostringstream cKBId;
       CVector3 cPos;
+      CQuaternion cOrientation(CRadians::ZERO, CVector3::Z);
       for(size_t j = 0; j < m_unRobotsPerSide; ++j) {
          for(size_t i = 0; i < m_unRobotsPerSide; ++i) {
             /* Make id */
@@ -86,7 +125,7 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
             cPos.SetX( m_fRobotsDistance * i - fHalfSideLength + m_cRobotsCenter.GetX());
             cPos.SetY(-m_fRobotsDistance * j + fHalfSideLength + m_cRobotsCenter.GetY());
             /* Add robot to space */
-            pcKB = new CKilobotEntity(cKBId.str(), KB_CONTROLLER, cPos);
+            pcKB = new CKilobotEntity(cKBId.str(), KB_CONTROLLER, cPos, cOrientation);
             AddEntity(*pcKB);
             m_vecRobots.push_back(pcKB);
             /* Fix robot mass, moment, shape to match the larger version */
@@ -105,6 +144,10 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
             cpCircleShape* ptShape = (cpCircleShape*)ptBody->shapeList;
             ptShape->r = SOFT_KILOBOT_RADIUS;
             ptShape->c = cpv(SOFT_KILOBOT_ECCENTRICITY, 0.0);
+            /* Create a waypoint vector */
+            m_tWaypoints[pcKB] = std::vector<CVector3>();
+            /* Add the initial position of the kilobot */
+            m_tWaypoints[pcKB].push_back(cPos);
          }
       }
    }
@@ -169,7 +212,7 @@ void CSoftRobotLoopFunctions::AddSpring(CKilobotEntity* pc_kb1,
       m_fSpringDamping);
    cpSpaceAddConstraint(m_pcDyn2DEngine->GetPhysicsSpace(),
                         ptSpring);
-   m_vecSprings.push_back(ptSpring);
+   m_vecSprings.push_back((cpDampedSpring*)ptSpring);
 }
 
 /****************************************/

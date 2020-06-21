@@ -62,6 +62,7 @@
   <!-- ****************** -->
   <visualization>
     <qt-opengl>
+      <user_functions label="soft_robot_qtuser_functions" />
       <camera>
         <placement idx="0" position="-0.500301,0,0.529999" look_at="0.213841,0,-0.170001" up="0.700001,0,0.714142" lens_focal_length="20" />
       </camera>

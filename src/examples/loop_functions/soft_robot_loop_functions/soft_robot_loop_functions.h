@@ -4,10 +4,15 @@
 #include <argos3/core/simulator/loop_functions.h>
 #include <argos3/plugins/robots/kilobot/simulator/kilobot_entity.h>
 #include <argos3/plugins/simulator/physics_engines/dynamics2d/dynamics2d_engine.h>
+//#include <argos3/plugins/simulator/physics_engines/dynamics2d/chipmunk-physics/include/constraints/cpDampedSpring.h>
 
 using namespace argos;
 
 class CSoftRobotLoopFunctions : public CLoopFunctions {
+
+public:
+
+   typedef std::map<CKilobotEntity*, std::vector<CVector3> > TWaypointMap;
 
 public:
 
@@ -16,9 +21,23 @@ public:
 
    virtual void Init(TConfigurationNode& t_tree);
 
-   virtual void PostStep();
+   virtual void Reset();
 
    virtual void Destroy();
+
+   virtual void PostStep();
+
+   inline const TWaypointMap& GetWaypoints() const {
+      return m_tWaypoints;
+   }
+
+   inline const std::vector<cpDampedSpring*>& GetSprings() const {
+      return m_vecSprings;
+   }
+
+   inline Real GetSpringRestLength() const {
+      return m_fSpringRestLength;
+   }
 
 private:
 
@@ -37,8 +56,10 @@ private:
 
 private:
 
+   TWaypointMap m_tWaypoints;
+   
    std::vector<CKilobotEntity*> m_vecRobots;
-   std::vector<cpConstraint*> m_vecSprings;
+   std::vector<cpDampedSpring*> m_vecSprings;
    
    UInt32   m_unRobotsPerSide;
    CVector2 m_cRobotsCenter;
