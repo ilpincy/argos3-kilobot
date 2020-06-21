@@ -8,10 +8,12 @@
 /****************************************/
 /****************************************/
 
-static const std::string KB_CONTROLLER       = "kbc";
-static const std::string PHYSICS_ENGINE      = "dyn2d";
-static const Real        SOFT_KILOBOT_RADIUS = 0.02; // 2 cm
-static const Real        SOFT_KILOBOT_MASS   = KILOBOT_MASS + 0.014; // grams
+static const std::string KB_CONTROLLER  = "kbc";   // must match .argos file
+static const std::string PHYSICS_ENGINE = "dyn2d"; // must match .argos file
+
+static const Real SOFT_KILOBOT_RADIUS       = 0.02; // 2 cm
+static const Real SOFT_KILOBOT_MASS         = KILOBOT_MASS + 0.014; // grams
+static const Real SOFT_KILOBOT_ECCENTRICITY = KILOBOT_ECCENTRICITY; // TODO!
 //static const Real        SPRING_MASS         = 0.02; // grams
 
 /****************************************/
@@ -87,7 +89,7 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
             pcKB = new CKilobotEntity(cKBId.str(), KB_CONTROLLER, cPos);
             AddEntity(*pcKB);
             m_vecRobots.push_back(pcKB);
-            /* Fix robot mass and moment to match the larger version */
+            /* Fix robot mass, moment, shape to match the larger version */
             CEmbodiedEntity& cBodyE =
                pcKB->GetEmbodiedEntity();
             CDynamics2DKilobotModel& cModel =
@@ -97,9 +99,12 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
             cpBodySetMass(ptBody, SOFT_KILOBOT_MASS);
             cpBodySetMoment(ptBody,
                cpMomentForCircle(SOFT_KILOBOT_MASS,
-                                 0.0f,
+                                 0.0,
                                  2 * SOFT_KILOBOT_RADIUS,
-                                 cpvzero));
+                                 cpv(SOFT_KILOBOT_ECCENTRICITY, 0.0)));
+            cpCircleShape* ptShape = (cpCircleShape*)ptBody->shapeList;
+            ptShape->r = SOFT_KILOBOT_RADIUS;
+            ptShape->c = cpv(SOFT_KILOBOT_ECCENTRICITY, 0.0);
          }
       }
    }
