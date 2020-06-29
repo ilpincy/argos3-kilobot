@@ -7,7 +7,7 @@
   <framework>
     <system threads="0" />
     <experiment length="0"
-                ticks_per_second="10"
+                ticks_per_second="32"
                 random_seed="124" />
   </framework>
 
@@ -18,10 +18,16 @@
 
     <kilobot_controller id="kbc">
       <actuators>
-        <differential_steering implementation="default" />
+        <differential_steering  implementation="default"
+                                bias_avg="0.001"
+                                bias_stddev="0.0001"
+                                factor_avg="1"
+                                factor_stddev="0.0001"/>
         <kilobot_led implementation="default" />
       </actuators>
-      <sensors />
+      <sensors>
+        <kilobot_communication implementation="default" medium="kilocomm" show_rays="true"/>
+      </sensors>
       <params behavior="build/examples/behaviors/simple_movement" />
     </kilobot_controller>
 
@@ -33,11 +39,11 @@
   <loop_functions
       library="build/examples/loop_functions/soft_robot_loop_functions/libsoft_robot_loop_functions"
       label="soft_robot_loop_functions"
-      robots_center = "0,0"
-      robots_per_side = "2"
+      robots_center = "0.5,-0.5"
+      robots_per_side = "3"
       spring_rest_length = "0.031"
-      spring_stiffness = "0.6"
-      spring_damping="0.01" />
+      spring_stiffness = "0.05"
+      spring_damping="0.6" />
 
  <!-- *********************** -->
   <!-- * Arena configuration * -->
@@ -49,13 +55,15 @@
   <!-- * Physics engines * -->
   <!-- ******************* -->
   <physics_engines>
-    <dynamics2d id="dyn2d" />
+    <dynamics2d id="dyn2d" iterations="40"/>
   </physics_engines>
 
   <!-- ********* -->
   <!-- * Media * -->
   <!-- ********* -->
-  <media />
+  <media>
+    <kilobot_communication id="kilocomm" />
+  </media>
 
   <!-- ****************** -->
   <!-- * Visualization * -->

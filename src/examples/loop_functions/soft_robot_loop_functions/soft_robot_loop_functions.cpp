@@ -24,9 +24,10 @@ static const Real MIN_DISTANCE_SQUARED = MIN_DISTANCE * MIN_DISTANCE;
 static const std::string KB_CONTROLLER  = "kbc";   // must match .argos file
 static const std::string PHYSICS_ENGINE = "dyn2d"; // must match .argos file
 
-static const Real SOFT_KILOBOT_RADIUS       = 0.02; // 2 cm
-static const Real SOFT_KILOBOT_MASS         = KILOBOT_MASS + 0.014; // grams
-static const Real SOFT_KILOBOT_ECCENTRICITY = KILOBOT_ECCENTRICITY; // TODO!
+static const Real SOFT_KILOBOT_RADIUS         = 0.02; // 2 cm
+static const Real SOFT_KILOBOT_MASS           = KILOBOT_MASS + 0.014; // grams
+static const Real SOFT_KILOBOT_ECCENTRICITY   = KILOBOT_ECCENTRICITY; // TODO!
+static const Real SOFT_KILOBOT_SPRING_ANCHOR  = -0.014; // 1.4 cm
 //static const Real        SPRING_MASS         = 0.02; // grams
 
 /****************************************/
@@ -106,7 +107,8 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
       CKilobotEntity* pcKB;
       std::ostringstream cKBId;
       CVector3 cPos;
-      CQuaternion cOrientation(CRadians::ZERO, CVector3::Z);
+      CRadians cAngle = CRadians::PI_OVER_TWO + CRadians::PI_OVER_FOUR;
+      CQuaternion cOrientation(cAngle, CVector3::Z);
       for(size_t j = 0; j < m_unRobotsPerSide; ++j) {
          for(size_t i = 0; i < m_unRobotsPerSide; ++i) {
             /* Make id */
@@ -160,15 +162,15 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
 /****************************************/
 
 void CSoftRobotLoopFunctions::AddSprings() {
-   /* Horizontal springs */
+   /* Horizontal springs - e.g. KB1 to KB2 (in a 3x3 robot) */
    for(int j = 0; j < m_unRobotsPerSide; ++j) {
       for(int i = 0; i < m_unRobotsPerSide-1; ++i) {
          AddSpring(GetRobot(i,   j),
                    GetRobot(i+1, j),
-                   CVector2::X);
+                   CVector2::Y);
       }
    }
-   /* Vertical springs */
+   /* Vertical springs - e.g. KB1 to KB4 (in a 3x3 robot) */
    for(int i = 0; i < m_unRobotsPerSide; ++i) {
       for(int j = 0; j < m_unRobotsPerSide-1; ++j) {
          AddSpring(GetRobot(i, j),
@@ -199,10 +201,15 @@ void CSoftRobotLoopFunctions::AddSpring(CKilobotEntity* pc_kb1,
     * anchor2 = -dir * radius
     */
    cpVect tOffset = cpvmult(
-         cpv(c_dir.GetX(), c_dir.GetY()),
-         SOFT_KILOBOT_RADIUS);
+         cpv(1, c_dir.GetY()),
+         SOFT_KILOBOT_SPRING_ANCHOR);
    cpVect tAnchor1 = tOffset;
    cpVect tAnchor2 = cpvneg(tOffset);
+
+   /*Adjusting to account for offset of KB origin */
+   tAnchor1 = cpvadd(tAnchor1, cpv(0.008,0));
+   tAnchor2 = cpvadd(tAnchor2, cpv(0.008,0));
+   
    /* Add spring between them */
    cpConstraint* ptSpring = cpDampedSpringNew(
       ptBody1, ptBody2,
