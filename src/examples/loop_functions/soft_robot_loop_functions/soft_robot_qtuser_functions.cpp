@@ -56,6 +56,14 @@ void CSoftRobotQTUserFunctions::DrawInWorld() {
 void CSoftRobotQTUserFunctions::Draw(CKilobotEntity& c_entity) {
    DrawText(CVector3(0.0, 0.0, 0.1),   // position
             c_entity.GetId()); // text
+
+  /* Drawing a representation of the circlet on each KB */
+  DrawCylinder(
+        CVector3(0.009f, 0.0f, 0.0304f), 
+        CQuaternion(),
+        0.02f,
+        0.006f,
+        CColor::WHITE);
 }
 
 /****************************************/
