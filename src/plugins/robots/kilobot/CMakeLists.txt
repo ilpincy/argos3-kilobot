@@ -71,7 +71,8 @@ add_library(argos3plugin_${ARGOS_BUILD_FOR}_kilobot SHARED ${ARGOS3_SOURCES_PLUG
 target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot
   argos3plugin_${ARGOS_BUILD_FOR}_genericrobot
   argos3plugin_${ARGOS_BUILD_FOR}_dynamics2d
-  argos3plugin_${ARGOS_BUILD_FOR}_pointmass3d)
+  argos3plugin_${ARGOS_BUILD_FOR}_pointmass3d
+  rt)
 if(ARGOS_COMPILE_QTOPENGL)
   target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot argos3plugin_${ARGOS_BUILD_FOR}_qtopengl)
 endif(ARGOS_COMPILE_QTOPENGL)

@@ -1,88 +1,42 @@
-# Compiling the code
+# SwarmTalk + Kilobot on ARGoS Simulation
 
-Make sure you have ARGoS >= 3.0.0-beta52 installed!
+For more details about SwarmTalk: https://github.com/shzhangyihan/SwarmTalk
 
-Commands:
+Make sure ARGoS and Kilobot plugin are installed correctly:
+
+1. ARGoS Core: https://github.com/ilpincy/argos3
+2. Kilobot plugin: https://github.com/ilpincy/argos3-kilobot
+
+To build:
+
 ```shell
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release ../src
+cmake ../src
 make
-sudo make install
+cd ..
 ```
 
-## Lab 0
+## Firefly synchronization
+
 ```shell
-argos3 -c src/examples/experiments/kilobot_blinky.argos
+argos3 -c src/examples/experiments/firefly.argos
 ```
 
-## Lab 1.2
+## Edge following
+
 ```shell
-argos3 -c src/examples/experiments/kilobot_simple_movement.argos
+argos3 -c src/examples/experiments/edge_following.argos
 ```
 
-## Lab 1.3
+## Hop count with one seed
+
 ```shell
-argos3 -c src/examples/experiments/kilobot_nonblocked_movement.argos
+argos3 -c src/examples/experiments/hop_count_1_seed.argos
 ```
 
-## Lab 2.1-2.2
+## Hop count with two seeds
+
 ```shell
-argos3 -c src/examples/experiments/kilobot_speaker_listener.argos
+argos3 -c src/examples/experiments/hop_count_2_seed.argos
 ```
-
-## Lab 2.3-2.4
-```shell
-argos3 -c src/examples/experiments/kilobot_speaker_listener_mod.argos
-```
-
-## Lab 3
-```shell
-argos3 -c src/examples/experiments/kilobot_disperse.argos
-```
-
-## Lab 4
-```shell
-argos3 -c src/examples/experiments/kilobot_orbit.argos
-```
-
-## Lab 5
-```shell
-argos3 -c src/examples/experiments/kilobot_move_to_light.argos
-```
-
-## Lab 6
-```shell
-argos3 -c src/examples/experiments/kilobot_gradient_simple.argos
-```
-
-## Lab 7
-```shell
-argos3 -c src/examples/experiments/kilobot_sync.argos
-```
-
-# Differences between Kilombo and ARGoS
-
-## Kilombo
-  * Architecture
-    * Single-thread, single process wrapper around kilolib.h
-      * Robots must run the same behavior
-      * Global variables cannot be used to contain state
-  * Models
-    * Only model offered is the Kilobot
-    * Motion is kinematics with simple overlap resolution
-      * Robots cannot push other objects
-    * Communication neglects obstructions
-    * Message drop has uniform probability
-
-## ARGoS
-  * Architecture
-    * Multi-thread, multi-process architecture
-    * Robots can run different behaviors
-    * Global variables can be used to contain state
-  * Models
-    * Models of Kilobot, other robots, boxes, cylinders
-      * Motion is full 2D dynamics
-      * Robots can push other objects
-    * Communication considers obstruction
-    * Message drop considers local density

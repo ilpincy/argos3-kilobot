@@ -1,3 +1,1 @@
-add_subdirectory(controllers)
 add_subdirectory(behaviors)
-add_subdirectory(loop_functions)

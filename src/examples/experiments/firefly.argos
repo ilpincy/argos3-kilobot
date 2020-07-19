@@ -16,16 +16,15 @@
   <!-- *************** -->
   <controllers>
 
-    <kilobot_controller id="kbc">
+    <kilobot_controller id="listener">
       <actuators>
-        <differential_steering implementation="default" />
         <kilobot_led implementation="default" />
         <kilobot_communication implementation="default" />
       </actuators>
       <sensors>
         <kilobot_communication implementation="default" medium="kilocomm" show_rays="true" />
       </sensors>
-      <params behavior="build/examples/behaviors/disperse" />
+      <params behavior="build/examples/behaviors/firefly/firefly" />
     </kilobot_controller>
 
   </controllers>
@@ -35,15 +34,17 @@
   <!-- *********************** -->
   <arena size="2, 2, 1" center="0,0,0.5">
     <distribute>
-      <position method="uniform" min="-0.5,-0.5,0" max="0.5,0.5,0" />
-      <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
-      <entity quantity="10" max_trials="100">
+      <position method="grid"
+                center="0,0,0"
+                distances="0.035,0.035,0"
+                layout="6,6,1" />
+      <orientation method="constant" values="0,0,0" />
+      <entity quantity="36" max_trials="1">
         <kilobot id="kb">
-          <controller config="kbc" />>
+          <controller config="listener" />>
         </kilobot>
       </entity>
     </distribute>
-
   </arena>
 
   <!-- ******************* -->
@@ -66,7 +67,8 @@
   <visualization>
     <qt-opengl>
       <camera>
-        <placement idx="0" position="-0.660983,0,0.6875" look_at="0.0531593,0,-0.0125011" lens_focal_length="20" />
+        <placement idx="0" position="-0.126801,-0.00109986,0.249553" look_at="0.303994,-0.00540795,-0.652886" lens_focal_length="20" />
+        <placement idx="1" position="-0.0229259,-0.177184,0.0725521" look_at="0.0273839,0.812385,-0.0624333" lens_focal_length="20" />
       </camera>
     </qt-opengl>
   </visualization>
