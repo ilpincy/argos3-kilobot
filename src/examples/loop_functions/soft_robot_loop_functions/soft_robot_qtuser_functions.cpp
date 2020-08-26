@@ -48,6 +48,20 @@ void CSoftRobotQTUserFunctions::DrawInWorld() {
               3.0 // width
          );
    }
+
+    /* Drawing Start and finish lines */
+    DrawRay(CRay3(
+              CVector3(0.4, 0, 0.02),
+              CVector3(0.4, 2, 0.02)),
+              CColor::RED,
+              3.0 // width
+         );
+    DrawRay(CRay3(
+              CVector3(1.6, 0, 0.02),
+              CVector3(1.6, 2, 0.02)),
+              CColor::RED,
+              3.0 // width
+         );
 }
 
 /****************************************/
