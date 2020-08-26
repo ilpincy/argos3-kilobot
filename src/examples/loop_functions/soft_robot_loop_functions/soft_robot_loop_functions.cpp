@@ -288,8 +288,8 @@ void CSoftRobotLoopFunctions::AddSpring(CKilobotEntity* pc_kb1,
    cpVect tAnchor2 = cpvneg(tOffset);
 
    /*Adjusting to account for offset of KB origin */
-   tAnchor1 = cpvadd(tAnchor1, cpv(0.008,0));
-   tAnchor2 = cpvadd(tAnchor2, cpv(0.008,0));
+   tAnchor1 = cpvadd(tAnchor1, cpv(0.009,0));
+   tAnchor2 = cpvadd(tAnchor2, cpv(0.009,0));
    
    /* Add spring between them */
    cpConstraint* ptSpring = cpDampedSpringNew(
