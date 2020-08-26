@@ -224,6 +224,41 @@ void CSoftRobotLoopFunctions::AddSprings() {
                    -CVector2::Y);
       }
    }
+
+
+   /* Addition of aproximated linear and rotational friction for each Kilobot */
+    for(int i = 0; i < m_unRobotsPerSide; ++i) {
+      for(int j = 0; j < m_unRobotsPerSide; ++j) {
+
+        /*Retrieving the cp Body of the Kilobot */
+        CEmbodiedEntity& cBodyE1 = GetRobot(i, j)->GetEmbodiedEntity();
+        CDynamics2DKilobotModel& cModel1 = dynamic_cast<CDynamics2DKilobotModel&>(cBodyE1.GetPhysicsModel(PHYSICS_ENGINE));
+        cpBody* ptBody1 = cModel1.GetBody();
+
+        /* Creating new infinite body to apply friction from */
+        cpBody* ptControlBody = cpBodyNew(INFINITY, INFINITY);
+
+        /* Adding new aproximation of angular friction */
+        cpConstraint* ptAngularConstraint =
+        cpSpaceAddConstraint(m_pcDyn2DEngine->GetPhysicsSpace(),
+                            cpGearJointNew(ptBody1,
+                                            ptControlBody,
+                                            0.0f,
+                                            1.0f));
+        ptAngularConstraint->maxBias = 0.0f;
+        ptAngularConstraint->maxForce = 0.010f; 
+      
+        /* Adding new aproximation of linear friction */
+        cpConstraint* ptLinearConstraint =
+        cpSpaceAddConstraint(m_pcDyn2DEngine->GetPhysicsSpace(),
+                            cpPivotJointNew2(ptBody1,
+                                              ptControlBody,
+                                              cpvzero,
+                                              cpvzero));
+        ptLinearConstraint->maxBias = 0.0f; 
+        ptLinearConstraint->maxForce = 0.010f; 
+       }
+    }
 }
 
 /****************************************/
