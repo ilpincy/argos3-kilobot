@@ -60,6 +60,9 @@ private:
    
    std::vector<CKilobotEntity*> m_vecRobots;
    std::vector<cpDampedSpring*> m_vecSprings;
+
+   std::string m_strOutput;
+   std::ofstream m_cOutput;
    
    UInt32   m_unRobotsPerSide;
    CVector2 m_cRobotsCenter;

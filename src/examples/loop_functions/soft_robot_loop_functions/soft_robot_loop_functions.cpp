@@ -35,6 +35,10 @@ static const Real SOFT_KILOBOT_SPRING_ANCHOR  = -0.014; // 1.4 cm
 
 void CSoftRobotLoopFunctions::Init(TConfigurationNode& t_tree) {
    try {
+      /* Get log name and output time header*/
+      GetNodeAttribute(t_tree, "output", m_strOutput);
+      m_cOutput.open(m_strOutput.c_str(), std::ios_base::trunc | std::ios_base::out);
+      m_cOutput << "Time(s)" << "\t";
       /* Get physics engine */
       m_pcDyn2DEngine = &dynamic_cast<CDynamics2DEngine&>(
          CSimulator::GetInstance().GetPhysicsEngine(PHYSICS_ENGINE));
@@ -66,6 +70,10 @@ void CSoftRobotLoopFunctions::Reset() {
       /* Add the initial position of the kilobot */
       m_tWaypoints[pcKB].push_back(pcKB->GetEmbodiedEntity().GetOriginAnchor().Position);
    }
+   /* Close the file */
+   m_cOutput.close();
+   /* Open the file, erasing its contents */
+   m_cOutput.open(m_strOutput.c_str(), std::ios_base::trunc | std::ios_base::out);
 }
 
 /****************************************/
@@ -79,6 +87,7 @@ void CSoftRobotLoopFunctions::Destroy() {
       cpConstraintFree((cpConstraint*)m_vecSprings.back());
       m_vecSprings.pop_back();
    }
+   m_cOutput.close();
 }
 
 /****************************************/
@@ -96,6 +105,31 @@ void CSoftRobotLoopFunctions::PostStep() {
          m_tWaypoints[pcKB].push_back(pcKB->GetEmbodiedEntity().GetOriginAnchor().Position);
       }
    }
+   /* Variable for calculating CoG */
+  Real fCoGX = 0;
+  /* Record position of each Kilobot every second */
+  /* 32 must match ticks per second of simulation */
+  if (GetSpace().GetSimulationClock() % 32 == 0 ) 
+  {
+    m_cOutput << ( GetSpace().GetSimulationClock() / 32) << "\t";
+    for(size_t i = 0; i < m_vecRobots.size(); ++i) 
+    {   
+        pcKB = m_vecRobots[i];
+        m_cOutput << pcKB->GetEmbodiedEntity().GetOriginAnchor().Position.GetX() << "\t"
+               << pcKB->GetEmbodiedEntity().GetOriginAnchor().Position.GetY() << "\t";
+
+               fCoGX = fCoGX + pcKB->GetEmbodiedEntity().GetOriginAnchor().Position.GetX();
+    }
+    m_cOutput << "\n";
+
+    /* Kill simulation of CoG past finish line */
+    if ( ( fCoGX / (m_unRobotsPerSide*m_unRobotsPerSide) )  > 1.6 )
+    {
+      argos::CSimulator& cSimulator = argos::CSimulator::GetInstance();
+      cSimulator.Destroy();
+    }
+
+  }
 }
 
 /****************************************/
