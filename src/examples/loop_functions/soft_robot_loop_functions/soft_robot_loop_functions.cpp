@@ -48,6 +48,7 @@ void CSoftRobotLoopFunctions::Init(TConfigurationNode& t_tree) {
       GetNodeAttribute(t_tree, "spring_rest_length", m_fSpringRestLength);
       GetNodeAttribute(t_tree, "spring_stiffness",   m_fSpringStiffness);
       GetNodeAttribute(t_tree, "spring_damping",     m_fSpringDamping);
+      GetNodeAttribute(t_tree, "kbsr_orientation",     m_fRobotOrientation);
       /* Setup the experiment */
       m_fRobotsDistance = m_fSpringRestLength + 2 * SOFT_KILOBOT_RADIUS;
       PlaceRobots();
@@ -137,11 +138,15 @@ void CSoftRobotLoopFunctions::PostStep() {
 
 void CSoftRobotLoopFunctions::PlaceRobots() {
    try {
-      Real fHalfSideLength = m_unRobotsPerSide * m_fRobotsDistance * 0.5;
+      Real fHalfSideLength = (m_unRobotsPerSide - 1) * m_fRobotsDistance * 0.5;
       CKilobotEntity* pcKB;
       std::ostringstream cKBId;
+      CDegrees cAngleDeg = CDegrees(m_fRobotOrientation);
+      CRadians cAngleRad = ToRadians(cAngleDeg);
+      m_fRotSin = Sin(cAngleRad);
+      m_fRotCos = Cos(cAngleRad);
       CVector3 cPos;
-      CRadians cAngle = CRadians::PI_OVER_TWO + CRadians::PI_OVER_FOUR;
+      CRadians cAngle = CRadians::PI_OVER_TWO + CRadians::PI_OVER_FOUR- cAngleRad;
       CQuaternion cOrientation(cAngle, CVector3::Z);
       for(size_t j = 0; j < m_unRobotsPerSide; ++j) {
          for(size_t i = 0; i < m_unRobotsPerSide; ++i) {
@@ -158,10 +163,15 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
              *  |   4 5 6
              *  v   7 8 9
              */
-            cPos.SetX( m_fRobotsDistance * i - fHalfSideLength + m_cRobotsCenter.GetX());
-            cPos.SetY(-m_fRobotsDistance * j + fHalfSideLength + m_cRobotsCenter.GetY());
+
+            Real fXcoord = m_fRobotsDistance * i - fHalfSideLength;
+            Real fYcoord = -m_fRobotsDistance * j + fHalfSideLength;
+            Real fRotXcoord = fXcoord * m_fRotCos + fYcoord * m_fRotSin;
+            Real fRotYcoord = -fXcoord * m_fRotSin + fYcoord * m_fRotCos;
+            cPos.SetX( fRotXcoord + m_cRobotsCenter.GetX());
+            cPos.SetY( fRotYcoord + m_cRobotsCenter.GetY());
             /* Add robot to space */
-            pcKB = new CKilobotEntity(cKBId.str(), KB_CONTROLLER, cPos, cOrientation);
+            pcKB = new CKilobotEntity(cKBId.str(), KB_CONTROLLER, cPos, cOrientation, 0.14f);
             AddEntity(*pcKB);
             m_vecRobots.push_back(pcKB);
             /* Fix robot mass, moment, shape to match the larger version */
@@ -184,8 +194,10 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
             m_tWaypoints[pcKB] = std::vector<CVector3>();
             /* Add the initial position of the kilobot */
             m_tWaypoints[pcKB].push_back(cPos);
+            m_cOutput << pcKB->GetId().c_str() << "X"  << "\t" << pcKB->GetId().c_str() << "Y" << "\t";
          }
       }
+      m_cOutput << "\n";
    }
    catch(CARGoSException& ex) {
       THROW_ARGOSEXCEPTION_NESTED("While placing robots", ex);

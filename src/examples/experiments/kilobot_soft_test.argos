@@ -18,10 +18,10 @@
     <kilobot_controller id="kbc">
       <actuators>
         <differential_steering  implementation="default"
-                                bias_avg="0.001"
-                                bias_stddev="0.0001"
-                                factor_avg="1"
-                                factor_stddev="0.0001"/>
+                                bias_stddev_left="0.00009"
+                                bias_stddev_right="0.00009"
+                                factor_avg="0.6"
+                                factor_stddev="0.00001"/>
         <kilobot_led implementation="default" />
         <kilobot_communication implementation="default" />
       </actuators>
@@ -39,17 +39,30 @@
   <loop_functions
       library="build/examples/loop_functions/soft_robot_loop_functions/libsoft_robot_loop_functions"
       label="soft_robot_loop_functions"
-      robots_center = "0.5,-0.5"
-      robots_per_side = "3"
+      robots_center = "0.4,1"
+      robots_per_side = "5"
       spring_rest_length = "0.031"
-      spring_stiffness = "0.05"
-      spring_damping="0.6"
-      output="log.txt" />
+      spring_stiffness = "0.6"
+      spring_damping="0.0" 
+      output="log.txt" 
+      kbsr_orientation="135"/>
 
  <!-- *********************** -->
   <!-- * Arena configuration * -->
   <!-- *********************** -->
-  <arena size="2, 2, 1" center="0,0,0.5">
+  <arena size="2, 2, 1" center="1,1,0.5">
+    <box id="wall_north" size="2,0.1,0.5" movable="false">
+      <body position="1,2.05,0" orientation="0,0,0" />
+    </box>
+    <box id="wall_south" size="2,0.1,0.5" movable="false">
+      <body position="1,-0.05,0" orientation="0,0,0" />
+    </box>
+    <box id="wall_east" size="0.1,2,0.5" movable="false">
+      <body position="2.05,1,0" orientation="0,0,0" />
+    </box>
+    <box id="wall_west" size="0.1,2,0.5" movable="false">
+      <body position="-0.05,1,0" orientation="0,0,0" />
+    </box>
   </arena>
 
   <!-- ******************* -->
@@ -74,6 +87,7 @@
       <user_functions label="soft_robot_qtuser_functions" />
       <camera>
         <placement idx="0" position="-0.500301,0,0.529999" look_at="0.213841,0,-0.170001" up="0.700001,0,0.714142" lens_focal_length="20" />
+        <placement idx="1" position="1,1,2" look_at="1,1,0" up="0.707107,0,0.707107" lens_focal_length="20" />
       </camera>
     </qt-opengl>
   </visualization>

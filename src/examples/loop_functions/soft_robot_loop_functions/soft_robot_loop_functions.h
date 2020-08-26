@@ -70,6 +70,10 @@ private:
    Real     m_fSpringRestLength;
    Real     m_fSpringStiffness;
    Real     m_fSpringDamping;
+
+   Real     m_fRobotOrientation;
+   Real     m_fRotSin;
+   Real     m_fRotCos;
    
    CDynamics2DEngine* m_pcDyn2DEngine;
 };
