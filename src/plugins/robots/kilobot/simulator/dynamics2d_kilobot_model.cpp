@@ -14,8 +14,8 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   static const Real KILOBOT_MAX_FORCE  = 0.001f;
-   static const Real KILOBOT_MAX_TORQUE = 0.001f;
+   static const Real KILOBOT_MAX_FORCE  = 0.014f;
+   static const Real KILOBOT_MAX_TORQUE = 0.0101f;
    static const Real KILOBOT_FRICTION   = 2.5f;
 
    enum KILOBOT_WHEELS {

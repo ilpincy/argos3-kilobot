@@ -48,6 +48,20 @@ void CSoftRobotQTUserFunctions::DrawInWorld() {
               3.0 // width
          );
    }
+
+    /* Drawing Start and finish lines */
+    DrawRay(CRay3(
+              CVector3(0.4, 0, 0.02),
+              CVector3(0.4, 2, 0.02)),
+              CColor::RED,
+              3.0 // width
+         );
+    DrawRay(CRay3(
+              CVector3(1.6, 0, 0.02),
+              CVector3(1.6, 2, 0.02)),
+              CColor::RED,
+              3.0 // width
+         );
 }
 
 /****************************************/
@@ -56,6 +70,14 @@ void CSoftRobotQTUserFunctions::DrawInWorld() {
 void CSoftRobotQTUserFunctions::Draw(CKilobotEntity& c_entity) {
    DrawText(CVector3(0.0, 0.0, 0.1),   // position
             c_entity.GetId()); // text
+
+  /* Drawing a representation of the circlet on each KB */
+  DrawCylinder(
+        CVector3(0.009f, 0.0f, 0.0304f), 
+        CQuaternion(),
+        0.02f,
+        0.006f,
+        CColor::WHITE);
 }
 
 /****************************************/

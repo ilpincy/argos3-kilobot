@@ -60,6 +60,9 @@ private:
    
    std::vector<CKilobotEntity*> m_vecRobots;
    std::vector<cpDampedSpring*> m_vecSprings;
+
+   std::string m_strOutput;
+   std::ofstream m_cOutput;
    
    UInt32   m_unRobotsPerSide;
    CVector2 m_cRobotsCenter;
@@ -67,6 +70,10 @@ private:
    Real     m_fSpringRestLength;
    Real     m_fSpringStiffness;
    Real     m_fSpringDamping;
+
+   Real     m_fRobotOrientation;
+   Real     m_fRotSin;
+   Real     m_fRotCos;
    
    CDynamics2DEngine* m_pcDyn2DEngine;
 };
