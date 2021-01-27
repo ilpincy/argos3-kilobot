@@ -65,6 +65,7 @@ private:
    std::ofstream m_cOutput;
    
    UInt32   m_unRobotsPerSide;
+   UInt32   m_unRobotsFaulty;
    CVector2 m_cRobotsCenter;
    Real     m_fRobotsDistance;
    Real     m_fSpringRestLength;

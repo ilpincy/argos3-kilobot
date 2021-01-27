@@ -45,6 +45,7 @@ void CSoftRobotLoopFunctions::Init(TConfigurationNode& t_tree) {
       /* Parse attributes */
       GetNodeAttribute(t_tree, "robots_center",      m_cRobotsCenter);
       GetNodeAttribute(t_tree, "robots_per_side",    m_unRobotsPerSide);
+      GetNodeAttribute(t_tree, "robots_faulty",      m_unRobotsFaulty);
       GetNodeAttribute(t_tree, "spring_rest_length", m_fSpringRestLength);
       GetNodeAttribute(t_tree, "spring_stiffness",   m_fSpringStiffness);
       GetNodeAttribute(t_tree, "spring_damping",     m_fSpringDamping);
