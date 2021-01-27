@@ -74,6 +74,9 @@ target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot
   argos3plugin_${ARGOS_BUILD_FOR}_pointmass3d)
 if(ARGOS_COMPILE_QTOPENGL)
   target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot argos3plugin_${ARGOS_BUILD_FOR}_qtopengl)
+  if(RT_FOUND)
+    target_link_libraries(argos3plugin_simulator_kilobot ${RT_LIBRARY})
+  endif(RT_FOUND)
 endif(ARGOS_COMPILE_QTOPENGL)
 
 #
@@ -84,7 +87,7 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
     control_interface/kilolib.c
     control_interface/message_crc.c)
   if(RT_FOUND)
-    target_link_libraries(argos3plugin_simulator_kilolib ${RT_LIBRARIES})
+    target_link_libraries(argos3plugin_simulator_kilolib ${RT_LIBRARY})
   endif(RT_FOUND)
 endif(ARGOS_BUILD_FOR_SIMULATOR)
 
