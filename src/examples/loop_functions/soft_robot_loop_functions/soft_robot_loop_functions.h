@@ -27,6 +27,10 @@ public:
 
    virtual void PostStep();
 
+   virtual bool IsExperimentFinished() {
+      return m_bDone;
+   }
+
    inline const TWaypointMap& GetWaypoints() const {
       return m_tWaypoints;
    }
@@ -62,7 +66,10 @@ private:
    std::vector<cpDampedSpring*> m_vecSprings;
 
    std::string m_strOutput;
-   std::ofstream m_cOutput;
+   std::ofstream m_cPoseData;
+   std::ofstream m_cCoMData;
+   std::ofstream m_cSpringData;
+   std::ofstream m_cAngleData;
    
    UInt32   m_unRobotsPerSide;
    UInt32   m_unRobotsFaulty;
@@ -77,6 +84,8 @@ private:
    Real     m_fRotCos;
    
    CDynamics2DEngine* m_pcDyn2DEngine;
+
+   bool m_bDone;
 };
 
 #endif
