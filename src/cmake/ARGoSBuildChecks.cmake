@@ -16,7 +16,7 @@ set(CMAKE_INSTALL_PREFIX ${ARGOS_PREFIX} CACHE STRING "Install path prefix, prep
 #
 # Find Lua
 #
-#find_package(Lua53 REQUIRED)
+#find_package(Lua REQUIRED)
 
 #
 # Look for librt, necessary on some platforms
