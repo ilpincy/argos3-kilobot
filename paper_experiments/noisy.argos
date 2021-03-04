@@ -103,12 +103,12 @@
   <!-- * Visualization * -->
   <!-- ****************** -->
   <visualization>
-    <qt-opengl>
-      <user_functions label="soft_robot_qtuser_functions" />
-      <camera>
-        <placement idx="0" position="1,1,2" look_at="1,1,0" up="0.707107,0,0.707107" lens_focal_length="20" />
-      </camera>
-    </qt-opengl>
+    <!-- <qt-opengl> -->
+    <!--   <user_functions label="soft_robot_qtuser_functions" /> -->
+    <!--   <camera> -->
+    <!--     <placement idx="0" position="1,1,2" look_at="1,1,0" up="0.707107,0,0.707107" lens_focal_length="20" /> -->
+    <!--   </camera> -->
+    <!-- </qt-opengl> -->
   </visualization>
 
 </argos-configuration>

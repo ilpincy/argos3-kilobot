@@ -13,7 +13,7 @@ mkdir -p angles
 popd
 
 for RS in $(seq 1 $REP); do
-    for ST in 0 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6 1.8 2.0 5.0; do
+    for ST in 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6 1.8 2.0 5.0; do
         for FT in $(seq 0 2 10); do
             EXPID=${RS}_${SL}_${ST}_${FT}_${NN}
             if [[ ! -f "${NN}/com/com_${EXPID}.tsv" ]]; then
