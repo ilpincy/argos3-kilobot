@@ -11,18 +11,18 @@ set(CMAKE_INSTALL_PREFIX ${ARGOS_PREFIX} CACHE STRING "Install path prefix, prep
 # Check whether all the necessary libs have been installed to compile the
 # code that depends on Qt and OpenGL
 #
-include(ARGoSCheckQTOpenGL)
+#include(ARGoSCheckQTOpenGL)
 
 #
 # Find Lua
 #
-find_package(Lua53 REQUIRED)
+#find_package(Lua53 REQUIRED)
 
 #
 # Look for librt, necessary on some platforms
 #
 if(NOT APPLE)
-  find_package(RT)
+  find_package(RT REQUIRED)
 endif(NOT APPLE)
 
 #
