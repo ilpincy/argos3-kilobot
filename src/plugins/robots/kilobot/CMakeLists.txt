@@ -52,8 +52,8 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
     simulator/kilobot_communication_entity.cpp
     simulator/kilobot_communication_medium.cpp)
   # Compile the graphical visualization only if the necessary libraries have been found
-  include(ARGoSCheckQTOpenGL)
   if(ARGOS_COMPILE_QTOPENGL)
+    include_directories(${ARGOS_QTOPENGL_INCLUDE_DIRS})
     set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR
       ${ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR}
       simulator/qtopengl_kilobot.h)
