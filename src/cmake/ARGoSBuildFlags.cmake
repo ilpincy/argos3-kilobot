@@ -7,6 +7,20 @@ execute_process(
   OUTPUT_VARIABLE ARGOS_PROCESSOR_ARCH)
 
 #
+# Set the compilation type
+#
+if(CMAKE_BUILD_TYPE STREQUAL "")
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel ..." FORCE)
+endif(CMAKE_BUILD_TYPE STREQUAL "")
+
+#
+# Select ISO C++17
+#
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+#
 # General compilation flags
 #
 set(CMAKE_C_FLAGS                  "-Wall")

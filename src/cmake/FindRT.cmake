@@ -18,12 +18,10 @@ find_library(RT_LIBRARY rt
   PATHS
   /lib
   /lib/i386-linux-gnu
-  /lib32
-  )
-set(RT_LIBRARIES ${RT_LIBRARY})
+  /lib32)
 
 # handle the QUIETLY and REQUIRED arguments and set
 # RT_FOUND to TRUE if all listed variables are TRUE
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(rt DEFAULT_MSG RT_LIBRARY)
+find_package_handle_standard_args(RT DEFAULT_MSG RT_LIBRARY)
 mark_as_advanced(RT_LIBRARY)
