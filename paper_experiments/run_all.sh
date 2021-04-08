@@ -4,7 +4,7 @@ NN=$1
 ST=$2
 SL=7
 
-mkdir -p jobs ${NN}
+mkdir -p ${NN}
 pushd ${NN}
 mkdir -p poses
 mkdir -p com
