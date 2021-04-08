@@ -4,7 +4,7 @@
 #SBATCH --mem 1Gb
 #SBATCH -p short
 #SBATCH -t 24:00:00
-#SBATCH -C E5-2695
+#SBATCH -C 8168
 
 #
 # CHECK PARAMS

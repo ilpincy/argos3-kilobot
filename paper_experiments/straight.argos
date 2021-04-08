@@ -19,10 +19,10 @@
     <kilobot_controller id="working">
       <actuators>
         <differential_steering  implementation="default"
-                                bias_avg="0"
-                                bias_stddev="0.0001"
-                                factor_avg="0.9"
-                                factor_stddev="0.01"/>
+                                bias_avg="0.015"
+                                bias_stddev="0.001" />
+                                <!-- factor_avg="0.000186" -->
+                                <!-- factor_stddev="0.0000001"/> -->
         <kilobot_led implementation="default" />
         <kilobot_communication implementation="default" />
       </actuators>
@@ -102,13 +102,10 @@
   <!-- ****************** -->
   <!-- * Visualization * -->
   <!-- ****************** -->
-  <visualization>
-    <!-- <qt-opengl> -->
-    <!--   <user_functions label="soft_robot_qtuser_functions" /> -->
-    <!--   <camera> -->
-    <!--     <placement idx="0" position="1,1,2" look_at="1,1,0" up="0.707107,0,0.707107" lens_focal_length="20" /> -->
-    <!--   </camera> -->
-    <!-- </qt-opengl> -->
-  </visualization>
+  <!-- <visualization> -->
+  <!--   <qt-opengl> -->
+  <!--     <user_functions label="soft_robot_qtuser_functions" /> -->
+  <!--   </qt-opengl> -->
+  <!-- </visualization> -->
 
 </argos-configuration>
