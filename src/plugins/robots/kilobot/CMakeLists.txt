@@ -52,7 +52,7 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
     simulator/kilobot_communication_entity.cpp
     simulator/kilobot_communication_medium.cpp)
   # Compile the graphical visualization only if the necessary libraries have been found
-  if(ARGOS_COMPILE_QTOPENGL)
+  if(ARGOS_QTOPENGL_FOUND)
     include_directories(${ARGOS_QTOPENGL_INCLUDE_DIRS})
     set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR
       ${ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_SIMULATOR}
@@ -61,7 +61,7 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
       ${ARGOS3_SOURCES_PLUGINS_ROBOTS_KILOBOT}
       simulator/qtopengl_kilobot.h
       simulator/qtopengl_kilobot.cpp)
-  endif(ARGOS_COMPILE_QTOPENGL)
+  endif(ARGOS_QTOPENGL_FOUND)
 endif(ARGOS_BUILD_FOR_SIMULATOR)
 
 #
@@ -72,12 +72,12 @@ target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot
   argos3plugin_${ARGOS_BUILD_FOR}_genericrobot
   argos3plugin_${ARGOS_BUILD_FOR}_dynamics2d
   argos3plugin_${ARGOS_BUILD_FOR}_pointmass3d)
-if(ARGOS_COMPILE_QTOPENGL)
+if(ARGOS_QTOPENGL_FOUND)
   target_link_libraries(argos3plugin_${ARGOS_BUILD_FOR}_kilobot argos3plugin_${ARGOS_BUILD_FOR}_qtopengl)
   if(RT_FOUND)
     target_link_libraries(argos3plugin_simulator_kilobot ${RT_LIBRARY})
   endif(RT_FOUND)
-endif(ARGOS_COMPILE_QTOPENGL)
+endif(ARGOS_QTOPENGL_FOUND)
 
 #
 # Create kilolib
