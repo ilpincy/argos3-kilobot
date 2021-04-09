@@ -19,8 +19,8 @@
     <kilobot_controller id="working">
       <actuators>
         <differential_steering  implementation="default"
-                                bias_avg="0.015"
-                                bias_stddev="0.001" />
+                                bias_avg="0.0001"
+                                bias_stddev="0.0001" />
                                 <!-- factor_avg="0.186" -->
                                 <!-- factor_stddev="0.001"/> -->
         <kilobot_led implementation="default" />
@@ -63,7 +63,7 @@
       robots_per_side = "__ROBOTSxSIDE__"
       spring_rest_length = "0.031"
       spring_stiffness = "__STIFFNESS__"
-      spring_damping="0.0" 
+      spring_damping="0.01" 
       output="__EXPID__" 
       kbsr_orientation="135"/>
 
@@ -102,10 +102,10 @@
   <!-- ****************** -->
   <!-- * Visualization * -->
   <!-- ****************** -->
-  <!-- <visualization> -->
-  <!--   <qt-opengl> -->
-  <!--     <user_functions label="soft_robot_qtuser_functions" /> -->
-  <!--   </qt-opengl> -->
-  <!-- </visualization> -->
+  <visualization>
+    <qt-opengl>
+      <!-- <user_functions label="soft_robot_qtuser_functions" /> -->
+    </qt-opengl>
+  </visualization>
 
 </argos-configuration>
