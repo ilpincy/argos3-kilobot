@@ -3,7 +3,7 @@
 SL=7
 NN=noisy
 FT=0
-REP=30
+REP=10
 
 mkdir -p jobs ${NN}
 pushd ${NN}

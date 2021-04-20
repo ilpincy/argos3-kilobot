@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-SL=7
 ST=0.6
 NN=noisy
-REP=30
+REP=50
 
 mkdir -p jobs ${NN}
 pushd ${NN}
@@ -13,7 +12,17 @@ mkdir -p springs
 mkdir -p angles
 popd
 
+for SL in 1 7; do
 for RS in $(seq 1 $REP); do
+    for FT in $(seq 0 10); do
+        EXPID=${RS}_${SL}_${ST}_${FT}_${NN}
+        rm -f "${NN}/com/com_${EXPID}.tsv"
+    done
+done
+done
+
+for SL in 1 7; do
+for RS in $(seq 50 100); do
     for FT in $(seq 0 10); do
         EXPID=${RS}_${SL}_${ST}_${FT}_${NN}
         if [[ ! -f "${NN}/com/com_${EXPID}.tsv" ]]; then
@@ -22,4 +31,5 @@ for RS in $(seq 1 $REP); do
             done
         fi
     done
+done
 done

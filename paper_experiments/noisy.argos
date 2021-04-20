@@ -103,9 +103,9 @@
   <!-- * Visualization * -->
   <!-- ****************** -->
   <visualization>
-    <qt-opengl>
-      <!-- <user_functions label="soft_robot_qtuser_functions" /> -->
-    </qt-opengl>
+    <!-- <qt-opengl> -->
+    <!--   <user_functions label="soft_robot_qtuser_functions" /> -->
+    <!-- </qt-opengl> -->
   </visualization>
 
 </argos-configuration>

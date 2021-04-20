@@ -3,7 +3,7 @@
 SL=7
 NN=straight
 FT=0
-REP=30
+REP=10
 ST=0
 
 mkdir -p jobs ${NN}
