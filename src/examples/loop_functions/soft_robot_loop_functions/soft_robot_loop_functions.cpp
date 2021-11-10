@@ -34,6 +34,20 @@ static const Real SOFT_KILOBOT_SPRING_ANCHOR  = -0.014; // 1.4 cm
 /****************************************/
 /****************************************/
 
+static Real TruncatedGaussian(CRandom::CRNG* pc_rng,
+                              Real f_avg,
+                              Real f_stddev,
+                              Real f_k) {
+   Real x;
+   do {
+      x = pc_rng->Gaussian(f_stddev, f_avg);
+   } while(x < f_avg - f_k * f_stddev || x > f_avg + f_k * f_stddev);
+   return x;
+}
+
+/****************************************/
+/****************************************/
+
 void CSoftRobotLoopFunctions::Init(TConfigurationNode& t_tree) {
    try {
       m_bDone = false;
@@ -51,13 +65,16 @@ void CSoftRobotLoopFunctions::Init(TConfigurationNode& t_tree) {
       m_pcDyn2DEngine = &dynamic_cast<CDynamics2DEngine&>(
          CSimulator::GetInstance().GetPhysicsEngine(PHYSICS_ENGINE));
       /* Parse attributes */
-      GetNodeAttribute(t_tree, "robots_center",      m_cRobotsCenter);
-      GetNodeAttribute(t_tree, "robots_per_side",    m_unRobotsPerSide);
-      GetNodeAttribute(t_tree, "robots_faulty",      m_unRobotsFaulty);
-      GetNodeAttribute(t_tree, "spring_rest_length", m_fSpringRestLength);
-      GetNodeAttribute(t_tree, "spring_stiffness",   m_fSpringStiffness);
-      GetNodeAttribute(t_tree, "spring_damping",     m_fSpringDamping);
-      GetNodeAttribute(t_tree, "kbsr_orientation",   m_fRobotOrientation);
+      GetNodeAttribute(t_tree, "robots_center",           m_cRobotsCenter);
+      GetNodeAttribute(t_tree, "robots_per_side",         m_unRobotsPerSide);
+      GetNodeAttribute(t_tree, "robots_faulty",           m_unRobotsFaulty);
+      GetNodeAttribute(t_tree, "spring_rest_length",      m_fSpringRestLength);
+      GetNodeAttribute(t_tree, "spring_stiffness",        m_fSpringStiffness);
+      GetNodeAttribute(t_tree, "spring_stiffness_stddev", m_fSpringStiffnessStdDev);
+      GetNodeAttribute(t_tree, "spring_damping",          m_fSpringDamping);
+      GetNodeAttribute(t_tree, "kbsr_orientation",        m_fRobotOrientation);
+      /* Create RNG */
+      m_pcRNG = CRandom::CreateRNG("argos");
       /* Setup the experiment */
       m_fRobotsDistance = m_fSpringRestLength + 2 * SOFT_KILOBOT_RADIUS;
       PlaceRobots();
@@ -215,10 +232,9 @@ void CSoftRobotLoopFunctions::PlaceRobots() {
       /* Make a list of robots to randomly make faulty */
       std::vector<unsigned int> vecFaulty;
       if(m_unRobotsFaulty > 0) {
-         CRandom::CRNG* pcRNG = CRandom::CreateRNG("argos");
          CRange<UInt32> cFaulty(0, m_unRobotsPerSide * m_unRobotsPerSide);
          for(UInt32 i = 0; i < m_unRobotsFaulty; ++i) {
-            vecFaulty.push_back(pcRNG->Uniform(cFaulty));
+            vecFaulty.push_back(m_pcRNG->Uniform(cFaulty));
             LOGERR << "DEBUG: robot #" << vecFaulty.back() << " is faulty" << std::endl;
          }
       }
@@ -343,6 +359,10 @@ void CSoftRobotLoopFunctions::AddSprings() {
 void CSoftRobotLoopFunctions::AddSpring(CKilobotEntity* pc_kb1,
                                         CKilobotEntity* pc_kb2,
                                         const CVector2& c_dir) {
+   /* Pick a value at random, if needed */
+   Real fNoise = 0.0;
+   if(m_fSpringStiffnessStdDev > 0.0)
+      fNoise = TruncatedGaussian(m_pcRNG, 0.0, m_fSpringStiffnessStdDev, 1.0);
    /* Get the embodied entities */
    CEmbodiedEntity& cBodyE1 = pc_kb1->GetEmbodiedEntity();
    CEmbodiedEntity& cBodyE2 = pc_kb2->GetEmbodiedEntity();
@@ -362,17 +382,15 @@ void CSoftRobotLoopFunctions::AddSpring(CKilobotEntity* pc_kb1,
       SOFT_KILOBOT_SPRING_ANCHOR);
    cpVect tAnchor1 = tOffset;
    cpVect tAnchor2 = cpvneg(tOffset);
-
    /*Adjusting to account for offset of KB origin */
    tAnchor1 = cpvadd(tAnchor1, cpv(0.009,0));
    tAnchor2 = cpvadd(tAnchor2, cpv(0.009,0));
-   
    /* Add spring between them */
    cpConstraint* ptSpring = cpDampedSpringNew(
       ptBody1, ptBody2,
       tAnchor1, tAnchor2,
       m_fSpringRestLength,
-      m_fSpringStiffness,
+      m_fSpringStiffness + m_fSpringStiffnessStdDev,
       m_fSpringDamping);
    cpSpaceAddConstraint(m_pcDyn2DEngine->GetPhysicsSpace(),
                         ptSpring);

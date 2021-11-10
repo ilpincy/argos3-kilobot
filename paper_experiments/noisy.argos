@@ -18,11 +18,11 @@
 
     <kilobot_controller id="working">
       <actuators>
-        <differential_steering  implementation="default"
-                                bias_avg="0.0001"
-                                bias_stddev="0.0001" />
-                                <!-- factor_avg="0.186" -->
-                                <!-- factor_stddev="0.001"/> -->
+        <kilobot_differential_steering  implementation="default"
+                                        bias_avg="__BIAS_AVG__"
+                                        bias_stddev="__BIAS_STDDEV__"
+                                        noise_avg="0.186"
+                                        noise_stddev="0.001"/>
         <kilobot_led implementation="default" />
         <kilobot_communication implementation="default" />
       </actuators>
@@ -35,11 +35,11 @@
 
     <kilobot_controller id="faulty">
       <actuators>
-        <differential_steering  implementation="default" />
-                                <!-- bias_stddev_left="0.000015" -->
-                                <!-- bias_stddev_right="0.00015" -->
-                                <!-- factor_avg="0.00186" -->
-                                <!-- factor_stddev="0.00001"/> -->
+        <kilobot_differential_steering  implementation="default"
+                                        bias_avg="__BIAS_AVG__"
+                                        bias_stddev="__BIAS_STDDEV__"
+                                        noise_avg="0.186"
+                                        noise_stddev="0.001"/>
         <kilobot_led implementation="default" />
         <kilobot_communication implementation="default" />
       </actuators>
@@ -63,6 +63,7 @@
       robots_per_side = "__ROBOTSxSIDE__"
       spring_rest_length = "0.031"
       spring_stiffness = "__STIFFNESS__"
+      spring_stiffness_stddev = "__STIFFNESS_STDDEV__"
       spring_damping="0.01" 
       output="__EXPID__" 
       kbsr_orientation="135"/>

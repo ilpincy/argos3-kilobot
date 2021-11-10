@@ -6,6 +6,7 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_KILOBOT_CONTROLINTERFACE
   control_interface/ci_kilobot_communication_actuator.h
   control_interface/ci_kilobot_communication_sensor.h
   control_interface/ci_kilobot_controller.h
+  control_interface/ci_kilobot_differential_steering_actuator.h
   control_interface/ci_kilobot_led_actuator.h
   control_interface/ci_kilobot_light_sensor.h
   control_interface/kilolib.h
@@ -21,6 +22,7 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
     simulator/kilobot_measures.h
     simulator/kilobot_led_default_actuator.h
     simulator/kilobot_light_rotzonly_sensor.h
+    simulator/kilobot_differential_steering_default_actuator.h
     simulator/kilobot_communication_default_actuator.h
     simulator/kilobot_communication_default_sensor.h
     simulator/kilobot_communication_entity.h
@@ -35,6 +37,7 @@ set(ARGOS3_SOURCES_PLUGINS_ROBOTS_KILOBOT
   control_interface/ci_kilobot_communication_actuator.cpp
   control_interface/ci_kilobot_communication_sensor.cpp
   control_interface/ci_kilobot_controller.cpp
+  control_interface/ci_kilobot_differential_steering_actuator.cpp
   control_interface/ci_kilobot_led_actuator.cpp
   control_interface/ci_kilobot_light_sensor.cpp)
 
@@ -47,6 +50,7 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
     simulator/kilobot_entity.cpp
     simulator/kilobot_led_default_actuator.cpp
     simulator/kilobot_light_rotzonly_sensor.cpp
+    simulator/kilobot_differential_steering_default_actuator.cpp
     simulator/kilobot_communication_default_actuator.cpp
     simulator/kilobot_communication_default_sensor.cpp
     simulator/kilobot_communication_entity.cpp

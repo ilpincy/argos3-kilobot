@@ -60,6 +60,8 @@ private:
 
 private:
 
+   CRandom::CRNG* m_pcRNG;
+
    TWaypointMap m_tWaypoints;
    
    std::vector<CKilobotEntity*> m_vecRobots;
@@ -77,6 +79,7 @@ private:
    Real     m_fRobotsDistance;
    Real     m_fSpringRestLength;
    Real     m_fSpringStiffness;
+   Real     m_fSpringStiffnessStdDev;
    Real     m_fSpringDamping;
 
    Real     m_fRobotOrientation;
